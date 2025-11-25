@@ -1,0 +1,54 @@
+[00:00:00.794] Server  LOG     
+[00:00:00.794] Server  LOG        We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+[00:00:00.795] Server  LOG        The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:00.795] Server  LOG        	- include was updated to add '.next/dev/types/**/*.ts'
+[00:00:00.795] Server  LOG     
+[00:00:00.795] Server  LOG        The following mandatory changes were made to your tsconfig.json:
+
+[00:00:00.796] Server  LOG        	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+[00:00:00.796] Server  LOG     
+[00:00:00.971] Server  LOG      ✓ Ready in 658ms
+[00:00:05.913] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:06.057] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:06.057] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:06.057] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764061501108}
+[00:02:55.278] Server  LOG      ✓ Compiled in 95ms
+[00:02:57.524] Server  LOG      ✓ Compiled in 96ms
+[00:03:57.510] Server  LOG      ✓ Compiled in 114ms
+[00:04:53.826] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:53.972] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:53.972] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:04:53.972] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764061789020}
+[00:05:14.685] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ateliers color: rgb(120, 120, 120) color: inherit {"dp":"/ateliers","o":"http://localhost:3000/ateliers","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764061809734}
+[00:05:19.702] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764061814750}
+[00:07:54.007] Server  LOG      ✓ Compiled in 101ms
+[00:08:01.370] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:01.527] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:08:01.527] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:08:01.527] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764061976564}
+[00:08:01.527] Browser WARN    Image with src "http://localhost:3000/Fichier%20129.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+[00:10:08.501] Server  LOG      ✓ Compiled in 117ms
+[00:10:22.726] Server  LOG      ✓ Compiled in 99ms
+[00:12:17.735] Server  LOG      ✓ Compiled in 78ms
+[00:12:27.033] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ateliers color: rgb(120, 120, 120) color: inherit {"dp":"/ateliers","o":"http://localhost:3000/ateliers","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062242078}
+[00:12:30.679] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/boutique color: rgb(120, 120, 120) color: inherit {"dp":"/boutique","o":"http://localhost:3000/boutique","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062245726}
+[00:12:41.174] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/blog color: rgb(120, 120, 120) color: inherit {"dp":"/blog","o":"http://localhost:3000/blog","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062256223}
+[00:13:32.057] Server  LOG      ✓ Compiled in 115ms
+[00:16:35.199] Server  LOG      ✓ Compiled in 139ms
+[00:16:37.411] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:16:37.574] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:16:37.574] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/blog/1","route":"/blog/1"}
+[00:16:37.574] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/blog/1 color: rgb(120, 120, 120) color: inherit {"dp":"/blog/1","o":"http://localhost:3000/blog/1","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062492616}
+[00:16:37.574] Browser WARN    Image with src "http://localhost:3000/Fichier%20129.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+[00:16:40.170] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/blog color: rgb(120, 120, 120) color: inherit {"dp":"/blog","o":"http://localhost:3000/blog","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062495218}
+[00:16:41.317] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/apropos color: rgb(120, 120, 120) color: inherit {"dp":"/apropos","o":"http://localhost:3000/apropos","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062496363}
+[00:16:47.607] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/contact color: rgb(120, 120, 120) color: inherit {"dp":"/contact","o":"http://localhost:3000/contact","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062502655}
+[00:16:58.161] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ateliers color: rgb(120, 120, 120) color: inherit {"dp":"/ateliers","o":"http://localhost:3000/ateliers","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062513206}
+[00:17:11.179] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062526225}
+[00:17:20.183] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ateliers color: rgb(120, 120, 120) color: inherit {"dp":"/ateliers","o":"http://localhost:3000/ateliers","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764062535233}
+[00:29:25.076] Server  LOG      ✓ Compiled in 67ms
+[00:29:36.516] Server  LOG      ✓ Compiled in 130ms
+[00:30:40.992] Server  LOG      ✓ Compiled in 62ms
+[00:30:43.203] Server  LOG      ✓ Compiled in 53ms
+[00:31:30.162] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/boutique color: rgb(120, 120, 120) color: inherit {"dp":"/boutique","o":"http://localhost:3000/boutique","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1764063385208}

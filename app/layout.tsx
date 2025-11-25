@@ -1,0 +1,54 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { Outfit } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
+import Navigation from "@/components/navigation"
+import Footer from "@/components/footer"
+
+const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "700", "800"] })
+
+export const metadata: Metadata = {
+  title: "Coffee Arts Paris | Ceramic Workshop & Café",
+  description:
+    "Discover Coffee Arts Paris - a unique ceramic workshop café in Paris. Enjoy artisan coffee, ceramics classes, and handcrafted pottery.",
+  generator: "v0.app",
+  icons: {
+    icon: [
+      {
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/icon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "Coffee Arts Paris",
+    description: "Ceramic Workshop & Café",
+  },
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${outfit.className} font-sans antialiased bg-background text-foreground`}>
+        <Navigation />
+        <main className="min-h-screen">{children}</main>
+        <Footer />
+        <Analytics />
+      </body>
+    </html>
+  )
+}
