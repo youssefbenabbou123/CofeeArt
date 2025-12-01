@@ -1,12 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Outfit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
-
-const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "700", "800"] })
 
 export const metadata: Metadata = {
   title: "Coffee Arts Paris | Ceramic Workshop & Café",
@@ -43,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} font-sans antialiased bg-background text-foreground`}>
+      <body className="font-sans antialiased bg-background text-foreground">
         <Navigation />
         <main className="min-h-screen">{children}</main>
         <Footer />

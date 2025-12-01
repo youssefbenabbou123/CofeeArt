@@ -3,14 +3,95 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Font Face Declarations */
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Duper";
+  src: url("/fonts/1fe71b44fe258fdd547688c1158feec5.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Coffee Arts Paris - Modern Color System */
   /* Primary: Dark Sage #58604C | Accent: Warm Beige #E8D6C1 | Background: Off-white #F7F0E7 */
   --background: #f7f0e7; /* Off-white base */
   --foreground: #58604c; /* Dark sage */
-  --card: #ffffff;
+  --card: rgba(255, 255, 255, 0.7);
   --card-foreground: #58604c;
-  --popover: #ffffff;
+  --popover: rgba(255, 255, 255, 0.8);
   --popover-foreground: #58604c;
   --primary: #58604c; /* Dark sage */
   --primary-foreground: #f7f0e7;
@@ -22,15 +103,15 @@
   --muted-foreground: #58604c;
   --destructive: #dc2626;
   --destructive-foreground: #f7f0e7;
-  --border: #e8d6c1;
-  --input: #f7f0e7;
+  --border: rgba(232, 214, 193, 0.5);
+  --input: rgba(247, 240, 231, 0.5);
   --ring: #58604c;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.5rem;
+  --radius: 0.75rem;
   --sidebar: oklch(97% 0 0);
   --sidebar-foreground: oklch(35% 0 0);
   --sidebar-primary: oklch(35% 0 0);
@@ -114,30 +195,64 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.8s ease-out forwards;
+  --animate-scale-in: scale-in 0.5s ease-out forwards;
+  --animate-marquee: marquee 30s linear infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 }
 
 /* Modernized custom utilities with refined spacing and typography */
 .hero-text {
-  @apply text-5xl md:text-7xl font-extrabold text-primary leading-tight;
+  @apply text-5xl md:text-7xl font-extrabold text-primary leading-tight tracking-tight;
 }
 
 .section-title {
-  @apply text-3xl md:text-5xl font-bold text-primary;
+  @apply text-3xl md:text-5xl font-bold text-primary tracking-tight;
 }
 
 .btn-primary {
-  @apply bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all;
+  @apply bg-primary text-primary-foreground px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95;
 }
 
 .btn-secondary {
-  @apply border-2 border-primary text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all;
+  @apply border-2 border-primary text-primary px-8 py-3 rounded-xl font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:shadow-md active:scale-95;
+}
+
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+.glass-card {
+  @apply bg-white/50 backdrop-blur-sm border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1;
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
   }
 }

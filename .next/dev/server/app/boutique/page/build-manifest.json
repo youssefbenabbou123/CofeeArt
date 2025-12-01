@@ -2,20 +2,20 @@
   "devFiles": [],
   "ampDevFiles": [],
   "polyfillFiles": [
-    "static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js"
+    "static/chunks/e1418_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_bae88007._.js",
-    "static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js",
-    "static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_9212ccad._.js",
-    "static/chunks/node_modules_next_dist_compiled_next-devtools_index_1dd7fb59.js",
-    "static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js",
-    "static/chunks/node_modules_next_dist_client_aaee43fe._.js",
-    "static/chunks/node_modules_next_dist_7a8122d0._.js",
-    "static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js",
-    "static/chunks/_a0ff3932._.js",
-    "static/chunks/turbopack-_45210fd5._.js"
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_4c5672d4._.js",
+    "static/chunks/e1418_next_dist_compiled_react-dom_50690285._.js",
+    "static/chunks/e1418_next_dist_compiled_react-server-dom-turbopack_e256d85e._.js",
+    "static/chunks/e1418_next_dist_compiled_next-devtools_index_56c0477f.js",
+    "static/chunks/e1418_next_dist_compiled_503c86db._.js",
+    "static/chunks/e1418_next_dist_client_dba230d1._.js",
+    "static/chunks/e1418_next_dist_e7b15d1f._.js",
+    "static/chunks/e1418_@swc_helpers_cjs_85a2c40b._.js",
+    "static/chunks/Desktop_coffee-arts-paris-website - Copie_a0ff3932._.js",
+    "static/chunks/turbopack-Desktop_coffee-arts-paris-website - Copie_80919305._.js"
   ],
   "pages": {},
   "ampFirstPages": []

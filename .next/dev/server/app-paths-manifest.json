@@ -3,7 +3,8 @@
   "/apropos/page": "app/apropos/page.js",
   "/ateliers/page": "app/ateliers/page.js",
   "/blog/page": "app/blog/page.js",
+  "/boutique/[id]/page": "app/boutique/[id]/page.js",
   "/boutique/page": "app/boutique/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/page": "app/page.js"
+  "/carte/page": "app/carte/page.js",
+  "/contact/page": "app/contact/page.js"
 }

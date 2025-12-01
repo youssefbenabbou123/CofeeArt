@@ -1,92 +1,226 @@
 "use client"
 
 import Link from "next/link"
-import { ShoppingCart } from "lucide-react"
+import Image from "next/image"
+import { ShoppingCart, ArrowRight, Sparkles } from "lucide-react"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Boutique() {
+  const [selectedFilter, setSelectedFilter] = useState<string>("Tous")
+
   const products = [
-    { id: 1, name: "Tasse Artisanale", price: "24€", category: "Tasses", emoji: "☕" },
-    { id: 2, name: "Assiette Céramique", price: "32€", category: "Assiettes", emoji: "🍽️" },
-    { id: 3, name: "Bol Fait Main", price: "28€", category: "Bols", emoji: "🥣" },
-    { id: 4, name: "Vase Minimaliste", price: "45€", category: "Vases", emoji: "🌿" },
-    { id: 5, name: "Théière Artisanale", price: "55€", category: "Théières", emoji: "🫖" },
-    { id: 6, name: "Set de Baguettes", price: "18€", category: "Accessoires", emoji: "🥢" },
-    { id: 7, name: "Pot Décoratif", price: "38€", category: "Décoration", emoji: "🏺" },
-    { id: 8, name: "Plateaux Géométriques", price: "42€", category: "Plateaux", emoji: "📦" },
+    {
+      id: 1,
+      name: "Tasse Artisanale",
+      price: "24€",
+      category: "Tasses",
+      image: "/boutique/tasse-artisanale.jpg"
+    },
+    {
+      id: 2,
+      name: "Assiette Céramique",
+      price: "32€",
+      category: "Assiettes",
+      image: "/boutique/Assiette-Artisanale.jpg"
+    },
+    {
+      id: 3,
+      name: "Bol Fait Main",
+      price: "28€",
+      category: "Bols",
+      image: "/boutique/bol-fait.jpg"
+    },
+    {
+      id: 4,
+      name: "Vase Minimaliste",
+      price: "45€",
+      category: "Vases",
+      image: "/boutique/vase-minimaliste.jpg"
+    },
+    {
+      id: 5,
+      name: "Théière Artisanale",
+      price: "55€",
+      category: "Théières",
+      image: "/boutique/Théière-Artisanale.jpg"
+    },
+    {
+      id: 6,
+      name: "Set de Baguettes",
+      price: "18€",
+      category: "Accessoires",
+      image: "/boutique/Set de Baguettes.webp"
+    },
+    {
+      id: 7,
+      name: "Pot Décoratif",
+      price: "38€",
+      category: "Décoration",
+      image: "/boutique/Pot Décoratif.png"
+    },
+    {
+      id: 8,
+      name: "Plateaux Géométriques",
+      price: "42€",
+      category: "Plateaux",
+      image: "/boutique/Plateaux Géométriques.jpg"
+    },
   ]
 
+  // Extract unique categories from products, ensuring the specific order or "Tous" first
+  const categories = ["Tous", ...Array.from(new Set(products.map(p => p.category)))]
+
+  const filteredProducts = selectedFilter === "Tous"
+    ? products
+    : products.filter(product => product.category === selectedFilter)
+
   return (
-    <div className="pt-20">
+    <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
       {/* Hero Section */}
-      <section className="bg-neutral-warm py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="hero-text mb-4">Notre Boutique</h1>
-          <p className="text-xl text-primary-light">
-            Découvrez notre sélection de pièces céramiques uniques créées par nos artisans.
-          </p>
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-primary/5 border border-primary/10 text-primary font-medium text-sm mb-8 tracking-wider uppercase backdrop-blur-sm">
+              <Sparkles size={14} />
+              Collection Artisanale
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
+              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Boutique</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+              Une sélection curatée de pièces céramiques uniques, façonnées à la main pour sublimer votre quotidien.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Filter Section */}
-      <section className="bg-neutral-light py-8 border-b-2 border-neutral-warm">
+      <section className="sticky top-20 z-40 py-6 backdrop-blur-xl bg-background/80 border-y border-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3">
-            <button className="px-4 py-2 bg-primary text-neutral-light rounded-md font-semibold">Tous</button>
-            <button className="px-4 py-2 border-2 border-primary text-primary rounded-md hover:bg-primary hover:text-neutral-light transition-colors">
-              Tasses
-            </button>
-            <button className="px-4 py-2 border-2 border-primary text-primary rounded-md hover:bg-primary hover:text-neutral-light transition-colors">
-              Assiettes
-            </button>
-            <button className="px-4 py-2 border-2 border-primary text-primary rounded-md hover:bg-primary hover:text-neutral-light transition-colors">
-              Vases
-            </button>
-            <button className="px-4 py-2 border-2 border-primary text-primary rounded-md hover:bg-primary hover:text-neutral-light transition-colors">
-              Décoration
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Products Grid */}
-      <section className="py-20 bg-neutral-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-neutral-warm rounded-lg overflow-hidden hover:shadow-lg transition-all"
+          <div className="flex overflow-x-auto pb-2 md:pb-0 gap-3 no-scrollbar justify-start md:justify-center">
+            {categories.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setSelectedFilter(filter)}
+                className={`relative px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap ${selectedFilter === filter
+                  ? "text-primary-foreground"
+                  : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                  }`}
               >
-                <div className="aspect-square bg-primary flex items-center justify-center text-6xl">
-                  {product.emoji}
-                </div>
-                <div className="p-4">
-                  <p className="text-xs text-primary-light mb-2">{product.category}</p>
-                  <h3 className="font-bold text-primary mb-3">{product.name}</h3>
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-lg text-accent">{product.price}</span>
-                    <button className="p-2 hover:bg-primary hover:text-neutral-light rounded-md transition-colors">
-                      <ShoppingCart size={20} className="text-primary" />
-                    </button>
-                  </div>
-                </div>
-              </div>
+                {selectedFilter === filter && (
+                  <motion.div
+                    layoutId="activeFilter"
+                    className="absolute inset-0 bg-primary rounded-full"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{filter}</span>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-extrabold mb-4 text-primary-foreground">Commandes spéciales et en gros</h2>
-          <p className="text-primary-foreground mb-6 opacity-90">Vous recherchez une commande personnalisée ou une collaboration?</p>
-          <Link
-            href="/contact"
-            className="inline-block px-8 py-3 bg-accent text-primary font-bold rounded-md hover:bg-neutral-warm transition-colors"
+      {/* Products Grid */}
+      <section className="py-20 bg-neutral-light/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            Nous Contacter
-          </Link>
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.map((product) => (
+                <motion.div
+                  layout
+                  key={product.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Link
+                    href={`/boutique/${product.id}`}
+                    className="group block h-full"
+                  >
+                    <div className="relative h-full bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
+                      <div className="aspect-[4/5] relative overflow-hidden bg-neutral-100">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+
+                        {/* Quick Action Button */}
+                        <div className="absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                          <button className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors">
+                            <ShoppingCart size={20} />
+                          </button>
+                        </div>
+
+                        {/* Category Badge */}
+                        <div className="absolute top-4 left-4">
+                          <span className="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-primary rounded-full uppercase tracking-wider">
+                            {product.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-bold text-lg text-primary group-hover:text-primary/80 transition-colors">
+                            {product.name}
+                          </h3>
+                          <span className="font-bold text-lg text-primary bg-primary/5 px-2 py-1 rounded-md">
+                            {product.price}
+                          </span>
+                        </div>
+                        <div className="w-full h-px bg-primary/10 my-4 group-hover:bg-primary/20 transition-colors" />
+                        <div className="flex items-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
+                          Voir le détail <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Modern CTA Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary" />
+        {/* <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" /> */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-16 text-center shadow-2xl">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-white tracking-tight">
+              Commandes Spéciales & En Gros
+            </h2>
+            <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">
+              Vous recherchez une commande personnalisée ou une collaboration ?
+              Créez quelque chose d'unique avec nous.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-accent hover:text-primary transition-all duration-300 hover:scale-105 shadow-lg shadow-black/5"
+            >
+              Nous Contacter
+              <ArrowRight className="ml-2" size={20} />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

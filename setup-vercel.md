@@ -19,7 +19,7 @@ vercel
 # Follow the prompts:
 # - Set up and deploy? → Yes
 # - Which scope? → Select your account
-# - Link to existing project? → No (first time)
+# - Link to existing project? → No (first time)ok make it
 # - Project name? → coffee-arts-paris-website (or press Enter)
 # - Directory? → ./ (press Enter)
 

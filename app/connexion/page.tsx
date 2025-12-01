@@ -2,35 +2,40 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { ArrowLeft } from "lucide-react"
 
 export default function Connexion() {
   const [tab, setTab] = useState<"login" | "signup">("login")
 
   return (
-    <div className="pt-20 min-h-screen bg-neutral-light flex items-center">
-      <div className="max-w-md w-full mx-auto px-4 py-12">
-        <div className="bg-neutral-warm p-8 rounded-lg border-2 border-accent">
-          <h1 className="text-3xl font-bold text-primary text-center mb-8">Coffee Arts</h1>
+    <div className="pt-20 min-h-screen bg-gradient-to-b from-neutral-light to-background flex items-center relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-20 left-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+
+      <div className="max-w-md w-full mx-auto px-4 py-12 relative z-10">
+        <div className="bg-white/60 backdrop-blur-xl p-10 rounded-3xl border border-white/50 shadow-2xl animate-fade-up opacity-0" style={{ animationDelay: "0.1s" }}>
+          <h1 className="text-4xl font-black text-primary text-center mb-10 animate-fade-up opacity-0" style={{ animationDelay: "0.2s" }}>
+            Coffee Arts
+          </h1>
 
           {/* Tabs */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-4 mb-8 animate-fade-up opacity-0" style={{ animationDelay: "0.3s" }}>
             <button
               onClick={() => setTab("login")}
-              className={`flex-1 py-2 px-4 rounded-md font-semibold transition-colors ${
-                tab === "login"
-                  ? "bg-primary text-neutral-light"
-                  : "border-2 border-primary text-primary hover:bg-primary hover:text-neutral-light"
-              }`}
+              className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "login"
+                  ? "bg-primary text-white shadow-lg scale-105"
+                  : "border-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50"
+                }`}
             >
               Connexion
             </button>
             <button
               onClick={() => setTab("signup")}
-              className={`flex-1 py-2 px-4 rounded-md font-semibold transition-colors ${
-                tab === "signup"
-                  ? "bg-primary text-neutral-light"
-                  : "border-2 border-primary text-primary hover:bg-primary hover:text-neutral-light"
-              }`}
+              className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "signup"
+                  ? "bg-primary text-white shadow-lg scale-105"
+                  : "border-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50"
+                }`}
             >
               Inscription
             </button>
@@ -38,20 +43,23 @@ export default function Connexion() {
 
           {/* Login Form */}
           {tab === "login" && (
-            <form className="space-y-4">
+            <form className="space-y-5">
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full px-4 py-3 border-2 border-primary rounded-md focus:outline-none focus:border-accent"
+                className="w-full px-5 py-4 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-white text-primary font-medium transition-all animate-fade-up opacity-0"
+                style={{ animationDelay: "0.4s" }}
               />
               <input
                 type="password"
                 placeholder="Mot de passe"
-                className="w-full px-4 py-3 border-2 border-primary rounded-md focus:outline-none focus:border-accent"
+                className="w-full px-5 py-4 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-white text-primary font-medium transition-all animate-fade-up opacity-0"
+                style={{ animationDelay: "0.5s" }}
               />
               <button
                 type="submit"
-                className="w-full bg-primary text-neutral-light py-3 rounded-md font-bold hover:bg-primary-light"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0"
+                style={{ animationDelay: "0.6s" }}
               >
                 Se connecter
               </button>
@@ -60,45 +68,50 @@ export default function Connexion() {
 
           {/* Signup Form */}
           {tab === "signup" && (
-            <form className="space-y-4">
+            <form className="space-y-5">
               <input
                 type="text"
                 placeholder="Nom complet"
-                className="w-full px-4 py-3 border-2 border-primary rounded-md focus:outline-none focus:border-accent"
+                className="w-full px-5 py-4 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-white text-primary font-medium transition-all animate-fade-up opacity-0"
+                style={{ animationDelay: "0.4s" }}
               />
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full px-4 py-3 border-2 border-primary rounded-md focus:outline-none focus:border-accent"
+                className="w-full px-5 py-4 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-white text-primary font-medium transition-all animate-fade-up opacity-0"
+                style={{ animationDelay: "0.5s" }}
               />
               <input
                 type="password"
                 placeholder="Mot de passe"
-                className="w-full px-4 py-3 border-2 border-primary rounded-md focus:outline-none focus:border-accent"
+                className="w-full px-5 py-4 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 bg-white text-primary font-medium transition-all animate-fade-up opacity-0"
+                style={{ animationDelay: "0.6s" }}
               />
               <button
                 type="submit"
-                className="w-full bg-primary text-neutral-light py-3 rounded-md font-bold hover:bg-primary-light"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0"
+                style={{ animationDelay: "0.7s" }}
               >
                 Créer un compte
               </button>
             </form>
           )}
 
-          <p className="text-center text-primary-light text-sm mt-6">
+          <p className="text-center text-primary/60 text-sm mt-8 font-medium animate-fade-up opacity-0" style={{ animationDelay: "0.7s" }}>
             {tab === "login" ? "Pas encore de compte? " : "Déjà inscrit? "}
             <button
               onClick={() => setTab(tab === "login" ? "signup" : "login")}
-              className="text-primary font-bold hover:text-accent"
+              className="text-primary font-bold hover:text-accent transition-colors"
             >
               {tab === "login" ? "S'inscrire" : "Se connecter"}
             </button>
           </p>
         </div>
 
-        <p className="text-center text-primary-light text-sm mt-6">
-          <Link href="/" className="hover:text-primary font-semibold">
-            ← Retour à l'accueil
+        <p className="text-center text-primary/60 text-sm mt-8 animate-fade-up opacity-0" style={{ animationDelay: "0.8s" }}>
+          <Link href="/" className="inline-flex items-center gap-2 hover:text-primary font-bold transition-colors group">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            Retour à l'accueil
           </Link>
         </p>
       </div>
