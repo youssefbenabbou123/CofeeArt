@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { Calendar, User, ArrowRight, Sparkles, Target, Palette, Leaf, Coffee, TrendingUp, Users, ShieldCheck } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function Blog() {
   const posts = [
@@ -98,18 +99,25 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-background selection:bg-primary/20">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 tracking-wider uppercase animate-fade-up opacity-0" style={{ animationDelay: "0.1s" }}>
-            Lire & S'inspirer
-          </span>
-          <h1 className="hero-text mb-6 animate-fade-up opacity-0" style={{ animationDelay: "0.2s" }}>
-            Notre Blog
-          </h1>
-          <p className="text-xl text-primary/70 max-w-2xl mx-auto mb-10 animate-fade-up opacity-0" style={{ animationDelay: "0.3s" }}>
-            Plongez dans l'univers fascinant de la céramique artisanale et de l'art de vivre.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-primary/5 border border-primary/10 text-primary font-medium text-sm mb-8 tracking-wider uppercase backdrop-blur-sm">
+              <Sparkles size={14} />
+              Lire & S'inspirer
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
+              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Blog</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+              Plongez dans l'univers fascinant de la céramique artisanale et de l'art de vivre.
+            </p>
+          </motion.div>
         </div>
       </section>
 

@@ -2,8 +2,9 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-import Navigation from "@/components/navigation"
-import Footer from "@/components/footer"
+import ConditionalNavigation from "@/components/conditional-navigation"
+import ConditionalFooter from "@/components/conditional-footer"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Coffee Arts Paris | Ceramic Workshop & Café",
@@ -41,9 +42,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased bg-background text-foreground">
-        <Navigation />
+        <ConditionalNavigation />
         <main className="min-h-screen">{children}</main>
-        <Footer />
+        <ConditionalFooter />
+        <Toaster />
         <Analytics />
       </body>
     </html>

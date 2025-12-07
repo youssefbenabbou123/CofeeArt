@@ -4,20 +4,20 @@ globalThis.__BUILD_MANIFEST = {
   },
   "devFiles": [],
   "polyfillFiles": [
-    "static/chunks/e1418_next_dist_build_polyfills_polyfill-nomodule.js"
+    "static/chunks/3d052_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_4c5672d4._.js",
-    "static/chunks/e1418_next_dist_compiled_react-dom_50690285._.js",
-    "static/chunks/e1418_next_dist_compiled_react-server-dom-turbopack_e256d85e._.js",
-    "static/chunks/e1418_next_dist_compiled_next-devtools_index_56c0477f.js",
-    "static/chunks/e1418_next_dist_compiled_503c86db._.js",
-    "static/chunks/e1418_next_dist_client_dba230d1._.js",
-    "static/chunks/e1418_next_dist_e7b15d1f._.js",
-    "static/chunks/e1418_@swc_helpers_cjs_85a2c40b._.js",
-    "static/chunks/Desktop_coffee-arts-paris-website - Copie_a0ff3932._.js",
-    "static/chunks/turbopack-Desktop_coffee-arts-paris-website - Copie_80919305._.js"
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_21ed4ab3._.js",
+    "static/chunks/3d052_next_dist_compiled_react-dom_2819a6df._.js",
+    "static/chunks/3d052_next_dist_compiled_react-server-dom-turbopack_610648f7._.js",
+    "static/chunks/3d052_next_dist_compiled_next-devtools_index_1bbe151f.js",
+    "static/chunks/3d052_next_dist_compiled_226f14ce._.js",
+    "static/chunks/3d052_next_dist_client_86483771._.js",
+    "static/chunks/3d052_next_dist_323bd316._.js",
+    "static/chunks/3d052_@swc_helpers_cjs_4d2d29ef._.js",
+    "static/chunks/Desktop_CoffeArt_frontend_a0ff3932._.js",
+    "static/chunks/turbopack-Desktop_CoffeArt_frontend_1042017a._.js"
   ]
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [

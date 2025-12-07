@@ -3,154 +3,63 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, ShoppingCart, Heart, Share2, Check, Truck, Shield } from "lucide-react"
-import { useState, use } from "react"
+import { useState, use, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { fetchProduct, fetchProducts, type Product } from "@/lib/api"
+import { addToCart } from "@/lib/cart"
 
-// Product data with full details
-const products = [
-  { 
-    id: 1, 
-    name: "Tasse Artisanale", 
-    price: "24€", 
-    category: "Tasses", 
-    image: "/boutique/tasse-artisanale.jpg",
-    description: "Une tasse artisanale unique, façonnée à la main par nos céramistes. Chaque pièce est unique et témoigne du savoir-faire traditionnel. Parfaite pour votre café du matin ou votre thé de l'après-midi.",
-    details: [
-      "Façonné à la main",
-      "Céramique émaillée",
-      "Lavable au lave-vaisselle",
-      "Capacité: 250ml",
-      "100% fait en France"
-    ],
-    dimensions: "H: 9cm, D: 8cm",
-    material: "Céramique émaillée"
-  },
-  { 
-    id: 2, 
-    name: "Assiette Céramique", 
-    price: "32€", 
-    category: "Assiettes", 
-    image: "/boutique/Assiette-Artisanale.jpg",
-    description: "Une assiette céramique élégante et fonctionnelle, parfaite pour sublimer vos plats. Le design minimaliste met en valeur la qualité de la céramique artisanale.",
-    details: [
-      "Design minimaliste",
-      "Surface lisse et douce",
-      "Lavable au lave-vaisselle",
-      "Microwaves safe",
-      "Pièce unique"
-    ],
-    dimensions: "D: 28cm",
-    material: "Céramique fine"
-  },
-  { 
-    id: 3, 
-    name: "Bol Fait Main", 
-    price: "28€", 
-    category: "Bols", 
-    image: "/boutique/bol-fait.jpg",
-    description: "Un bol artisanal chaleureux et généreux, idéal pour vos soupes, salades ou céréales. Sa forme ergonomique et sa finition soignée en font un objet du quotidien raffiné.",
-    details: [
-      "Forme ergonomique",
-      "Finition soignée",
-      "Lavable au lave-vaisselle",
-      "Capacité: 500ml",
-      "Texture naturelle"
-    ],
-    dimensions: "H: 7cm, D: 18cm",
-    material: "Grès émaillé"
-  },
-  { 
-    id: 4, 
-    name: "Vase Minimaliste", 
-    price: "45€", 
-    category: "Vases", 
-    image: "/boutique/vase-minimaliste.jpg",
-    description: "Un vase minimaliste aux lignes épurées qui met en valeur vos bouquets. Design contemporain alliant esthétique et fonctionnalité, parfait pour créer une ambiance zen.",
-    details: [
-      "Design épuré",
-      "Lignes modernes",
-      "Texture mate",
-      "Hauteur: 25cm",
-      "Idéal pour fleurs sèches ou fraîches"
-    ],
-    dimensions: "H: 25cm, D: 12cm",
-    material: "Céramique brute"
-  },
-  { 
-    id: 5, 
-    name: "Théière Artisanale", 
-    price: "55€", 
-    category: "Théières", 
-    image: "/boutique/Théière-Artisanale.jpg",
-    description: "Une théière artisanale élégante, parfaite pour vos cérémonies de thé. Sa forme traditionnelle et son design raffiné en font un objet de collection.",
-    details: [
-      "Design traditionnel",
-      "Poignée ergonomique",
-      "Passe-thé intégré",
-      "Capacité: 600ml",
-      "Conserve la chaleur"
-    ],
-    dimensions: "H: 18cm, L: 20cm",
-    material: "Porcelaine fine"
-  },
-  { 
-    id: 6, 
-    name: "Set de Baguettes", 
-    price: "18€", 
-    category: "Accessoires", 
-    image: "/boutique/Set de Baguettes.webp",
-    description: "Un set de baguettes en céramique artisanale, alliant tradition et modernité. Parfait pour accompagner vos plats asiatiques ou pour une décoration élégante.",
-    details: [
-      "Set de 2 baguettes",
-      "Design élégant",
-      "Finitions soignées",
-      "Longueur: 23cm",
-      "Faciles à tenir"
-    ],
-    dimensions: "L: 23cm",
-    material: "Céramique laquée"
-  },
-  { 
-    id: 7, 
-    name: "Pot Décoratif", 
-    price: "38€", 
-    category: "Décoration", 
-    image: "/boutique/Pot Décoratif.png",
-    description: "Un pot décoratif aux motifs subtils, parfait pour apporter une touche d'élégance à votre intérieur. Peut également servir de rangement pour vos objets précieux.",
-    details: [
-      "Motifs subtils",
-      "Versatile",
-      "Design unique",
-      "Hauteur: 15cm",
-      "Parfait pour décoration"
-    ],
-    dimensions: "H: 15cm, D: 14cm",
-    material: "Céramique décorative"
-  },
-  { 
-    id: 8, 
-    name: "Plateaux Géométriques", 
-    price: "42€", 
-    category: "Plateaux", 
-    image: "/boutique/Plateaux Géométriques.jpg",
-    description: "Des plateaux géométriques modernes aux formes épurées. Parfaits pour servir vos apéritifs, petits-déjeuners ou comme éléments décoratifs.",
-    details: [
-      "Design géométrique",
-      "Set de 2 plateaux",
-      "Formes différentes",
-      "Faciles à nettoyer",
-      "Polyvalents"
-    ],
-    dimensions: "Variable selon pièce",
-    material: "Céramique émaillée"
-  },
-]
+// Map product titles to categories
+function getCategory(title: string): string {
+  const titleLower = title.toLowerCase();
+  if (titleLower.includes("tasse")) return "Tasses";
+  if (titleLower.includes("assiette")) return "Assiettes";
+  if (titleLower.includes("bol")) return "Bols";
+  if (titleLower.includes("vase")) return "Vases";
+  if (titleLower.includes("théière") || titleLower.includes("theiere")) return "Théières";
+  if (titleLower.includes("baguette")) return "Accessoires";
+  if (titleLower.includes("pot")) return "Décoration";
+  if (titleLower.includes("plateau")) return "Plateaux";
+  return "Autres";
+}
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
+  const router = useRouter()
   const { id } = use(params)
-  const productId = parseInt(id)
-  const product = products.find(p => p.id === productId)
+  const [product, setProduct] = useState<Product | null>(null)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [addingToCart, setAddingToCart] = useState(false)
+
+  useEffect(() => {
+    async function loadProduct() {
+      const data = await fetchProduct(id);
+      setProduct(data);
+      setLoading(false);
+      
+      if (data) {
+        // Load related products
+        const allProducts = await fetchProducts();
+        const category = getCategory(data.title);
+        const related = allProducts
+          .filter(p => p.id !== data.id && getCategory(p.title) === category)
+          .slice(0, 3);
+        setRelatedProducts(related);
+      }
+    }
+    loadProduct();
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-muted-foreground">Chargement...</div>
+        </div>
+      </div>
+    )
+  }
 
   if (!product) {
     return (
@@ -164,10 +73,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       </div>
     )
   }
-
-  const relatedProducts = products
-    .filter(p => p.id !== product.id && p.category === product.category)
-    .slice(0, 3)
 
   return (
     <div className="pt-20 min-h-screen bg-background">
@@ -191,7 +96,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="aspect-square bg-neutral-warm rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={product.image}
-                  alt={product.name}
+                  alt={product.title}
                   fill
                   className="object-cover"
                   priority
@@ -219,13 +124,13 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             <div className="flex flex-col">
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 bg-accent/30 text-primary text-sm font-semibold rounded-full mb-4">
-                  {product.category}
+                  {getCategory(product.title)}
                 </span>
                 <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4">
-                  {product.name}
+                  {product.title}
                 </h1>
                 <div className="text-3xl font-bold text-primary mb-6">
-                  {product.price}
+                  {typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}€
                 </div>
               </div>
 
@@ -237,22 +142,19 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="mb-8 space-y-3">
                 <h3 className="font-bold text-lg text-primary mb-3">Caractéristiques</h3>
                 <ul className="space-y-2">
-                  {product.details.map((detail, index) => (
-                    <li key={index} className="flex items-center gap-3 text-primary">
-                      <Check size={18} className="text-accent flex-shrink-0" />
-                      <span>{detail}</span>
-                    </li>
-                  ))}
+                  <li className="flex items-center gap-3 text-primary">
+                    <Check size={18} className="text-accent flex-shrink-0" />
+                    <span>Pièce artisanale unique</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-primary">
+                    <Check size={18} className="text-accent flex-shrink-0" />
+                    <span>Fait main en France</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-primary">
+                    <Check size={18} className="text-accent flex-shrink-0" />
+                    <span>Qualité céramique premium</span>
+                  </li>
                 </ul>
-              </div>
-
-              {/* Specifications */}
-              <div className="mb-8 p-4 bg-neutral-warm rounded-lg">
-                <h3 className="font-bold text-lg text-primary mb-3">Spécifications</h3>
-                <div className="space-y-2 text-sm text-primary-light">
-                  <div><span className="font-semibold">Dimensions:</span> {product.dimensions}</div>
-                  <div><span className="font-semibold">Matériau:</span> {product.material}</div>
-                </div>
               </div>
 
               {/* Quantity & Add to Cart */}
@@ -275,9 +177,41 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                     </button>
                   </div>
                 </div>
-                <button className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-3 mb-4">
+                <button 
+                  onClick={async (e) => {
+                    e.preventDefault()
+                    if (!product) return
+                    
+                    setAddingToCart(true)
+                    try {
+                      addToCart({
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        image: product.image
+                      }, quantity)
+                      
+                      // Show success feedback
+                      const button = e.currentTarget
+                      const originalText = button.innerHTML
+                      button.innerHTML = '<span>✓ Ajouté!</span>'
+                      button.classList.add('bg-green-500')
+                      
+                      setTimeout(() => {
+                        button.innerHTML = originalText
+                        button.classList.remove('bg-green-500')
+                        setAddingToCart(false)
+                      }, 2000)
+                    } catch (error) {
+                      console.error('Error adding to cart:', error)
+                      setAddingToCart(false)
+                    }
+                  }}
+                  disabled={addingToCart || !product}
+                  className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-3 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                   <ShoppingCart size={24} />
-                  Ajouter au panier
+                  {addingToCart ? "Ajout..." : "Ajouter au panier"}
                 </button>
               </div>
 
@@ -316,16 +250,16 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                   <div className="aspect-square bg-primary relative overflow-hidden">
                     <Image
                       src={relatedProduct.image}
-                      alt={relatedProduct.name}
+                      alt={relatedProduct.title}
                       fill
                       className="object-cover transition-transform hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                   <div className="p-4">
-                    <p className="text-xs text-primary-light mb-2">{relatedProduct.category}</p>
-                    <h3 className="font-bold text-primary mb-2">{relatedProduct.name}</h3>
-                    <span className="font-bold text-lg text-primary">{relatedProduct.price}</span>
+                    <p className="text-xs text-primary-light mb-2">{getCategory(relatedProduct.title)}</p>
+                    <h3 className="font-bold text-primary mb-2">{relatedProduct.title}</h3>
+                    <span className="font-bold text-lg text-primary">{typeof relatedProduct.price === 'number' ? relatedProduct.price.toFixed(2) : parseFloat(relatedProduct.price).toFixed(2)}€</span>
                   </div>
                 </Link>
               ))}

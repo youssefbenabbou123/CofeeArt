@@ -3,77 +3,47 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ShoppingCart, ArrowRight, Sparkles } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { fetchProducts, type Product } from "@/lib/api"
+import { addToCart } from "@/lib/cart"
+import { useToast } from "@/hooks/use-toast"
+
+// Map product titles to categories
+function getCategory(title: string): string {
+  const titleLower = title.toLowerCase();
+  if (titleLower.includes("tasse")) return "Tasses";
+  if (titleLower.includes("assiette")) return "Assiettes";
+  if (titleLower.includes("bol")) return "Bols";
+  if (titleLower.includes("vase")) return "Vases";
+  if (titleLower.includes("théière") || titleLower.includes("theiere")) return "Théières";
+  if (titleLower.includes("baguette")) return "Accessoires";
+  if (titleLower.includes("pot")) return "Décoration";
+  if (titleLower.includes("plateau")) return "Plateaux";
+  return "Autres";
+}
 
 export default function Boutique() {
   const [selectedFilter, setSelectedFilter] = useState<string>("Tous")
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
-  const products = [
-    {
-      id: 1,
-      name: "Tasse Artisanale",
-      price: "24€",
-      category: "Tasses",
-      image: "/boutique/tasse-artisanale.jpg"
-    },
-    {
-      id: 2,
-      name: "Assiette Céramique",
-      price: "32€",
-      category: "Assiettes",
-      image: "/boutique/Assiette-Artisanale.jpg"
-    },
-    {
-      id: 3,
-      name: "Bol Fait Main",
-      price: "28€",
-      category: "Bols",
-      image: "/boutique/bol-fait.jpg"
-    },
-    {
-      id: 4,
-      name: "Vase Minimaliste",
-      price: "45€",
-      category: "Vases",
-      image: "/boutique/vase-minimaliste.jpg"
-    },
-    {
-      id: 5,
-      name: "Théière Artisanale",
-      price: "55€",
-      category: "Théières",
-      image: "/boutique/Théière-Artisanale.jpg"
-    },
-    {
-      id: 6,
-      name: "Set de Baguettes",
-      price: "18€",
-      category: "Accessoires",
-      image: "/boutique/Set de Baguettes.webp"
-    },
-    {
-      id: 7,
-      name: "Pot Décoratif",
-      price: "38€",
-      category: "Décoration",
-      image: "/boutique/Pot Décoratif.png"
-    },
-    {
-      id: 8,
-      name: "Plateaux Géométriques",
-      price: "42€",
-      category: "Plateaux",
-      image: "/boutique/Plateaux Géométriques.jpg"
-    },
-  ]
+  useEffect(() => {
+    async function loadProducts() {
+      const data = await fetchProducts();
+      setProducts(data);
+      setLoading(false);
+    }
+    loadProducts();
+  }, [])
 
-  // Extract unique categories from products, ensuring the specific order or "Tous" first
-  const categories = ["Tous", ...Array.from(new Set(products.map(p => p.category)))]
+  // Extract unique categories from products, ensuring "Tous" first
+  const categories = ["Tous", ...Array.from(new Set(products.map(p => getCategory(p.title))))]
 
   const filteredProducts = selectedFilter === "Tous"
     ? products
-    : products.filter(product => product.category === selectedFilter)
+    : products.filter(product => getCategory(product.title) === selectedFilter)
 
   return (
     <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
@@ -134,65 +104,95 @@ export default function Boutique() {
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            <AnimatePresence mode="popLayout">
-              {filteredProducts.map((product) => (
-                <motion.div
-                  layout
-                  key={product.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link
-                    href={`/boutique/${product.id}`}
-                    className="group block h-full"
+            {loading ? (
+              <div className="col-span-full text-center py-20">
+                <div className="text-muted-foreground">Chargement des produits...</div>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="col-span-full text-center py-20">
+                <div className="text-muted-foreground">Aucun produit trouvé</div>
+              </div>
+            ) : (
+              <AnimatePresence mode="popLayout">
+                {filteredProducts.map((product) => (
+                  <motion.div
+                    layout
+                    key={product.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <div className="relative h-full bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
-                      <div className="aspect-[4/5] relative overflow-hidden bg-neutral-100">
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                  <div className="group block h-full relative">
+                    <Link
+                      href={`/boutique/${product.id}`}
+                      className="block h-full"
+                    >
+                      <div className="relative h-full bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-2">
+                        <div className="aspect-[4/5] relative overflow-hidden bg-neutral-100">
+                          <Image
+                            src={product.image}
+                            alt={product.title}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
 
-                        {/* Quick Action Button */}
-                        <div className="absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                          <button className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors">
-                            <ShoppingCart size={20} />
-                          </button>
+                          {/* Category Badge */}
+                          <div className="absolute top-4 left-4 z-10">
+                            <span className="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-primary rounded-full uppercase tracking-wider">
+                              {getCategory(product.title)}
+                            </span>
+                          </div>
+
+                          {/* Cart Button - Inside Card */}
+                          <div className="absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-20">
+                            <button 
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                addToCart({
+                                  id: product.id,
+                                  title: product.title,
+                                  price: product.price,
+                                  image: product.image
+                                }, 1)
+                                
+                                toast({
+                                  title: "Ajouté au panier",
+                                  description: `${product.title} a été ajouté avec succès`,
+                                })
+                              }}
+                              className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110"
+                              aria-label="Ajouter au panier"
+                            >
+                              <ShoppingCart size={20} />
+                            </button>
+                          </div>
                         </div>
 
-                        {/* Category Badge */}
-                        <div className="absolute top-4 left-4">
-                          <span className="px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold text-primary rounded-full uppercase tracking-wider">
-                            {product.category}
-                          </span>
+                        <div className="p-6">
+                          <div className="flex justify-between items-start mb-2">
+                            <h3 className="font-bold text-lg text-primary group-hover:text-primary/80 transition-colors">
+                              {product.title}
+                            </h3>
+                            <span className="font-bold text-lg text-primary bg-primary/5 px-2 py-1 rounded-md">
+                              {typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}€
+                            </span>
+                          </div>
+                          <div className="w-full h-px bg-primary/10 my-4 group-hover:bg-primary/20 transition-colors" />
+                          <div className="flex items-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
+                            Voir le détail <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                          </div>
                         </div>
                       </div>
-
-                      <div className="p-6">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-bold text-lg text-primary group-hover:text-primary/80 transition-colors">
-                            {product.name}
-                          </h3>
-                          <span className="font-bold text-lg text-primary bg-primary/5 px-2 py-1 rounded-md">
-                            {product.price}
-                          </span>
-                        </div>
-                        <div className="w-full h-px bg-primary/10 my-4 group-hover:bg-primary/20 transition-colors" />
-                        <div className="flex items-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
-                          Voir le détail <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+                    </Link>
+                  </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            )}
           </motion.div>
         </div>
       </section>
