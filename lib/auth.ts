@@ -41,50 +41,88 @@ export function removeAuthToken() {
 
 // Sign up
 export async function signUp(name: string, email: string, password: string): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, email, password }),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
 
-  const data = await response.json();
+    // Handle network errors
+    if (!response.ok) {
+      let errorMessage = 'Erreur lors de l\'inscription';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use status text
+        errorMessage = `Erreur ${response.status}: ${response.statusText || 'Erreur serveur'}`;
+      }
+      throw new Error(errorMessage);
+    }
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Erreur lors de l\'inscription');
+    const data = await response.json();
+
+    // Store token automatically after signup
+    if (data.success && data.data?.token) {
+      setAuthToken(data.data.token);
+    }
+
+    return data;
+  } catch (error) {
+    // Handle network/fetch errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error('Network error - API URL:', API_BASE_URL);
+      throw new Error('Impossible de se connecter au serveur. Vérifiez que le backend est accessible.');
+    }
+    // Re-throw other errors
+    throw error;
   }
-
-  // Store token automatically after signup
-  if (data.success && data.data.token) {
-    setAuthToken(data.data.token);
-  }
-
-  return data;
 }
 
 // Sign in
 export async function signIn(email: string, password: string): Promise<AuthResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await response.json();
+    // Handle network errors
+    if (!response.ok) {
+      let errorMessage = 'Erreur lors de la connexion';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        // If response is not JSON, use status text
+        errorMessage = `Erreur ${response.status}: ${response.statusText || 'Erreur serveur'}`;
+      }
+      throw new Error(errorMessage);
+    }
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Erreur lors de la connexion');
+    const data = await response.json();
+
+    // Store token automatically after signin
+    if (data.success && data.data?.token) {
+      setAuthToken(data.data.token);
+    }
+
+    return data;
+  } catch (error) {
+    // Handle network/fetch errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error('Network error - API URL:', API_BASE_URL);
+      throw new Error('Impossible de se connecter au serveur. Vérifiez que le backend est accessible.');
+    }
+    // Re-throw other errors
+    throw error;
   }
-
-  // Store token automatically after signin
-  if (data.success && data.data.token) {
-    setAuthToken(data.data.token);
-  }
-
-  return data;
 }
 
 // Get current user

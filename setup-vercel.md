@@ -58,6 +58,38 @@ vercel --prod
 
 ---
 
+## ⚠️ IMPORTANT: Set Environment Variables
+
+**Before deploying, you MUST set the backend API URL:**
+
+1. **In Vercel Dashboard:**
+   - Go to your project → **Settings** → **Environment Variables**
+   - Add a new variable:
+     - **Name:** `NEXT_PUBLIC_API_URL`
+     - **Value:** Your Railway backend URL (e.g., `https://your-app-name.up.railway.app`)
+     - **Environment:** Select all (Production, Preview, Development)
+   - Click **Save**
+
+2. **Or via CLI:**
+   ```bash
+   vercel env add NEXT_PUBLIC_API_URL
+   # Enter your Railway backend URL when prompted
+   # Select all environments (production, preview, development)
+   ```
+
+3. **After adding the environment variable:**
+   - **Redeploy** your project (Vercel will automatically redeploy, or trigger a new deployment)
+
+**Example Railway URL format:**
+- ✅ Correct: `https://coffee-arts-backend.up.railway.app`
+- ❌ Wrong: `http://coffee-arts-backend.up.railway.app` (missing https)
+- ❌ Wrong: `https://coffee-arts-backend.up.railway.app/` (trailing slash)
+
+**For local development**, create a `.env.local` file:
+```
+NEXT_PUBLIC_API_URL=http://localhost:3002
+```
+
 ## After Setup - Verify It Works:
 
 ```bash
@@ -106,4 +138,12 @@ npx vercel
 vercel logout
 vercel login
 ```
+
+**If you get "Erreur lors de la connexion" (500 error):**
+1. ✅ Check that `NEXT_PUBLIC_API_URL` is set in Vercel environment variables
+2. ✅ Verify your Railway backend is running and accessible
+3. ✅ Check Railway backend logs for errors
+4. ✅ Ensure CORS is configured on your backend to allow requests from your Vercel domain
+5. ✅ Verify the backend URL format: `https://your-app.up.railway.app` (no trailing slash)
+6. ✅ After setting environment variables, **redeploy** your Vercel project
 
