@@ -1,5 +1,7 @@
-// API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+// API configuration - use empty string for production to route through Next.js rewrites (bypasses CORS)
+const API_BASE_URL = typeof window === 'undefined'
+  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002')  // Server-side: use direct URL
+  : '';  // Client-side: use relative URL (goes through Next.js rewrites)
 
 // Get auth token
 function getAuthToken(): string | null {
@@ -12,18 +14,18 @@ function getAuthToken(): string | null {
 // Helper function for API calls
 async function apiCall(endpoint: string, options: RequestInit = {}) {
   const token = getAuthToken();
-  
+
   // Don't make API calls without a token
   if (!token) {
     throw new Error('Non authentifié. Veuillez vous connecter.');
   }
-  
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
     ...options.headers,
   };
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
@@ -111,7 +113,7 @@ export async function fetchAdminProducts(category?: string, status?: string): Pr
   const params = new URLSearchParams();
   if (category) params.append('category', category);
   if (status) params.append('status', status);
-  
+
   const query = params.toString() ? `?${params.toString()}` : '';
   const data = await apiCall(`/api/admin/products${query}`);
   return data.success ? data.data : [];
@@ -155,7 +157,7 @@ export async function fetchMessages(read?: boolean, subject?: string): Promise<C
   const params = new URLSearchParams();
   if (read !== undefined) params.append('read', read.toString());
   if (subject) params.append('subject', subject);
-  
+
   const query = params.toString() ? `?${params.toString()}` : '';
   const data = await apiCall(`/api/admin/messages${query}`);
   return data.success ? data.data : [];

@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+const API_BASE_URL = '';  // Use relative URL to route through Next.js rewrites (bypasses CORS)
 
 export default function Contact() {
   const { toast } = useToast()
@@ -174,7 +174,7 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-primary ml-1">Sujet</label>
-                  <select 
+                  <select
                     name="subject"
                     className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-primary/70"
                     required
