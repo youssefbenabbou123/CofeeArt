@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 
-const API_BASE_URL = '';  // Use relative URL to route through Next.js rewrites (bypasses CORS)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
 export default function Contact() {
   const { toast } = useToast()

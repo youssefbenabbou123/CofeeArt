@@ -12,9 +12,6 @@ const nextConfig = {
       },
     ],
   },
-  // Note: API proxy is now handled by /app/api/[...path]/route.ts
-  // This serverless function forwards requests to Railway backend
 }
 
 export default nextConfig
-

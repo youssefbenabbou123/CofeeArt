@@ -1,7 +1,5 @@
-// API configuration - use empty string for production to route through Next.js rewrites (bypasses CORS)
-const API_BASE_URL = typeof window === 'undefined'
-  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002')  // Server-side: use direct URL
-  : '';  // Client-side: use relative URL (goes through Next.js rewrites)
+// API configuration
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
 export interface User {
   id: string;
@@ -180,4 +178,3 @@ export function signOut() {
 export function isAdmin(user: User | null): boolean {
   return user?.role === 'admin';
 }
-

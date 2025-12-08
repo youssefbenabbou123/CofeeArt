@@ -1,7 +1,4 @@
-// API configuration - use empty string in browser to route through Next.js rewrites (bypasses CORS)
-const API_BASE_URL = typeof window === 'undefined'
-  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002')
-  : '';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
 
 // Get auth token
 function getAuthToken(): string | null {
@@ -44,4 +41,3 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
     throw new Error('Erreur de connexion au serveur');
   }
 }
-
