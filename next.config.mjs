@@ -12,19 +12,8 @@ const nextConfig = {
       },
     ],
   },
-  // Proxy API requests through Vercel to bypass Railway CORS issues
-  async rewrites() {
-    return {
-      // beforeFiles: rewrites that run BEFORE pages/public files are checked
-      // This ensures /api/* always goes to Railway
-      beforeFiles: [
-        {
-          source: '/api/:path*',
-          destination: 'https://coffee-arts-backend.railway.app/api/:path*',
-        },
-      ],
-    };
-  },
+  // Note: API proxy is now handled by /app/api/[...path]/route.ts
+  // This serverless function forwards requests to Railway backend
 }
 
 export default nextConfig
