@@ -13,16 +13,19 @@ const nextConfig = {
     ],
   },
   // Proxy API requests through Vercel to bypass Railway CORS issues
-  // Browser calls /api/* on Vercel, Vercel forwards to Railway (server-to-server, no CORS)
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://coffee-arts-backend.railway.app';
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`,
-      },
-    ];
+    return {
+      // beforeFiles: rewrites that run BEFORE pages/public files are checked
+      // This ensures /api/* always goes to Railway
+      beforeFiles: [
+        {
+          source: '/api/:path*',
+          destination: 'https://coffee-arts-backend.railway.app/api/:path*',
+        },
+      ],
+    };
   },
 }
 
 export default nextConfig
+
