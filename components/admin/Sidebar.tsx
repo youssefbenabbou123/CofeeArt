@@ -3,15 +3,19 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Package, Mail, Settings, Menu, X } from "lucide-react"
+import { LayoutDashboard, Users, Package, Mail, Settings, Menu, X, FileText, ShoppingCart, Calendar, Gift } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/users", label: "Utilisateurs", icon: Users },
+  { href: "/admin/orders", label: "Commandes", icon: ShoppingCart },
   { href: "/admin/products", label: "Produits", icon: Package },
+  { href: "/admin/workshops", label: "Ateliers", icon: Calendar },
+  { href: "/admin/gift-cards", label: "Cartes cadeaux", icon: Gift },
+  { href: "/admin/blogs", label: "Blogs", icon: FileText },
+  { href: "/admin/users", label: "Utilisateurs", icon: Users },
   { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/settings", label: "Paramètres", icon: Settings },
 ]

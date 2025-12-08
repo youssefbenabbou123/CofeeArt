@@ -7,6 +7,7 @@ import { ArrowLeft, ShoppingCart, Plus, Minus, Trash2, X } from "lucide-react"
 import { getCartItems, removeFromCart, updateCartItemQuantity, getCartTotal, clearCart, type CartItem } from "@/lib/cart"
 import { useRouter } from "next/navigation"
 import { getCurrentUser } from "@/lib/auth"
+import CheckoutForm from "@/components/CheckoutForm"
 
 export default function Panier() {
   const router = useRouter()
@@ -14,6 +15,7 @@ export default function Panier() {
   const [total, setTotal] = useState(0)
   const [user, setUser] = useState<any>(null)
   const [checkingAuth, setCheckingAuth] = useState(true)
+  const [showCheckout, setShowCheckout] = useState(false)
 
   useEffect(() => {
     // Check if user is logged in
@@ -65,16 +67,13 @@ export default function Panier() {
   }
 
   const handleCheckout = () => {
-    // Check if user is logged in
-    if (!user) {
-      // Redirect to login page with return URL
-      const returnUrl = encodeURIComponent('/panier')
-      router.push(`/connexion?return=${returnUrl}`)
-      return
-    }
-    
-    // TODO: Implement checkout logic
-    alert('Fonctionnalité de paiement à venir!')
+    // Show checkout form (works for both logged in and guest users)
+    setShowCheckout(true)
+  }
+
+  const handleOrderSuccess = () => {
+    setShowCheckout(false)
+    router.push('/boutique?order=success')
   }
 
   if (cartItems.length === 0) {
@@ -194,50 +193,83 @@ export default function Panier() {
             ))}
           </div>
 
-          {/* Order Summary */}
+          {/* Order Summary / Checkout */}
           <div className="lg:col-span-1">
-            <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl p-6 sticky top-24">
-              <h2 className="text-2xl font-bold text-primary mb-6">Résumé</h2>
+            {!showCheckout ? (
+              <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl p-6 sticky top-24">
+                <h2 className="text-2xl font-bold text-primary mb-6">Résumé</h2>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-primary">
-                  <span>Sous-total</span>
-                  <span className="font-bold">{total.toFixed(2)}€</span>
+                <div className="space-y-4 mb-6">
+                  <div className="flex justify-between text-primary">
+                    <span>Sous-total</span>
+                    <span className="font-bold">{total.toFixed(2)}€</span>
+                  </div>
+                  <div className="flex justify-between text-primary">
+                    <span>Livraison</span>
+                    <span className="font-bold">Gratuite</span>
+                  </div>
+                  <div className="border-t border-primary/20 pt-4 flex justify-between text-xl font-bold text-primary">
+                    <span>Total</span>
+                    <span>{total.toFixed(2)}€</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-primary">
-                  <span>Livraison</span>
-                  <span className="font-bold">Gratuite</span>
-                </div>
-                <div className="border-t border-primary/20 pt-4 flex justify-between text-xl font-bold text-primary">
-                  <span>Total</span>
-                  <span>{total.toFixed(2)}€</span>
-                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors mb-4"
+                >
+                  Passer la commande
+                </button>
+
+                {user && (
+                  <p className="text-sm text-muted-foreground text-center mb-4">
+                    Connecté en tant que {user.name}
+                  </p>
+                )}
+
+                {!user && (
+                  <p className="text-sm text-muted-foreground text-center mb-4">
+                    Vous pouvez commander sans créer de compte
+                  </p>
+                )}
+
+                <button
+                  onClick={() => {
+                    clearCart()
+                    setCartItems([])
+                    setTotal(0)
+                  }}
+                  className="w-full text-primary hover:text-accent transition-colors text-sm font-medium"
+                >
+                  Vider le panier
+                </button>
               </div>
+            ) : (
+              <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl p-6 sticky top-24">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-primary">Commande</h2>
+                  <button
+                    onClick={() => setShowCheckout(false)}
+                    className="text-primary hover:text-accent transition-colors"
+                  >
+                    ← Retour
+                  </button>
+                </div>
 
-              <button
-                onClick={handleCheckout}
-                className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors mb-4"
-              >
-                {user ? 'Passer la commande' : 'Se connecter pour commander'}
-              </button>
-              
-              {!user && (
-                <p className="text-sm text-muted-foreground text-center mb-4">
-                  Vous devez être connecté pour passer une commande
-                </p>
-              )}
+                <div className="mb-6 p-4 bg-primary/5 rounded-xl">
+                  <div className="flex justify-between text-primary mb-2">
+                    <span>Total</span>
+                    <span className="font-bold text-xl">{total.toFixed(2)}€</span>
+                  </div>
+                </div>
 
-              <button
-                onClick={() => {
-                  clearCart()
-                  setCartItems([])
-                  setTotal(0)
-                }}
-                className="w-full text-primary hover:text-accent transition-colors text-sm font-medium"
-              >
-                Vider le panier
-              </button>
-            </div>
+                <CheckoutForm
+                  cartItems={cartItems}
+                  total={total}
+                  onSuccess={handleOrderSuccess}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

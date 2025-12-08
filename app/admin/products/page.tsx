@@ -88,6 +88,7 @@ export default function ProductsPage() {
         description: "Produit mis à jour",
       })
       setEditingProduct(null)
+      setShowForm(false)
       loadProducts()
     } catch (error: any) {
       toast({
