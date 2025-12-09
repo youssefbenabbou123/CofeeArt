@@ -102,7 +102,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-xl text-primary mb-2">Notre Adresse</h3>
-                  <p className="text-primary/70">12 Rue de la Céramique<br />75011 Paris, France</p>
+                  <p className="text-primary/70">25 Boulevard du Temple<br />75003 PARIS</p>
                 </div>
               </div>
 
@@ -217,7 +217,7 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
             <iframe
-              src="https://www.google.com/maps?q=48.8634,2.3797&z=17&output=embed&hl=fr"
+              src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -232,7 +232,7 @@ export default function Contact() {
                 <MapPin size={20} className="text-primary flex-shrink-0" />
                 <div>
                   <p className="font-bold text-primary text-sm">Coffee Arts Paris</p>
-                  <p className="text-primary/70 text-xs">12 Rue de la Céramique, 75011 Paris</p>
+                  <p className="text-primary/70 text-xs">25 Boulevard du Temple, 75003 PARIS</p>
                 </div>
               </div>
             </div>

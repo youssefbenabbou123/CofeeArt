@@ -68,7 +68,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3 text-primary-foreground/80 group">
                 <MapPin size={20} className="mt-1 text-accent group-hover:text-white transition-colors" />
-                <span>12 Rue de la Céramique<br />75011 Paris, France</span>
+                <span>25 Boulevard du Temple<br />75003 PARIS</span>
               </li>
             </ul>
           </div>
@@ -78,18 +78,13 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-6 text-accent">Horaires</h3>
             <ul className="space-y-3 text-primary-foreground/80">
               <li className="flex justify-between border-b border-primary-foreground/10 pb-2">
-                <span>Lundi - Jeudi</span>
-                <span className="font-medium">10h - 20h</span>
+                <span>Mardi - Mercredi - Jeudi - Vendredi</span>
+                <span className="font-medium">08h - 20h</span>
               </li>
               <li className="flex justify-between border-b border-primary-foreground/10 pb-2">
-                <span>Vendredi - Samedi</span>
-                <span className="font-medium">10h - 22h</span>
+                <span>Samedi - Dimanche</span>
+                <span className="font-medium">10h - 21h</span>
               </li>
-              <li className="flex justify-between border-b border-primary-foreground/10 pb-2">
-                <span>Dimanche</span>
-                <span className="font-medium">11h - 19h</span>
-              </li>
-              <li className="pt-2 text-accent font-medium">Fermé les jours fériés</li>
             </ul>
           </div>
         </div>
