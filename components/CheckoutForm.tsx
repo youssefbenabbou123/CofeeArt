@@ -10,10 +10,19 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { clearCart } from "@/lib/cart"
 
-// Load Stripe
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
-)
+// Get Stripe publishable key
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
+
+// Load Stripe only if key is provided
+const stripePromise = stripePublishableKey 
+  ? loadStripe(stripePublishableKey)
+  : null
+
+// Warn if Stripe key is missing (only in development)
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !stripePublishableKey) {
+  console.warn('⚠️ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Stripe payments will not work.')
+  console.warn('   Add it to your .env.local file. Get your key from: https://dashboard.stripe.com/apikeys')
+}
 
 interface CheckoutFormProps {
   cartItems: Array<{ id: string; title: string; price: number; quantity: number }>
@@ -222,6 +231,24 @@ export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFo
   }
 
   if (step === 'payment' && clientSecret && orderId && paymentIntentId) {
+    // Check if Stripe is configured
+    if (!stripePromise) {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-6"
+        >
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+            <h2 className="text-xl font-bold text-red-600 mb-2">Stripe non configuré</h2>
+            <p className="text-red-600">
+              Le paiement Stripe n'est pas configuré. Veuillez ajouter NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY à votre fichier .env.local
+            </p>
+          </div>
+        </motion.div>
+      )
+    }
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}

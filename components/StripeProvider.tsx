@@ -4,10 +4,20 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { ReactNode } from 'react'
 
+// Get Stripe publishable key
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
+
 // Load Stripe outside of component to avoid recreating on every render
-const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
-)
+// Only load if key is provided
+const stripePromise = stripePublishableKey 
+    ? loadStripe(stripePublishableKey)
+    : null
+
+// Warn if Stripe key is missing (only in development)
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !stripePublishableKey) {
+    console.warn('⚠️ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Stripe payments will not work.')
+    console.warn('   Add it to your .env.local file. Get your key from: https://dashboard.stripe.com/apikeys')
+}
 
 interface StripeProviderProps {
     children: ReactNode
@@ -48,6 +58,11 @@ export default function StripeProvider({ children, clientSecret }: StripeProvide
 
     if (!clientSecret) {
         // Return children without Elements wrapper when no clientSecret
+        return <>{children}</>
+    }
+
+    if (!stripePromise) {
+        console.error('Stripe is not configured. NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing.')
         return <>{children}</>
     }
 
