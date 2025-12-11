@@ -1,19 +1,33 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Users, Package, Mail, MailCheck, TrendingUp, TrendingDown } from "lucide-react"
+import { Users, Package, Mail, MailCheck, TrendingUp, TrendingDown, Euro, ShoppingCart, DollarSign } from "lucide-react"
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { fetchStats, type Stats } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 
-const COLORS = ['#8B7355', '#E8D6C1', '#ACB792', '#D4C5B0', '#C9A96B']
+// Dynamic colors for charts - more vibrant and professional
+const CHART_COLORS = {
+  primary: '#3b82f6',      // Blue
+  secondary: '#10b981',     // Green
+  accent: '#f59e0b',        // Amber
+  danger: '#ef4444',        // Red
+  purple: '#8b5cf6',        // Purple
+  teal: '#14b8a6',          // Teal
+  pink: '#ec4899',          // Pink
+  indigo: '#6366f1',        // Indigo
+}
+
+const PIE_COLORS = [CHART_COLORS.primary, CHART_COLORS.secondary, CHART_COLORS.accent, CHART_COLORS.purple, CHART_COLORS.teal]
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
   const { toast } = useToast()
+  const router = useRouter()
 
   useEffect(() => {
     async function loadStats() {
@@ -39,32 +53,58 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
+      label: "Revenus totaux",
+      value: `${stats.revenue.toFixed(2)}€`,
+      icon: Euro,
+      color: "bg-gradient-to-br from-green-500 to-emerald-600",
+      change: "+15%",
+      description: "Chiffre d'affaires",
+      href: "/admin/orders",
+    },
+    {
+      label: "Commandes",
+      value: stats.orders,
+      icon: ShoppingCart,
+      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      change: "+8%",
+      description: "Total des commandes",
+      href: "/admin/orders",
+    },
+    {
       label: "Utilisateurs",
       value: stats.users,
       icon: Users,
-      color: "bg-primary",
+      color: "bg-gradient-to-br from-purple-500 to-pink-600",
       change: "+12%",
+      description: "Comptes actifs",
+      href: "/admin/users",
     },
     {
       label: "Produits",
       value: stats.products,
       icon: Package,
-      color: "bg-accent",
+      color: "bg-gradient-to-br from-amber-500 to-orange-600",
       change: "+5%",
+      description: "En catalogue",
+      href: "/admin/products",
     },
     {
       label: "Messages",
       value: stats.messages,
       icon: Mail,
-      color: "bg-[#ACB792]",
+      color: "bg-gradient-to-br from-teal-500 to-cyan-600",
       change: "+8%",
+      description: "Total reçus",
+      href: "/admin/messages",
     },
     {
       label: "Non lus",
       value: stats.unreadMessages,
       icon: MailCheck,
-      color: "bg-[#D4C5B0]",
-      change: "-3%",
+      color: "bg-gradient-to-br from-red-500 to-rose-600",
+      change: stats.unreadMessages > 0 ? "À traiter" : "À jour",
+      description: "Messages en attente",
+      href: "/admin/messages",
     },
   ]
 
@@ -81,7 +121,7 @@ export default function AdminDashboard() {
       </motion.div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((stat, index) => {
           const Icon = stat.icon
           return (
@@ -91,25 +131,33 @@ export default function AdminDashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg hover:shadow-xl transition-all"
+              onClick={() => router.push(stat.href)}
+              className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`${stat.color} p-3 rounded-xl text-white`}>
+                <div className={`${stat.color} p-3 rounded-xl text-white shadow-lg`}>
                   <Icon size={24} />
                 </div>
-                <div className={`flex items-center gap-1 text-sm font-bold ${
-                  stat.change.startsWith('-') ? 'text-red-600' : 'text-green-600'
+                <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${
+                  stat.change.startsWith('-') || stat.change === 'À traiter' 
+                    ? 'text-red-600 bg-red-50' 
+                    : stat.change === 'À jour'
+                    ? 'text-green-600 bg-green-50'
+                    : 'text-green-600 bg-green-50'
                 }`}>
                   {stat.change.startsWith('-') ? (
-                    <TrendingDown size={16} />
-                  ) : (
-                    <TrendingUp size={16} />
+                    <TrendingDown size={14} />
+                  ) : stat.change === 'À traiter' ? null : (
+                    <TrendingUp size={14} />
                   )}
                   {stat.change}
                 </div>
               </div>
               <h3 className="text-3xl font-black text-primary mb-1">{stat.value}</h3>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              <p className="text-sm font-semibold text-primary">{stat.label}</p>
+              {stat.description && (
+                <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+              )}
             </motion.div>
           )
         })}
@@ -124,26 +172,38 @@ export default function AdminDashboard() {
           transition={{ delay: 0.4 }}
           className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-primary mb-6">Ventes mensuelles</h3>
+          <h3 className="text-xl font-bold text-primary mb-2">Ventes mensuelles</h3>
+          <p className="text-sm text-muted-foreground mb-6">Chiffre d'affaires des 6 derniers mois</p>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={stats.salesData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8D6C1" />
-              <XAxis dataKey="month" stroke="#8B7355" />
-              <YAxis stroke="#8B7355" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="month" 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+                tickFormatter={(value) => `${value}€`}
+              />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #E8D6C1",
+                  backgroundColor: "rgba(255, 255, 255, 0.98)",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
+                formatter={(value: number) => [`${value.toFixed(2)}€`, 'Ventes']}
+                labelFormatter={(label) => `Mois: ${label}`}
               />
               <Line
                 type="monotone"
                 dataKey="sales"
-                stroke="#8B7355"
+                stroke={CHART_COLORS.primary}
                 strokeWidth={3}
-                dot={{ fill: "#8B7355", r: 5 }}
-                activeDot={{ r: 8 }}
+                dot={{ fill: CHART_COLORS.primary, r: 5 }}
+                activeDot={{ r: 8, fill: CHART_COLORS.primary }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -156,7 +216,8 @@ export default function AdminDashboard() {
           transition={{ delay: 0.5 }}
           className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-primary mb-6">Répartition par catégorie</h3>
+          <h3 className="text-xl font-bold text-primary mb-2">Répartition par catégorie</h3>
+          <p className="text-sm text-muted-foreground mb-6">Quantité vendue par catégorie</p>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -170,15 +231,17 @@ export default function AdminDashboard() {
                 dataKey="value"
               >
                 {stats.categoryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #E8D6C1",
+                  backgroundColor: "rgba(255, 255, 255, 0.98)",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
+                formatter={(value: number) => [`${value} unités`, 'Quantité']}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -191,20 +254,32 @@ export default function AdminDashboard() {
           transition={{ delay: 0.6 }}
           className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-primary mb-6">Inscriptions mensuelles</h3>
+          <h3 className="text-xl font-bold text-primary mb-2">Inscriptions mensuelles</h3>
+          <p className="text-sm text-muted-foreground mb-6">Nouveaux utilisateurs des 6 derniers mois</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={stats.registrationsData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8D6C1" />
-              <XAxis dataKey="month" stroke="#8B7355" />
-              <YAxis stroke="#8B7355" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="month" 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+                label={{ value: 'Nombre d\'utilisateurs', angle: -90, position: 'insideLeft' }}
+              />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #E8D6C1",
+                  backgroundColor: "rgba(255, 255, 255, 0.98)",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
+                formatter={(value: number) => [`${value} utilisateurs`, 'Inscriptions']}
+                labelFormatter={(label) => `Mois: ${label}`}
               />
-              <Bar dataKey="users" fill="#8B7355" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="users" fill={CHART_COLORS.secondary} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -216,7 +291,8 @@ export default function AdminDashboard() {
           transition={{ delay: 0.7 }}
           className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-primary mb-6">Messages par sujet</h3>
+          <h3 className="text-xl font-bold text-primary mb-2">Messages par sujet</h3>
+          <p className="text-sm text-muted-foreground mb-6">Répartition des messages reçus</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
               data={[
@@ -226,17 +302,28 @@ export default function AdminDashboard() {
                 { subject: "Partenariats", count: 12 },
               ]}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8D6C1" />
-              <XAxis dataKey="subject" stroke="#8B7355" />
-              <YAxis stroke="#8B7355" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis 
+                dataKey="subject" 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+                label={{ value: 'Nombre de messages', angle: -90, position: 'insideLeft' }}
+              />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  border: "1px solid #E8D6C1",
+                  backgroundColor: "rgba(255, 255, 255, 0.98)",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
+                formatter={(value: number) => [`${value} messages`, 'Total']}
+                labelFormatter={(label) => `Sujet: ${label}`}
               />
-              <Bar dataKey="count" fill="#E8D6C1" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="count" fill={CHART_COLORS.purple} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>

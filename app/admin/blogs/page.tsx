@@ -72,6 +72,7 @@ export default function BlogsPage() {
         description: "Blog mis à jour",
       })
       setEditingBlog(null)
+      setShowForm(false)
       loadBlogs()
     } catch (error: any) {
       toast({
@@ -260,5 +261,7 @@ export default function BlogsPage() {
     </div>
   )
 }
+
+
 
 

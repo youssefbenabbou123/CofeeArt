@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { Menu, X, User, LogOut, ShoppingBag } from "lucide-react"
+import { Menu, X, User, LogOut, ShoppingBag, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { getCurrentUser, signOut, type User as UserType } from "@/lib/auth"
 import { getCartItemCount } from "@/lib/cart"
@@ -16,6 +16,10 @@ export default function Navigation() {
   const [user, setUser] = useState<UserType | null>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [cartCount, setCartCount] = useState(0)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [showSearch, setShowSearch] = useState(false)
+  const [suggestions, setSuggestions] = useState<Array<{type: string, title: string, href: string}>>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const pathname = usePathname()
   const isHomePage = pathname === "/"
 
@@ -80,12 +84,127 @@ export default function Navigation() {
     }
   }, [])
 
+  // Fetch search suggestions
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!searchQuery.trim() || searchQuery.length < 2) {
+        setSuggestions([])
+        setShowSuggestions(false)
+        return
+      }
+
+      try {
+        const query = searchQuery.toLowerCase()
+        const allSuggestions: Array<{type: string, title: string, href: string}> = []
+
+        // Fetch products
+        try {
+          const productsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/products`)
+          if (productsRes.ok) {
+            const productsData = await productsRes.json()
+            const products = productsData.success ? productsData.data : []
+            products
+              .filter((p: any) => 
+                p.title?.toLowerCase().includes(query) || 
+                p.description?.toLowerCase().includes(query)
+              )
+              .slice(0, 3)
+              .forEach((p: any) => {
+                allSuggestions.push({
+                  type: 'Produit',
+                  title: p.title,
+                  href: `/boutique/${p.id}`
+                })
+              })
+          }
+        } catch (err) {
+          console.error('Error fetching products for suggestions:', err)
+        }
+
+        // Fetch blogs
+        try {
+          const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/blogs`)
+          if (blogsRes.ok) {
+            const blogsData = await blogsRes.json()
+            const blogs = blogsData.success ? blogsData.data : []
+            blogs
+              .filter((b: any) => 
+                b.title?.toLowerCase().includes(query) ||
+                b.excerpt?.toLowerCase().includes(query)
+              )
+              .slice(0, 2)
+              .forEach((b: any) => {
+                allSuggestions.push({
+                  type: 'Article',
+                  title: b.title,
+                  href: `/blog/${b.slug || b.id}`
+                })
+              })
+          }
+        } catch (err) {
+          console.error('Error fetching blogs for suggestions:', err)
+        }
+
+        // Fetch workshops
+        try {
+          const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/workshops`)
+          if (workshopsRes.ok) {
+            const workshopsData = await workshopsRes.json()
+            const workshops = workshopsData.success ? workshopsData.data : []
+            workshops
+              .filter((w: any) => 
+                w.title?.toLowerCase().includes(query) ||
+                w.description?.toLowerCase().includes(query)
+              )
+              .slice(0, 2)
+              .forEach((w: any) => {
+                allSuggestions.push({
+                  type: 'Atelier',
+                  title: w.title,
+                  href: `/ateliers`
+                })
+              })
+          }
+        } catch (err) {
+          console.error('Error fetching workshops for suggestions:', err)
+        }
+
+        setSuggestions(allSuggestions.slice(0, 5))
+        setShowSuggestions(allSuggestions.length > 0)
+      } catch (error) {
+        console.error('Error fetching suggestions:', error)
+        setSuggestions([])
+        setShowSuggestions(false)
+      }
+    }
+
+    const debounceTimer = setTimeout(fetchSuggestions, 300)
+    return () => clearTimeout(debounceTimer)
+  }, [searchQuery])
+
   const handleLogout = () => {
     signOut()
     setUser(null)
     setShowUserMenu(false)
     router.push("/")
     router.refresh()
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/recherche?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery("")
+      setShowSearch(false)
+      setShowSuggestions(false)
+    }
+  }
+
+  const handleSuggestionClick = (href: string) => {
+    router.push(href)
+    setSearchQuery("")
+    setShowSearch(false)
+    setShowSuggestions(false)
   }
 
   const leftLinks = [
@@ -176,8 +295,118 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Cart and User Icons - Far Right */}
+          {/* Search, Cart and User Icons - Far Right */}
           <div className="hidden md:flex ml-auto items-center gap-3 z-10">
+            {/* Search Icon */}
+            <div className="relative">
+              {showSearch ? (
+                <div className="relative">
+                  <form onSubmit={handleSearch} className="flex items-center gap-2">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value)
+                          setShowSuggestions(true)
+                        }}
+                        onFocus={() => {
+                          if (suggestions.length > 0) setShowSuggestions(true)
+                        }}
+                        placeholder="Rechercher..."
+                        autoFocus
+                        className={cn(
+                          "px-4 py-2 rounded-xl border-2 transition-all text-sm w-64",
+                          elementsScrolled
+                            ? "bg-white border-primary/20 text-primary focus:border-primary"
+                            : "bg-accent/10 border-accent/20 text-accent focus:border-accent"
+                        )}
+                      />
+                      {/* Suggestions Dropdown */}
+                      {showSuggestions && suggestions.length > 0 && (
+                        <>
+                          <div 
+                            className="fixed inset-0 z-40" 
+                            onClick={() => setShowSuggestions(false)}
+                          />
+                          <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-primary/20 z-50 max-h-80 overflow-y-auto">
+                          {suggestions.map((suggestion, index) => (
+                            <button
+                              key={index}
+                              type="button"
+                              onClick={() => handleSuggestionClick(suggestion.href)}
+                              className="w-full text-left px-4 py-3 hover:bg-primary/5 transition-colors flex items-center gap-3 border-b border-primary/5 last:border-b-0"
+                            >
+                              <div className={cn(
+                                "px-2 py-1 rounded text-xs font-bold",
+                                suggestion.type === 'Produit' ? "bg-blue-100 text-blue-700" :
+                                suggestion.type === 'Article' ? "bg-green-100 text-green-700" :
+                                "bg-purple-100 text-purple-700"
+                              )}>
+                                {suggestion.type}
+                              </div>
+                              <span className="flex-1 text-primary font-medium">{suggestion.title}</span>
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={handleSearch}
+                            className="w-full text-left px-4 py-3 hover:bg-primary/5 transition-colors flex items-center gap-2 border-t border-primary/10 bg-primary/5"
+                          >
+                            <Search size={16} className="text-primary" />
+                            <span className="text-primary font-bold">
+                              Voir tous les résultats pour "{searchQuery}"
+                            </span>
+                          </button>
+                        </div>
+                        </>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      className={cn(
+                        "p-2 rounded-full transition-colors",
+                        elementsScrolled
+                          ? "bg-primary text-white hover:bg-primary/90"
+                          : "bg-accent text-white hover:bg-accent/90"
+                      )}
+                    >
+                      <Search size={18} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowSearch(false)
+                        setSearchQuery("")
+                        setShowSuggestions(false)
+                      }}
+                      className={cn(
+                        "p-2 rounded-full transition-colors",
+                        elementsScrolled
+                          ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      )}
+                    >
+                      <X size={18} />
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowSearch(true)}
+                  className={cn(
+                    "p-2 rounded-full transition-colors",
+                    elementsScrolled
+                      ? "bg-primary/5 hover:bg-primary/10 text-primary"
+                      : "bg-accent/10 hover:bg-accent/20 text-accent"
+                  )}
+                  aria-label="Rechercher"
+                >
+                  <Search size={24} />
+                </button>
+              )}
+            </div>
+
             {/* Cart Icon */}
             <Link
               href="/panier"
@@ -256,8 +485,17 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Mobile Cart and User Icons */}
+          {/* Mobile Search, Cart and User Icons */}
           <div className="md:hidden ml-auto flex items-center gap-2 z-10">
+            {/* Search Icon */}
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-accent")}
+              aria-label="Rechercher"
+            >
+              <Search size={24} />
+            </button>
+
             {/* Cart Icon */}
             <Link
               href="/panier"
@@ -296,6 +534,82 @@ export default function Navigation() {
             )}
           </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        {showSearch && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-primary/10 p-4 z-50">
+            <div className="relative">
+              <form onSubmit={handleSearch} className="flex gap-2">
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setShowSuggestions(true)
+                    }}
+                    onFocus={() => {
+                      if (suggestions.length > 0) setShowSuggestions(true)
+                    }}
+                    placeholder="Rechercher..."
+                    autoFocus
+                    className="w-full px-4 py-2 border-2 border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-primary"
+                  />
+                  {/* Mobile Suggestions */}
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-primary/20 z-50 max-h-64 overflow-y-auto">
+                      {suggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => handleSuggestionClick(suggestion.href)}
+                          className="w-full text-left px-4 py-3 hover:bg-primary/5 transition-colors flex items-center gap-3 border-b border-primary/5 last:border-b-0"
+                        >
+                          <div className={cn(
+                            "px-2 py-1 rounded text-xs font-bold",
+                            suggestion.type === 'Produit' ? "bg-blue-100 text-blue-700" :
+                            suggestion.type === 'Article' ? "bg-green-100 text-green-700" :
+                            "bg-purple-100 text-purple-700"
+                          )}>
+                            {suggestion.type}
+                          </div>
+                          <span className="flex-1 text-primary font-medium">{suggestion.title}</span>
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={handleSearch}
+                        className="w-full text-left px-4 py-3 hover:bg-primary/5 transition-colors flex items-center gap-2 border-t border-primary/10 bg-primary/5"
+                      >
+                        <Search size={16} className="text-primary" />
+                        <span className="text-primary font-bold">
+                          Voir tous les résultats
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-bold"
+                >
+                  <Search size={20} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowSearch(false)
+                    setSearchQuery("")
+                    setShowSuggestions(false)
+                  }}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Mobile Navigation Overlay */}
         <div

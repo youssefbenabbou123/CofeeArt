@@ -17,7 +17,9 @@ export async function fetchProducts(): Promise<Product[]> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch products');
+      const errorText = await response.text();
+      console.error('Failed to fetch products:', response.status, errorText);
+      throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -121,6 +123,7 @@ export interface GuestOrderData {
   shipping_city: string;
   shipping_postal_code: string;
   shipping_country?: string;
+  create_payment_intent?: boolean;
 }
 
 export interface OrderResponse {
@@ -130,6 +133,10 @@ export interface OrderResponse {
     order_id: string;
     total: number;
     created_at: string;
+    payment_intent?: {
+      client_secret: string;
+      payment_intent_id: string;
+    };
   };
 }
 
@@ -137,11 +144,11 @@ export async function createOrder(orderData: GuestOrderData): Promise<OrderRespo
   try {
     // Get auth token if user is logged in
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    
+
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -161,6 +168,93 @@ export async function createOrder(orderData: GuestOrderData): Promise<OrderRespo
     return data.data;
   } catch (error) {
     console.error('Error creating order:', error);
+    throw error;
+  }
+}
+
+// ========== STRIPE PAYMENTS ==========
+
+export interface StripeConfigResponse {
+  success: boolean;
+  configured: boolean;
+  hasSecretKey: boolean;
+  keyPrefix?: string | null;
+}
+
+export async function checkStripeConfig(): Promise<StripeConfigResponse> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/stripe/check-config`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to check Stripe configuration');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error checking Stripe config:', error);
+    return {
+      success: false,
+      configured: false,
+      hasSecretKey: false,
+    };
+  }
+}
+
+export interface PaymentIntentResponse {
+  success: boolean;
+  clientSecret: string;
+  paymentIntentId: string;
+}
+
+export async function createPaymentIntent(amount: number): Promise<PaymentIntentResponse> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/stripe/create-payment-intent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount,
+        currency: 'eur',
+        metadata: {
+          type: 'product_order'
+        }
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to create payment intent');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    throw error;
+  }
+}
+
+export async function confirmPayment(orderId: string, paymentIntentId: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/stripe/confirm-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ orderId, paymentIntentId }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to confirm payment');
+    }
+  } catch (error) {
+    console.error('Error confirming payment:', error);
     throw error;
   }
 }

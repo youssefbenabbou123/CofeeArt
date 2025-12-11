@@ -2,16 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Plus, Calendar, Users, Edit, Trash2, Eye } from "lucide-react"
+import { Plus, Calendar, Users, Edit, Trash2, Eye, Upload, X } from "lucide-react"
 import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, type Workshop } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
+import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
 
 export default function WorkshopsPage() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingWorkshop, setEditingWorkshop] = useState<Workshop | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const { toast } = useToast()
 
   const loadWorkshops = async () => {
@@ -34,16 +38,61 @@ export default function WorkshopsPage() {
     loadWorkshops()
   }, [])
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
+    // Reset file input
+    const fileInput = document.getElementById('image-upload') as HTMLInputElement
+    if (fileInput) fileInput.value = ''
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    
+    let imageUrl = formData.get('image') as string || editingWorkshop?.image || ''
+
+    // Upload image to Cloudinary if a new file is selected
+    if (imageFile) {
+      try {
+        setUploadingImage(true)
+        imageUrl = await uploadImageToCloudinary(imageFile)
+        toast({
+          title: "Succès",
+          description: "Image uploadée sur Cloudinary",
+        })
+      } catch (error: any) {
+        toast({
+          title: "Erreur",
+          description: error.message || "Impossible d'uploader l'image",
+          variant: "destructive",
+        })
+        setUploadingImage(false)
+        return
+      } finally {
+        setUploadingImage(false)
+      }
+    }
+
     const workshopData = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       level: formData.get('level') as string,
       duration: parseInt(formData.get('duration') as string),
       price: parseFloat(formData.get('price') as string),
-      image: formData.get('image') as string,
+      image: imageUrl,
       status: formData.get('status') as string,
       capacity: parseInt(formData.get('capacity') as string),
     }
@@ -58,6 +107,8 @@ export default function WorkshopsPage() {
       }
       setShowForm(false)
       setEditingWorkshop(null)
+      setImageFile(null)
+      setImagePreview(null)
       loadWorkshops()
     } catch (error: any) {
       toast({
@@ -102,6 +153,8 @@ export default function WorkshopsPage() {
         <button
           onClick={() => {
             setEditingWorkshop(null)
+            setImageFile(null)
+            setImagePreview(null)
             setShowForm(true)
           }}
           className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2"
@@ -133,6 +186,8 @@ export default function WorkshopsPage() {
               <button
                 onClick={() => {
                   setEditingWorkshop(workshop)
+                  setImageFile(null)
+                  setImagePreview(workshop.image || null)
                   setShowForm(true)
                 }}
                 className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
@@ -234,13 +289,59 @@ export default function WorkshopsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-bold text-primary mb-2">Image URL</label>
-                <input
-                  type="url"
-                  name="image"
-                  defaultValue={editingWorkshop?.image}
-                  className="w-full px-4 py-2 border border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
+                <label className="block text-sm font-bold text-primary mb-2">Image</label>
+                
+                {/* Image Preview */}
+                {(imagePreview || editingWorkshop?.image) && (
+                  <div className="relative mb-4">
+                    <img
+                      src={imagePreview || editingWorkshop?.image || ''}
+                      alt="Preview"
+                      className="w-full h-48 object-cover rounded-xl border border-primary/20"
+                    />
+                    {imageFile && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* File Upload */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="image-upload"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-primary/30 rounded-xl hover:border-primary/50 transition-colors cursor-pointer bg-primary/5"
+                  >
+                    <Upload size={20} className="text-primary" />
+                    <span className="text-sm font-medium text-primary">
+                      {imageFile ? imageFile.name : 'Choisir une image'}
+                    </span>
+                  </label>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  
+                  {/* Fallback URL input (optional) */}
+                  <div className="text-xs text-muted-foreground text-center">
+                    ou
+                  </div>
+                  <input
+                    type="url"
+                    name="image"
+                    placeholder="URL de l'image (optionnel si vous uploadez un fichier)"
+                    defaultValue={editingWorkshop?.image && !imageFile ? editingWorkshop.image : ''}
+                    className="w-full px-4 py-2 border border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-bold text-primary mb-2">Statut</label>
@@ -256,15 +357,25 @@ export default function WorkshopsPage() {
               <div className="flex gap-4">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
+                  disabled={uploadingImage}
+                  className="flex-1 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {editingWorkshop ? 'Mettre à jour' : 'Créer'}
+                  {uploadingImage ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Upload en cours...
+                    </>
+                  ) : (
+                    editingWorkshop ? 'Mettre à jour' : 'Créer'
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={() => {
                     setShowForm(false)
                     setEditingWorkshop(null)
+                    setImageFile(null)
+                    setImagePreview(null)
                   }}
                   className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors"
                 >
@@ -278,5 +389,7 @@ export default function WorkshopsPage() {
     </div>
   )
 }
+
+
 
 

@@ -182,6 +182,8 @@ export interface Stats {
   products: number;
   messages: number;
   unreadMessages: number;
+  revenue: number;
+  orders: number;
   salesData: Array<{ month: string; sales: number }>;
   categoryData: Array<{ name: string; value: number }>;
   registrationsData: Array<{ month: string; users: number }>;

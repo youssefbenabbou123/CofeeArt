@@ -29,7 +29,12 @@ export default function AdminHeader() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Searching for:", searchQuery)
+    if (searchQuery.trim()) {
+      // Search in admin context - could search orders, users, products, etc.
+      // For now, redirect to main search page
+      router.push(`/recherche?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery("")
+    }
   }
 
   return (

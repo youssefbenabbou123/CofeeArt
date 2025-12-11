@@ -1,19 +1,36 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { Search, Filter, Download, FileText, RefreshCw, Eye } from "lucide-react"
+import { createPortal } from "react-dom"
+import { Search, Filter, Download, FileText, RefreshCw, Eye, ChevronDown } from "lucide-react"
 import { fetchAdminOrders, fetchAdminOrder, updateOrderStatus, processRefund, downloadInvoice, exportOrdersCSV, type Order } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 
-const ORDER_STATUSES = ['pending', 'paid', 'preparing', 'shipped', 'delivered', 'cancelled', 'refunded']
+// Valid order statuses matching backend
+const ORDER_STATUSES = ['confirmed', 'preparing', 'shipped', 'delivered', 'cancelled', 'refunded'] as const
+
+// Status configuration with colors and French labels
+const STATUS_CONFIG: Record<string, { label: string; color: string; bgColor: string }> = {
+  pending: { label: 'En attente', color: '#f59e0b', bgColor: '#fef3c7' }, // amber
+  confirmed: { label: 'Confirmée', color: '#3b82f6', bgColor: '#dbeafe' }, // blue
+  preparing: { label: 'En préparation', color: '#8b5cf6', bgColor: '#ede9fe' }, // purple
+  shipped: { label: 'Expédiée', color: '#06b6d4', bgColor: '#cffafe' }, // cyan
+  delivered: { label: 'Livrée', color: '#10b981', bgColor: '#d1fae5' }, // green
+  cancelled: { label: 'Annulée', color: '#ef4444', bgColor: '#fee2e2' }, // red
+  refunded: { label: 'Remboursée', color: '#6b7280', bgColor: '#f3f4f6' }, // gray
+}
+
 const PAYMENT_STATUSES = ['pending', 'paid', 'failed', 'refunded']
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [openStatusDropdown, setOpenStatusDropdown] = useState<string | null>(null)
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number } | null>(null)
+  const statusButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
   const [filters, setFilters] = useState({
     status: '',
     payment_status: '',
@@ -48,6 +65,8 @@ export default function OrdersPage() {
         title: "Succès",
         description: "Statut de la commande mis à jour",
       })
+      setOpenStatusDropdown(null)
+      setDropdownPosition(null)
       loadOrders()
     } catch (error: any) {
       toast({
@@ -56,6 +75,15 @@ export default function OrdersPage() {
         variant: "destructive",
       })
     }
+  }
+
+  const handleOpenDropdown = (orderId: string, button: HTMLButtonElement) => {
+    const rect = button.getBoundingClientRect()
+    setDropdownPosition({
+      top: rect.bottom + window.scrollY + 4,
+      left: rect.left + window.scrollX
+    })
+    setOpenStatusDropdown(orderId)
   }
 
   const handleViewOrder = async (orderId: string) => {
@@ -150,9 +178,20 @@ export default function OrdersPage() {
               className="w-full px-4 py-2 border border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
             >
               <option value="">Tous</option>
-              {ORDER_STATUSES.map(status => (
-                <option key={status} value={status}>{status}</option>
-              ))}
+              {ORDER_STATUSES.map(status => {
+                const config = STATUS_CONFIG[status]
+                return (
+                  <option 
+                    key={status} 
+                    value={status}
+                    style={{
+                      color: config.color,
+                    }}
+                  >
+                    {config.label}
+                  </option>
+                )
+              })}
             </select>
           </div>
           <div>
@@ -188,7 +227,7 @@ export default function OrdersPage() {
 
       {/* Orders List */}
       <div className="bg-white/80 backdrop-blur-xl rounded-2xl border border-primary/10 shadow-lg overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" style={{ overflowY: 'visible' }}>
           <table className="w-full">
             <thead className="bg-primary/5">
               <tr>
@@ -217,15 +256,31 @@ export default function OrdersPage() {
                     {parseFloat(order.total as any).toFixed(2)}€
                   </td>
                   <td className="px-6 py-4">
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                      className="text-sm px-3 py-1 border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    <button
+                      ref={(el) => (statusButtonRefs.current[order.id] = el)}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (openStatusDropdown === order.id) {
+                          setOpenStatusDropdown(null)
+                          setDropdownPosition(null)
+                        } else if (e.currentTarget) {
+                          handleOpenDropdown(order.id, e.currentTarget)
+                        }
+                      }}
+                      className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full font-medium transition-all hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                      style={{
+                        color: STATUS_CONFIG[order.status]?.color || '#1a1a2e',
+                        backgroundColor: STATUS_CONFIG[order.status]?.bgColor || '#f3f4f6',
+                        border: `1px solid ${STATUS_CONFIG[order.status]?.color || '#1a1a2e'}40`,
+                      }}
                     >
-                      {ORDER_STATUSES.map(status => (
-                        <option key={status} value={status}>{status}</option>
-                      ))}
-                    </select>
+                      <span>{STATUS_CONFIG[order.status]?.label || order.status}</span>
+                      <ChevronDown 
+                        size={14} 
+                        className={`transition-transform ${openStatusDropdown === order.id ? 'rotate-180' : ''}`}
+                      />
+                    </button>
                   </td>
                   <td className="px-6 py-4 text-sm text-primary">
                     {order.payment_status || 'unpaid'}
@@ -262,6 +317,67 @@ export default function OrdersPage() {
           </div>
         )}
       </div>
+
+      {/* Status Dropdown Portal */}
+      {openStatusDropdown && dropdownPosition && typeof window !== 'undefined' && createPortal(
+        <>
+          <div 
+            className="fixed inset-0 z-[9999]" 
+            onClick={() => {
+              setOpenStatusDropdown(null)
+              setDropdownPosition(null)
+            }}
+          />
+          <div 
+            className="fixed z-[10000] bg-white rounded-lg shadow-xl border border-primary/20 py-1 w-[180px] max-h-[300px] overflow-y-auto overflow-x-hidden"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
+            }}
+          >
+            {ORDER_STATUSES.map(status => {
+              const config = STATUS_CONFIG[status]
+              const order = orders.find(o => o.id === openStatusDropdown)
+              const isSelected = status === order?.status
+              return (
+                <button
+                  key={status}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (openStatusDropdown && status !== order?.status) {
+                      handleStatusChange(openStatusDropdown, status)
+                    }
+                  }}
+                  className="w-full text-left px-4 py-2.5 text-sm font-medium transition-colors duration-200 flex items-center gap-2"
+                  style={{
+                    color: config.color,
+                    backgroundColor: isSelected ? config.bgColor : 'transparent',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.backgroundColor = config.bgColor + '80'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                    }
+                  }}
+                >
+                  <span>{config.label}</span>
+                  {isSelected && (
+                    <span className="ml-auto text-xs font-bold">✓</span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </>,
+        document.body
+      )}
 
       {/* Order Detail Modal */}
       {selectedOrder && (
@@ -312,5 +428,7 @@ export default function OrdersPage() {
     </div>
   )
 }
+
+
 
 
