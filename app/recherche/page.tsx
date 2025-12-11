@@ -64,7 +64,7 @@ function SearchContent() {
 
       // Search workshops (we'll fetch from API)
       try {
-        const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/workshops`)
+        const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/workshops`)
         if (workshopsRes.ok) {
           const workshopsData = await workshopsRes.json()
           const allWorkshops = workshopsData.success ? workshopsData.data : []

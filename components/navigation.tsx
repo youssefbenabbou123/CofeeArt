@@ -99,7 +99,7 @@ export default function Navigation() {
 
         // Fetch products
         try {
-          const productsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/products`)
+          const productsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/products`)
           if (productsRes.ok) {
             const productsData = await productsRes.json()
             const products = productsData.success ? productsData.data : []
@@ -123,7 +123,7 @@ export default function Navigation() {
 
         // Fetch blogs
         try {
-          const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/blogs`)
+          const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/blogs`)
           if (blogsRes.ok) {
             const blogsData = await blogsRes.json()
             const blogs = blogsData.success ? blogsData.data : []
@@ -147,7 +147,7 @@ export default function Navigation() {
 
         // Fetch workshops
         try {
-          const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002'}/api/workshops`)
+          const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/workshops`)
           if (workshopsRes.ok) {
             const workshopsData = await workshopsRes.json()
             const workshops = workshopsData.success ? workshopsData.data : []
