@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Palette, Coffee, Users, Star, ArrowUpRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function Home() {
@@ -25,16 +25,11 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <div className="animate-fade-up opacity-0" style={{ animationDelay: "0.2s" }}>
-            <span className="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-medium mb-6 tracking-wider uppercase">
-              Paris 11ème
-            </span>
-          </div>
           <h1 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tight leading-tight animate-fade-up opacity-0" style={{ animationDelay: "0.4s" }}>
             L'Art de la <br />
             <span className="text-accent italic">Céramique</span> & du Café
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
             Un espace hybride unique où la créativité rencontre la dégustation.
             Ateliers, Boutique & Coffee Shop.
           </p>
@@ -51,18 +46,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/70">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-white rounded-full animate-scroll" />
-          </div>
-        </div>
       </section>
 
       {/* Concept Section - Bento Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="section-title mb-4">Notre Concept</h2>
+          <h2 className="section-title mb-4">Notre concept</h2>
           <p className="text-primary/70 text-lg max-w-2xl mx-auto">
             Trois univers réunis en un seul lieu pour une expérience sensorielle complète.
           </p>
@@ -80,7 +69,6 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="flex items-center gap-3 mb-2 text-accent">
-                  <Coffee size={24} />
                   <span className="font-bold uppercase tracking-wider text-sm">Coffee Shop</span>
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-2">Café de Spécialité</h3>
@@ -103,9 +91,8 @@ export default function Home() {
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-primary/80 group-hover:bg-primary/70 transition-colors p-8 flex flex-col justify-between">
-              <Palette className="text-accent w-10 h-10" />
               <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Ateliers Créatifs</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">Ateliers créatifs</h3>
                 <p className="text-white/80 text-sm mb-4">Initiez-vous au tournage et au modelage.</p>
                 <Link href="/ateliers" className="absolute inset-0" aria-label="Voir les ateliers" />
               </div>
@@ -122,13 +109,12 @@ export default function Home() {
 
             <div className="relative h-full p-8 flex flex-col justify-between">
               <div className="flex justify-between items-start">
-                <Users className="text-primary w-10 h-10" />
                 <div className="bg-white/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary uppercase">
                   Fait main
                 </div>
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-primary mb-2">La Boutique</h3>
+                <h3 className="text-2xl font-bold text-primary mb-2">La boutique</h3>
                 <p className="text-primary/80 text-sm mb-4">Céramiques artisanales et objets uniques.</p>
                 <Link href="/boutique" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors shadow-lg">
                   <ArrowRight size={18} />
@@ -139,26 +125,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social Proof / Testimonials - Scrolling Marquee */}
-      <section className="py-16 bg-primary overflow-hidden">
-        <div className="flex whitespace-nowrap">
-          <div className="flex gap-8 animate-marquee">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex gap-8">
-                {[
-                  "Ambiance incroyable", "Café délicieux", "Ateliers passionnants", "Super profs", "Lieu magnifique",
-                  "Céramiques uniques", "Moment de détente", "À refaire absolument"
-                ].map((text, j) => (
-                  <div key={`${i}-${j}`} className="flex items-center gap-4 px-8 py-4 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 flex-shrink-0">
-                    <Star className="text-accent fill-accent" size={16} />
-                    <span className="text-white font-medium text-lg">{text}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">
@@ -170,7 +136,7 @@ export default function Home() {
           <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-8 leading-tight">
             Prêt à mettre les mains <br /> dans la terre ?
           </h2>
-          <p className="text-xl text-primary/70 mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-primary/70 mb-8 max-w-2xl mx-auto">
             Rejoignez-nous pour un moment de création et de partage. Réservez votre atelier ou passez nous voir pour un café.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">

@@ -14,17 +14,6 @@ interface BlogFormProps {
   onCancel: () => void
 }
 
-const categories = [
-  "Techniques",
-  "Conseils",
-  "Art",
-  "Écologie",
-  "Lifestyle",
-  "Tendances",
-  "Community",
-  "Guide",
-  "Autres",
-]
 
 export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
   const { toast } = useToast()
@@ -34,8 +23,6 @@ export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
     content: "",
     excerpt: "",
     image: "",
-    author: "",
-    category: "",
     slug: "",
     published: true,
   })
@@ -49,8 +36,6 @@ export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
         content: blog.content || "",
         excerpt: blog.excerpt || "",
         image: blog.image || "",
-        author: blog.author || "",
-        category: blog.category || "",
         slug: blog.slug || "",
         published: blog.published !== false,
       })
@@ -80,8 +65,6 @@ export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
         content: formData.content,
         excerpt: formData.excerpt,
         image: formData.image,
-        author: formData.author,
-        category: formData.category,
         slug: formData.slug,
         published: formData.published,
       })
@@ -189,37 +172,6 @@ export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
             />
           </div>
 
-          {/* Author */}
-          <div>
-            <label className="block text-sm font-bold text-primary mb-2">
-              Auteur
-            </label>
-            <input
-              type="text"
-              value={formData.author}
-              onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-            />
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-bold text-primary mb-2">
-              Catégorie
-            </label>
-            <select
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full px-4 py-3 bg-white border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-            >
-              <option value="">Sélectionner une catégorie</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
 
           {/* Image */}
           <div className="md:col-span-2">
@@ -305,6 +257,7 @@ export default function BlogForm({ blog, onSubmit, onCancel }: BlogFormProps) {
     </motion.div>
   )
 }
+
 
 
 

@@ -4,7 +4,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { Menu, X, User, LogOut, ShoppingBag, Search } from "lucide-react"
+import { Menu, X, User, LogOut, ShoppingBag } from "lucide-react"
+// import { Search } from "lucide-react" // Kept for future search functionality
 import { cn } from "@/lib/utils"
 import { getCurrentUser, signOut, type User as UserType } from "@/lib/auth"
 import { getCartItemCount } from "@/lib/cart"
@@ -16,10 +17,11 @@ export default function Navigation() {
   const [user, setUser] = useState<UserType | null>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [cartCount, setCartCount] = useState(0)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [showSearch, setShowSearch] = useState(false)
-  const [suggestions, setSuggestions] = useState<Array<{type: string, title: string, href: string}>>([])
-  const [showSuggestions, setShowSuggestions] = useState(false)
+  // Search functionality - kept for future use
+  // const [searchQuery, setSearchQuery] = useState("")
+  // const [showSearch, setShowSearch] = useState(false)
+  // const [suggestions, setSuggestions] = useState<Array<{type: string, title: string, href: string}>>([])
+  // const [showSuggestions, setShowSuggestions] = useState(false)
   const pathname = usePathname()
   const isHomePage = pathname === "/"
 
@@ -84,103 +86,103 @@ export default function Navigation() {
     }
   }, [])
 
-  // Fetch search suggestions
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (!searchQuery.trim() || searchQuery.length < 2) {
-        setSuggestions([])
-        setShowSuggestions(false)
-        return
-      }
+  // Search functionality - kept for future use
+  // useEffect(() => {
+  //   const fetchSuggestions = async () => {
+  //     if (!searchQuery.trim() || searchQuery.length < 2) {
+  //       setSuggestions([])
+  //       setShowSuggestions(false)
+  //       return
+  //     }
 
-      try {
-        const query = searchQuery.toLowerCase()
-        const allSuggestions: Array<{type: string, title: string, href: string}> = []
+  //     try {
+  //       const query = searchQuery.toLowerCase()
+  //       const allSuggestions: Array<{type: string, title: string, href: string}> = []
 
-        // Fetch products
-        try {
-          const productsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/products`)
-          if (productsRes.ok) {
-            const productsData = await productsRes.json()
-            const products = productsData.success ? productsData.data : []
-            products
-              .filter((p: any) => 
-                p.title?.toLowerCase().includes(query) || 
-                p.description?.toLowerCase().includes(query)
-              )
-              .slice(0, 3)
-              .forEach((p: any) => {
-                allSuggestions.push({
-                  type: 'Produit',
-                  title: p.title,
-                  href: `/boutique/${p.id}`
-                })
-              })
-          }
-        } catch (err) {
-          console.error('Error fetching products for suggestions:', err)
-        }
+  //       // Fetch products
+  //       try {
+  //         const productsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/products`)
+  //         if (productsRes.ok) {
+  //           const productsData = await productsRes.json()
+  //           const products = productsData.success ? productsData.data : []
+  //           products
+  //             .filter((p: any) => 
+  //               p.title?.toLowerCase().includes(query) || 
+  //               p.description?.toLowerCase().includes(query)
+  //             )
+  //             .slice(0, 3)
+  //             .forEach((p: any) => {
+  //               allSuggestions.push({
+  //                 type: 'Produit',
+  //                 title: p.title,
+  //                 href: `/boutique/${p.id}`
+  //               })
+  //             })
+  //         }
+  //       } catch (err) {
+  //         console.error('Error fetching products for suggestions:', err)
+  //       }
 
-        // Fetch blogs
-        try {
-          const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/blogs`)
-          if (blogsRes.ok) {
-            const blogsData = await blogsRes.json()
-            const blogs = blogsData.success ? blogsData.data : []
-            blogs
-              .filter((b: any) => 
-                b.title?.toLowerCase().includes(query) ||
-                b.excerpt?.toLowerCase().includes(query)
-              )
-              .slice(0, 2)
-              .forEach((b: any) => {
-                allSuggestions.push({
-                  type: 'Article',
-                  title: b.title,
-                  href: `/blog/${b.slug || b.id}`
-                })
-              })
-          }
-        } catch (err) {
-          console.error('Error fetching blogs for suggestions:', err)
-        }
+  //       // Fetch blogs
+  //       try {
+  //         const blogsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/blogs`)
+  //         if (blogsRes.ok) {
+  //           const blogsData = await blogsRes.json()
+  //           const blogs = blogsData.success ? blogsData.data : []
+  //           blogs
+  //             .filter((b: any) => 
+  //               b.title?.toLowerCase().includes(query) ||
+  //               b.excerpt?.toLowerCase().includes(query)
+  //             )
+  //             .slice(0, 2)
+  //             .forEach((b: any) => {
+  //               allSuggestions.push({
+  //                 type: 'Article',
+  //                 title: b.title,
+  //                 href: `/blog/${b.slug || b.id}`
+  //               })
+  //             })
+  //         }
+  //       } catch (err) {
+  //         console.error('Error fetching blogs for suggestions:', err)
+  //       }
 
-        // Fetch workshops
-        try {
-          const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/workshops`)
-          if (workshopsRes.ok) {
-            const workshopsData = await workshopsRes.json()
-            const workshops = workshopsData.success ? workshopsData.data : []
-            workshops
-              .filter((w: any) => 
-                w.title?.toLowerCase().includes(query) ||
-                w.description?.toLowerCase().includes(query)
-              )
-              .slice(0, 2)
-              .forEach((w: any) => {
-                allSuggestions.push({
-                  type: 'Atelier',
-                  title: w.title,
-                  href: `/ateliers`
-                })
-              })
-          }
-        } catch (err) {
-          console.error('Error fetching workshops for suggestions:', err)
-        }
+  //       // Fetch workshops
+  //       try {
+  //         const workshopsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/workshops`)
+  //         if (workshopsRes.ok) {
+  //           const workshopsData = await workshopsRes.json()
+  //           const workshops = workshopsData.success ? workshopsData.data : []
+  //           workshops
+  //             .filter((w: any) => 
+  //               w.title?.toLowerCase().includes(query) ||
+  //               w.description?.toLowerCase().includes(query)
+  //             )
+  //             .slice(0, 2)
+  //             .forEach((w: any) => {
+  //               allSuggestions.push({
+  //                 type: 'Atelier',
+  //                 title: w.title,
+  //                 href: `/ateliers`
+  //               })
+  //             })
+  //         }
+  //       } catch (err) {
+  //         console.error('Error fetching workshops for suggestions:', err)
+  //       }
 
-        setSuggestions(allSuggestions.slice(0, 5))
-        setShowSuggestions(allSuggestions.length > 0)
-      } catch (error) {
-        console.error('Error fetching suggestions:', error)
-        setSuggestions([])
-        setShowSuggestions(false)
-      }
-    }
+  //       setSuggestions(allSuggestions.slice(0, 5))
+  //       setShowSuggestions(allSuggestions.length > 0)
+  //     } catch (error) {
+  //       console.error('Error fetching suggestions:', error)
+  //       setSuggestions([])
+  //       setShowSuggestions(false)
+  //     }
+  //   }
 
-    const debounceTimer = setTimeout(fetchSuggestions, 300)
-    return () => clearTimeout(debounceTimer)
-  }, [searchQuery])
+  //   const debounceTimer = setTimeout(fetchSuggestions, 300)
+  //   return () => clearTimeout(debounceTimer)
+  // }, [searchQuery])
 
   const handleLogout = () => {
     signOut()
@@ -190,33 +192,36 @@ export default function Navigation() {
     router.refresh()
   }
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/recherche?q=${encodeURIComponent(searchQuery.trim())}`)
-      setSearchQuery("")
-      setShowSearch(false)
-      setShowSuggestions(false)
-    }
-  }
+  // Search functionality - kept for future use
+  // const handleSearch = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   if (searchQuery.trim()) {
+  //     router.push(`/recherche?q=${encodeURIComponent(searchQuery.trim())}`)
+  //     setSearchQuery("")
+  //     setShowSearch(false)
+  //     setShowSuggestions(false)
+  //   }
+  // }
 
-  const handleSuggestionClick = (href: string) => {
-    router.push(href)
-    setSearchQuery("")
-    setShowSearch(false)
-    setShowSuggestions(false)
-  }
+  // const handleSuggestionClick = (href: string) => {
+  //   router.push(href)
+  //   setSearchQuery("")
+  //   setShowSearch(false)
+  //   setShowSuggestions(false)
+  // }
 
   const leftLinks = [
-    { href: "/carte", label: "Carte" },
-    { href: "/ateliers", label: "Ateliers" },
+    { href: "/carte", label: "Café" },
+    { href: "/ateliers", label: "Céramique" },
     { href: "/boutique", label: "Boutique" },
+    { href: "/evenements", label: "Événements" },
   ]
 
   const rightLinks = [
     { href: "/blog", label: "Blog" },
     { href: "/apropos", label: "À Propos" },
     { href: "/contact", label: "Contact" },
+    { href: "/espace-client", label: "Espace Client" },
   ]
 
   const menuLinks = [...leftLinks, ...rightLinks]
@@ -270,9 +275,9 @@ export default function Navigation() {
             <Image
               src={elementsScrolled ? "/Fichier 129.png" : "/Fichier 128.png"}
               alt="Coffee Arts Paris"
-              width={200}
-              height={80}
-              className={cn("object-contain transition-all", elementsScrolled ? "max-h-16 w-auto h-auto" : "max-h-20 w-auto h-auto")}
+              width={240}
+              height={96}
+              className={cn("object-contain transition-all", elementsScrolled ? "max-h-20 w-auto h-auto" : "max-h-24 w-auto h-auto")}
               style={{ width: 'auto', height: 'auto' }}
               priority
             />
@@ -295,10 +300,10 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Search, Cart and User Icons - Far Right */}
+          {/* Cart and User Icons - Far Right */}
           <div className="hidden md:flex ml-auto items-center gap-3 z-10">
-            {/* Search Icon */}
-            <div className="relative">
+            {/* Search functionality - kept for future use */}
+            {/* <div className="relative">
               {showSearch ? (
                 <div className="relative">
                   <form onSubmit={handleSearch} className="flex items-center gap-2">
@@ -322,7 +327,6 @@ export default function Navigation() {
                             : "bg-accent/10 border-accent/20 text-accent focus:border-accent"
                         )}
                       />
-                      {/* Suggestions Dropdown */}
                       {showSuggestions && suggestions.length > 0 && (
                         <>
                           <div 
@@ -405,7 +409,7 @@ export default function Navigation() {
                   <Search size={24} />
                 </button>
               )}
-            </div>
+            </div> */}
 
             {/* Cart Icon */}
             <Link
@@ -485,16 +489,16 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Mobile Search, Cart and User Icons */}
+          {/* Mobile Cart and User Icons */}
           <div className="md:hidden ml-auto flex items-center gap-2 z-10">
-            {/* Search Icon */}
-            <button
+            {/* Search functionality - kept for future use */}
+            {/* <button
               onClick={() => setShowSearch(!showSearch)}
               className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-accent")}
               aria-label="Rechercher"
             >
               <Search size={24} />
-            </button>
+            </button> */}
 
             {/* Cart Icon */}
             <Link
@@ -535,8 +539,8 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
-        {showSearch && (
+        {/* Mobile Search Bar - kept for future use */}
+        {/* {showSearch && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-primary/10 p-4 z-50">
             <div className="relative">
               <form onSubmit={handleSearch} className="flex gap-2">
@@ -555,7 +559,6 @@ export default function Navigation() {
                     autoFocus
                     className="w-full px-4 py-2 border-2 border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-primary"
                   />
-                  {/* Mobile Suggestions */}
                   {showSuggestions && suggestions.length > 0 && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-primary/20 z-50 max-h-64 overflow-y-auto">
                       {suggestions.map((suggestion, index) => (
@@ -609,7 +612,7 @@ export default function Navigation() {
               </form>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Mobile Navigation Overlay */}
         <div

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Calendar, User, ArrowLeft, Share2 } from "lucide-react"
+import { ArrowLeft, Share2 } from "lucide-react"
 import { motion } from "framer-motion"
 import { fetchBlog, type Blog } from "@/lib/api"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
@@ -72,27 +72,14 @@ export default function BlogDetail() {
               <span className="font-medium">Retour aux blogs</span>
             </Link>
 
-            {blog.category && (
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-bold rounded-full mb-6 uppercase tracking-wider">
-                {blog.category}
-              </span>
-            )}
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary mb-6 leading-tight">
               {blog.title}
             </h1>
 
             <div className="flex items-center gap-6 text-sm text-primary/60 mb-8">
               <div className="flex items-center gap-2">
-                <Calendar size={16} />
                 <span>{date}</span>
               </div>
-              {blog.author && (
-                <div className="flex items-center gap-2">
-                  <User size={16} />
-                  <span>{blog.author}</span>
-                </div>
-              )}
             </div>
           </motion.div>
         </div>
@@ -100,7 +87,7 @@ export default function BlogDetail() {
 
       {/* Featured Image */}
       {blog.image && (
-        <section className="relative w-full h-[400px] md:h-[500px] mb-12">
+        <section className="relative w-full h-[400px] md:h-[500px] mb-8">
           <Image
             src={blog.image}
             alt={blog.title}
@@ -160,6 +147,7 @@ export default function BlogDetail() {
     </div>
   )
 }
+
 
 
 

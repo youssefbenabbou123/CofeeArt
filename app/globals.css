@@ -120,6 +120,16 @@
   --sidebar-accent-foreground: oklch(35% 0 0);
   --sidebar-border: oklch(90% 0 0);
   --sidebar-ring: oklch(35% 0 0);
+  
+  /* Footer column spacing - adjust these to move columns left/right */
+  --footer-col1-ml: 0px; /* Brand - margin left */
+  --footer-col1-mr: 0px; /* Brand - margin right */
+  --footer-col2-ml: 65px; /* Découvrir - margin left */
+  --footer-col2-mr: 0px; /* Découvrir - margin right */
+  --footer-col3-ml: 0px; /* Contact - margin left */
+  --footer-col3-mr: 0px; /* Contact - margin right */
+  --footer-col4-ml: 0px; /* Horaires - margin left */
+  --footer-col4-mr: 0px; /* Horaires - margin right */
 }
 
 .dark {

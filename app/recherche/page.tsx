@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Search, Package, FileText, Calendar } from "lucide-react"
+import { Search } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { fetchProducts } from "@/lib/api"
@@ -151,7 +151,6 @@ function SearchContent() {
                 className="mb-8"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <Package size={24} className="text-primary" />
                   <h2 className="text-2xl font-bold text-primary">Produits ({products.length})</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -169,11 +168,7 @@ function SearchContent() {
                             fill
                             className="object-cover group-hover:scale-105 transition-transform"
                           />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Package size={48} className="text-muted-foreground" />
-                          </div>
-                        )}
+                        ) : null}
                       </div>
                       <div className="p-4">
                         <h3 className="font-bold text-lg text-primary mb-2 line-clamp-2">{product.title}</h3>
@@ -194,7 +189,6 @@ function SearchContent() {
                 className="mb-8"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <FileText size={24} className="text-primary" />
                   <h2 className="text-2xl font-bold text-primary">Articles ({blogs.length})</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -212,11 +206,7 @@ function SearchContent() {
                             fill
                             className="object-cover group-hover:scale-105 transition-transform"
                           />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <FileText size={48} className="text-muted-foreground" />
-                          </div>
-                        )}
+                        ) : null}
                       </div>
                       <div className="p-4">
                         <h3 className="font-bold text-lg text-primary mb-2 line-clamp-2">{blog.title}</h3>
@@ -243,7 +233,6 @@ function SearchContent() {
                 className="mb-8"
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <Calendar size={24} className="text-primary" />
                   <h2 className="text-2xl font-bold text-primary">Ateliers ({workshops.length})</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -261,11 +250,7 @@ function SearchContent() {
                             fill
                             className="object-cover group-hover:scale-105 transition-transform"
                           />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Calendar size={48} className="text-muted-foreground" />
-                          </div>
-                        )}
+                        ) : null}
                       </div>
                       <div className="p-4">
                         <h3 className="font-bold text-lg text-primary mb-2 line-clamp-2">{workshop.title}</h3>
@@ -285,7 +270,6 @@ function SearchContent() {
                 animate={{ opacity: 1 }}
                 className="text-center py-12"
               >
-                <Search size={64} className="mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-2xl font-bold text-primary mb-2">Aucun résultat trouvé</h3>
                 <p className="text-muted-foreground">
                   Essayez avec d'autres mots-clés ou parcourez nos catégories
@@ -299,7 +283,6 @@ function SearchContent() {
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
-            <Search size={64} className="mx-auto text-muted-foreground mb-4" />
             <h3 className="text-2xl font-bold text-primary mb-2">Recherchez quelque chose</h3>
             <p className="text-muted-foreground">
               Entrez un terme de recherche pour trouver des produits, articles et ateliers

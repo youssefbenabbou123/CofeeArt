@@ -258,3 +258,71 @@ export async function confirmPayment(orderId: string, paymentIntentId: string): 
     throw error;
   }
 }
+
+// ========== WORKSHOPS ==========
+
+export interface Workshop {
+  id: string;
+  title: string;
+  description: string;
+  level: string;
+  duration: number;
+  price: number;
+  image?: string;
+  status: string;
+  session_count?: number;
+  next_session_date?: string;
+  created_at?: string;
+}
+
+export interface WorkshopSession {
+  id: string;
+  session_date: string;
+  session_time: string;
+  capacity: number;
+  booked_count: number;
+  available_spots: number;
+  status: string;
+}
+
+export async function fetchWorkshops(filters?: { level?: string }): Promise<Workshop[]> {
+  try {
+    const params = new URLSearchParams();
+    if (filters?.level) params.append('level', filters.level);
+
+    const response = await fetch(`${API_BASE_URL}/api/workshops?${params.toString()}`, {
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch workshops');
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching workshops:', error);
+    return [];
+  }
+}
+
+export async function fetchWorkshop(id: string): Promise<{ workshop: Workshop; sessions: WorkshopSession[] } | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/workshops/${id}`, {
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error('Failed to fetch workshop');
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error fetching workshop:', error);
+    return null;
+  }
+}

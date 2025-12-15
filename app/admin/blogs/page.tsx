@@ -106,8 +106,7 @@ export default function BlogsPage() {
   const filteredBlogs = blogs.filter(
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.category?.toLowerCase().includes(searchTerm.toLowerCase())
+      blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   if (loading) {
@@ -230,16 +229,6 @@ export default function BlogsPage() {
               </p>
               <div className="flex items-center justify-between mt-auto pt-3 border-t border-primary/10">
                 <div className="flex gap-2 flex-wrap">
-                  {blog.category && (
-                    <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">
-                      {blog.category}
-                    </span>
-                  )}
-                  {blog.author && (
-                    <span className="px-2 py-1 bg-accent/10 text-accent text-xs font-bold rounded-full">
-                      {blog.author}
-                    </span>
-                  )}
                 </div>
                 {blog.published ? (
                   <Eye size={16} className="text-green-600" />

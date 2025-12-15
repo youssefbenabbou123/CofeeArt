@@ -115,7 +115,7 @@ export default function Panier() {
           Retour à la boutique
         </Link>
 
-        <h1 className="text-4xl font-black text-primary mb-8">Mon Panier</h1>
+        <h1 className="text-4xl font-black text-primary mb-8">Mon panier</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
