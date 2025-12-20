@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Package, Mail, Settings, Menu, X, FileText, ShoppingCart, Calendar, Gift } from "lucide-react"
+import { LayoutDashboard, Users, Package, Mail, Settings, Menu, X, FileText, ShoppingCart, Calendar, Gift, ShoppingBag } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
@@ -12,6 +12,7 @@ const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Commandes", icon: ShoppingCart },
   { href: "/admin/products", label: "Produits", icon: Package },
+  { href: "/admin/goodies", label: "Goodies / Lifestyle", icon: ShoppingBag },
   { href: "/admin/workshops", label: "Ateliers", icon: Calendar },
   { href: "/admin/gift-cards", label: "Cartes cadeaux", icon: Gift },
   { href: "/admin/blogs", label: "Blogs", icon: FileText },

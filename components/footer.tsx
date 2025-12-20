@@ -19,8 +19,24 @@ export default function Footer() {
             }}
           >
             <div>
-              <div className="text-lg font-bold mb-1 tracking-tight">Coffee Arts Paris</div>
-              <div className="h-1 w-12 bg-accent rounded-full"></div>
+              <Link href="/" className="flex items-center gap-2 mb-3">
+                <Image
+                  src="/Fichier 121.png"
+                  alt="Coffee Arts Paris"
+                  width={100}
+                  height={40}
+                  className="h-auto w-auto object-contain max-h-12"
+                  priority
+                />
+                <Image
+                  src="/Fichier 95.png"
+                  alt="Coffee Arts Paris"
+                  width={70}
+                  height={22}
+                  className="h-auto w-auto object-contain max-h-9 mt-1"
+                  priority
+                />
+              </Link>
             </div>
             <p className="text-primary-foreground/80 leading-relaxed">
               Un lieu unique où la céramique<br />
@@ -129,8 +145,64 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-primary-foreground/10 pt-4 mt-4">
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-primary-foreground/60 gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/60">
             <p>&copy; {new Date().getFullYear()} Coffee Arts Paris. Tous droits réservés.</p>
+            
+            {/* Payment Icons */}
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              {/* Mastercard */}
+              <div className="bg-white rounded-lg flex items-center justify-center shadow-sm w-10 h-10 p-1">
+                <Image
+                  src="/mastercard-png-8.png"
+                  alt="Mastercard"
+                  width={0}
+                  height={0}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              {/* Visa */}
+              <div className="bg-white rounded-lg flex items-center justify-center shadow-sm w-10 h-10 p-1.5">
+                <Image
+                  src="/visa-logo-png-transparent.png"
+                  alt="Visa"
+                  width={0}
+                  height={0}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              {/* Google Pay */}
+              <div className="bg-white rounded-lg flex items-center justify-center shadow-sm w-10 h-10 p-1.5">
+                <Image
+                  src="/Google_Pay_Logo.svg.webp"
+                  alt="Google Pay"
+                  width={0}
+                  height={0}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              {/* Apple Pay */}
+              <div className="bg-white rounded-lg flex items-center justify-center shadow-sm w-10 h-10 p-1.5">
+                <Image
+                  src="/Apple_Pay-Logo.wine.png"
+                  alt="Apple Pay"
+                  width={0}
+                  height={0}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              {/* PayPal */}
+              <div className="bg-white rounded-lg flex items-center justify-center shadow-sm w-10 h-10 p-1.5">
+                <Image
+                  src="/Paypal.png"
+                  alt="PayPal"
+                  width={0}
+                  height={0}
+                  className="h-3/4 w-3/4 object-contain"
+                />
+              </div>
+            </div>
+
+            {/* Legal Links */}
             <div className="flex gap-6 flex-wrap justify-center md:justify-end">
               <Link href="/legal/politique-confidentialite" className="hover:text-accent transition-colors">
                 Politique de confidentialité

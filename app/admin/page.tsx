@@ -57,7 +57,6 @@ export default function AdminDashboard() {
       value: `${stats.revenue.toFixed(2)}€`,
       icon: Euro,
       color: "bg-gradient-to-br from-green-500 to-emerald-600",
-      change: "+15%",
       description: "Chiffre d'affaires",
       href: "/admin/orders",
     },
@@ -66,7 +65,6 @@ export default function AdminDashboard() {
       value: stats.orders,
       icon: ShoppingCart,
       color: "bg-gradient-to-br from-blue-500 to-indigo-600",
-      change: "+8%",
       description: "Total des commandes",
       href: "/admin/orders",
     },
@@ -75,7 +73,6 @@ export default function AdminDashboard() {
       value: stats.users,
       icon: Users,
       color: "bg-gradient-to-br from-purple-500 to-pink-600",
-      change: "+12%",
       description: "Comptes actifs",
       href: "/admin/users",
     },
@@ -84,7 +81,6 @@ export default function AdminDashboard() {
       value: stats.products,
       icon: Package,
       color: "bg-gradient-to-br from-amber-500 to-orange-600",
-      change: "+5%",
       description: "En catalogue",
       href: "/admin/products",
     },
@@ -93,7 +89,6 @@ export default function AdminDashboard() {
       value: stats.messages,
       icon: Mail,
       color: "bg-gradient-to-br from-teal-500 to-cyan-600",
-      change: "+8%",
       description: "Total reçus",
       href: "/admin/messages",
     },
@@ -102,7 +97,6 @@ export default function AdminDashboard() {
       value: stats.unreadMessages,
       icon: MailCheck,
       color: "bg-gradient-to-br from-red-500 to-rose-600",
-      change: stats.unreadMessages > 0 ? "À traiter" : "À jour",
       description: "Messages en attente",
       href: "/admin/messages",
     },
@@ -137,20 +131,6 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className={`${stat.color} p-3 rounded-xl text-white shadow-lg`}>
                   <Icon size={24} />
-                </div>
-                <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${
-                  stat.change.startsWith('-') || stat.change === 'À traiter' 
-                    ? 'text-red-600 bg-red-50' 
-                    : stat.change === 'À jour'
-                    ? 'text-green-600 bg-green-50'
-                    : 'text-green-600 bg-green-50'
-                }`}>
-                  {stat.change.startsWith('-') ? (
-                    <TrendingDown size={14} />
-                  ) : stat.change === 'À traiter' ? null : (
-                    <TrendingUp size={14} />
-                  )}
-                  {stat.change}
                 </div>
               </div>
               <h3 className="text-3xl font-black text-primary mb-1">{stat.value}</h3>
@@ -195,7 +175,7 @@ export default function AdminDashboard() {
                   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
                 formatter={(value: number) => [`${value.toFixed(2)}€`, 'Ventes']}
-                labelFormatter={(label) => `Mois: ${label}`}
+                labelFormatter={(label) => `Mois : ${label}`}
               />
               <Line
                 type="monotone"
@@ -277,7 +257,7 @@ export default function AdminDashboard() {
                   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
                 formatter={(value: number) => [`${value} utilisateurs`, 'Inscriptions']}
-                labelFormatter={(label) => `Mois: ${label}`}
+                labelFormatter={(label) => `Mois : ${label}`}
               />
               <Bar dataKey="users" fill={CHART_COLORS.secondary} radius={[8, 8, 0, 0]} />
             </BarChart>
@@ -321,7 +301,7 @@ export default function AdminDashboard() {
                   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
                 formatter={(value: number) => [`${value} messages`, 'Total']}
-                labelFormatter={(label) => `Sujet: ${label}`}
+                labelFormatter={(label) => `Sujet : ${label}`}
               />
               <Bar dataKey="count" fill={CHART_COLORS.purple} radius={[8, 8, 0, 0]} />
             </BarChart>

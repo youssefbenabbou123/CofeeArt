@@ -24,9 +24,6 @@ export default function NosCafes() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <span className="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-primary/5 border border-primary/10 text-primary font-medium text-sm mb-8 tracking-wider uppercase backdrop-blur-sm">
-              L'excellence du café
-            </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
               Nos <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">cafés</span>
             </h1>

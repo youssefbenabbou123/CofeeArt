@@ -7,6 +7,7 @@ import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, ty
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
+import WorkshopDatePicker from "@/components/admin/WorkshopDatePicker"
 
 export default function WorkshopsPage() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
@@ -16,6 +17,8 @@ export default function WorkshopsPage() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [selectedWorkshopForDates, setSelectedWorkshopForDates] = useState<string | null>(null)
+  const [workshopSessions, setWorkshopSessions] = useState<Record<string, any[]>>({})
   const { toast } = useToast()
 
   const loadWorkshops = async () => {
@@ -37,6 +40,29 @@ export default function WorkshopsPage() {
   useEffect(() => {
     loadWorkshops()
   }, [])
+
+  const loadWorkshopSessions = async (workshopId: string) => {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/admin/workshops/${workshopId}/sessions`,
+        {
+          headers: {
+            ...(token && { 'Authorization': `Bearer ${token}` })
+          }
+        }
+      )
+      if (response.ok) {
+        const data = await response.json()
+        setWorkshopSessions(prev => ({
+          ...prev,
+          [workshopId]: data.success ? data.data : []
+        }))
+      }
+    } catch (error) {
+      console.error('Error loading sessions:', error)
+    }
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -196,12 +222,32 @@ export default function WorkshopsPage() {
                 Modifier
               </button>
               <button
+                onClick={() => {
+                  setSelectedWorkshopForDates(workshop.id)
+                  loadWorkshopSessions(workshop.id)
+                }}
+                className="px-4 py-2 bg-accent text-primary rounded-lg hover:bg-accent/90 transition-colors"
+                title="Gérer les dates"
+              >
+                <Calendar size={16} />
+              </button>
+              <button
                 onClick={() => handleDelete(workshop.id)}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
               >
                 <Trash2 size={16} />
               </button>
             </div>
+            
+            {selectedWorkshopForDates === workshop.id && (
+              <div className="mt-4 pt-4 border-t border-primary/10">
+                <WorkshopDatePicker
+                  workshopId={workshop.id}
+                  existingSessions={workshopSessions[workshop.id] || []}
+                  onSessionsUpdate={() => loadWorkshopSessions(workshop.id)}
+                />
+              </div>
+            )}
           </motion.div>
         ))}
       </div>

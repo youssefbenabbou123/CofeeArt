@@ -122,7 +122,7 @@ export default function BlogsPage() {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-4xl font-black text-primary mb-2">Gestion des Blogs</h1>
+          <h1 className="text-4xl font-black text-primary mb-2">Blogs</h1>
           <p className="text-muted-foreground">Créer, modifier et supprimer des articles de blog</p>
         </div>
         <motion.button

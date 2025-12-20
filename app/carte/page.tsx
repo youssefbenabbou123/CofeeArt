@@ -47,9 +47,6 @@ export default function Carte() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-primary/5 border border-primary/10 text-primary font-medium text-sm mb-8 tracking-wider uppercase backdrop-blur-sm">
-              Déguster & savourer
-            </span>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
               Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">carte</span>
             </h1>

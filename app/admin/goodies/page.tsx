@@ -11,11 +11,11 @@ import {
   type Product,
 } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
-import ProductForm from "@/components/admin/ProductForm"
+import GoodiesProductForm from "@/components/admin/GoodiesProductForm"
 import Image from "next/image"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 
-export default function ProductsPage() {
+export default function GoodiesPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -24,45 +24,24 @@ export default function ProductsPage() {
   const [showForm, setShowForm] = useState(false)
   const { toast } = useToast()
 
-  const categories = [
-    "Tasses",
-    "Assiettes",
-    "Bols",
-    "Vases",
-    "Théières",
-    "Accessoires",
-    "Décoration",
-    "Plateaux",
-    "Autres",
+  const goodiesCategories = [
+    "Tote bags",
+    "Affiches / prints",
   ]
-
-  // Helper function to check if product is goodies/lifestyle
-  const isGoodies = (product: Product): boolean => {
-    const category = product.category?.toLowerCase() || ''
-    const titleLower = product.title.toLowerCase()
-    
-    return (
-      category === 'goodies / lifestyle' ||
-      category === 'tote bags' ||
-      category === 'affiches / prints' ||
-      titleLower.includes('print') ||
-      titleLower.includes('affiche') ||
-      titleLower.includes('poster') ||
-      titleLower.includes('tote') ||
-      titleLower.includes('sac')
-    )
-  }
 
   const loadProducts = async () => {
     try {
       setLoading(true)
       const data = await fetchAdminProducts(
-        selectedCategory || undefined,
+        undefined,
         undefined
       )
-      // Filter out goodies/lifestyle products
-      const filteredData = data.filter(product => !isGoodies(product))
-      setProducts(filteredData)
+      // Filter only goodies/lifestyle products
+      const goodiesProducts = data.filter(p => {
+        const category = p.category || ""
+        return category === "Tote bags" || category === "Affiches / prints"
+      })
+      setProducts(goodiesProducts)
     } catch (error: any) {
       toast({
         title: "Erreur",
@@ -76,7 +55,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     loadProducts()
-  }, [selectedCategory, toast])
+  }, [toast])
 
   const handleCreate = async (productData: Omit<Product, "id" | "created_at">) => {
     try {
@@ -142,10 +121,12 @@ export default function ProductsPage() {
     (product) =>
       product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  ).filter(
+    (product) => !selectedCategory || product.category === selectedCategory
   )
 
   if (loading) {
-    return <LoadingSpinner message="Chargement des produits..." />
+    return <LoadingSpinner message="Chargement des goodies..." />
   }
 
   return (
@@ -157,8 +138,8 @@ export default function ProductsPage() {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-4xl font-black text-primary mb-2">Produits</h1>
-          <p className="text-muted-foreground">Créer, modifier et supprimer des produits</p>
+          <h1 className="text-4xl font-black text-primary mb-2">Goodies / Lifestyle</h1>
+          <p className="text-muted-foreground">Gérez les tote bags et affiches / prints</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -167,7 +148,7 @@ export default function ProductsPage() {
             setEditingProduct(null)
             setShowForm(true)
           }}
-          className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg"
+          className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2"
         >
           <Plus size={20} />
           Nouveau produit
@@ -197,7 +178,7 @@ export default function ProductsPage() {
           className="px-4 py-3 bg-white/80 backdrop-blur-xl border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
         >
           <option value="">Toutes les catégories</option>
-          {categories.map((cat) => (
+          {goodiesCategories.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>
@@ -207,7 +188,7 @@ export default function ProductsPage() {
 
       {/* Form */}
       {showForm && (
-        <ProductForm
+        <GoodiesProductForm
           product={editingProduct}
           onSubmit={editingProduct ? handleUpdate : handleCreate}
           onCancel={() => {
@@ -219,85 +200,68 @@ export default function ProductsPage() {
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProducts.map((product, index) => (
+        {filteredProducts.map((product) => (
           <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-            whileHover={{ scale: 1.02, y: -5 }}
-            className="bg-white/80 backdrop-blur-xl rounded-2xl border border-primary/10 shadow-lg overflow-hidden hover:shadow-xl transition-all"
+            className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/10 shadow-lg hover:shadow-xl transition-all"
           >
-            <div className="relative h-48 bg-neutral-100">
-              {product.image ? (
+            {product.image && (
+              <div className="relative h-48 mb-4 rounded-xl overflow-hidden">
                 <Image
                   src={product.image}
                   alt={product.title}
                   fill
                   className="object-cover"
                 />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <ImageIcon size={48} className="text-muted-foreground" />
-                </div>
-              )}
-              <div className="absolute top-2 right-2 flex gap-2">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => {
-                    setEditingProduct(product)
-                    setShowForm(true)
-                  }}
-                  className="p-2 bg-white/90 backdrop-blur-sm rounded-lg text-primary hover:bg-primary hover:text-white transition-colors"
-                >
-                  <Edit size={16} />
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => handleDelete(product.id)}
-                  className="p-2 bg-white/90 backdrop-blur-sm rounded-lg text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  <Trash2 size={16} />
-                </motion.button>
               </div>
-            </div>
-            <div className="p-4">
-              <h3 className="font-bold text-lg text-primary mb-2">{product.title}</h3>
-              <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                {product.description || "Aucune description"}
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-black text-primary">
-                  {product.price.toFixed(2)}€
+            )}
+            <div className="mb-4">
+              <div className="flex items-start justify-between mb-2">
+                <h3 className="text-xl font-bold text-primary flex-1">{product.title}</h3>
+                <span className="text-2xl font-black text-primary ml-2">
+                  {typeof product.price === 'number' ? product.price.toFixed(2) : parseFloat(product.price).toFixed(2)}€
                 </span>
-                <div className="flex gap-2">
-                  {product.category && (
-                    <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">
-                      {product.category}
-                    </span>
-                  )}
-                  <span
-                    className={`px-2 py-1 text-xs font-bold rounded-full ${
-                      product.status === "active"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {product.status}
-                  </span>
-                </div>
               </div>
+              {product.category && (
+                <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2">
+                  {product.category}
+                </span>
+              )}
+              {product.description && (
+                <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                  {product.description}
+                </p>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setEditingProduct(product)
+                  setShowForm(true)
+                }}
+                className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+              >
+                <Edit size={16} />
+                Modifier
+              </button>
+              <button
+                onClick={() => handleDelete(product.id)}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
             </div>
           </motion.div>
         ))}
       </div>
 
       {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <Package size={48} className="mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">Aucun produit trouvé</p>
+        <div className="text-center py-12 text-muted-foreground">
+          {searchTerm || selectedCategory
+            ? "Aucun produit trouvé avec ces critères"
+            : "Aucun produit goodies / lifestyle pour le moment"}
         </div>
       )}
     </div>

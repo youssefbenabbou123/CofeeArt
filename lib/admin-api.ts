@@ -94,6 +94,33 @@ export async function deleteUser(id: string): Promise<void> {
   });
 }
 
+// ========== PRODUCT CATEGORIES ==========
+
+export interface ProductCategory {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
+export async function fetchProductCategories(): Promise<ProductCategory[]> {
+  const data = await apiCall('/api/admin/categories');
+  return data.success ? data.data : [];
+}
+
+export async function createProductCategory(name: string): Promise<ProductCategory> {
+  const data = await apiCall('/api/admin/categories', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  });
+  return data.data;
+}
+
+export async function deleteProductCategory(id: string): Promise<void> {
+  await apiCall(`/api/admin/categories/${id}`, {
+    method: 'DELETE',
+  });
+}
+
 // ========== PRODUCTS ==========
 
 export interface Product {
@@ -566,6 +593,11 @@ export interface GiftCard {
   balance: number;
   expiry_date?: string;
   status: string;
+  used?: boolean;
+  category?: string;
+  purchaser_id?: string;
+  purchaser_email?: string;
+  purchaser_name?: string;
   created_at: string;
   transactions?: GiftCardTransaction[];
 }

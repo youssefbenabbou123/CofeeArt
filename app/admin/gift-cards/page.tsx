@@ -134,9 +134,15 @@ export default function GiftCardsPage() {
                 <Gift size={24} className="text-primary" />
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                card.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                card.status === 'active' || (!card.used && card.status !== 'expired')
+                  ? 'bg-green-100 text-green-700' 
+                  : card.status === 'used' || card.used
+                  ? 'bg-blue-100 text-blue-700'
+                  : card.status === 'expired'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-gray-100 text-gray-700'
               }`}>
-                {card.status}
+                {card.used ? 'Utilisée' : card.status === 'expired' ? 'Expirée' : 'Non utilisée'}
               </span>
             </div>
             <div className="mb-4">
@@ -144,6 +150,12 @@ export default function GiftCardsPage() {
               <p className="text-xl font-bold text-primary font-mono">{card.code}</p>
             </div>
             <div className="space-y-2 text-sm mb-4">
+              {card.category && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Catégorie</span>
+                  <span className="font-bold text-primary">{card.category}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Montant</span>
                 <span className="font-bold text-primary">{card.amount.toFixed(2)}€</span>
@@ -155,6 +167,11 @@ export default function GiftCardsPage() {
               {card.expiry_date && (
                 <div className="text-xs text-muted-foreground">
                   Expire le: {new Date(card.expiry_date).toLocaleDateString('fr-FR')}
+                </div>
+              )}
+              {card.purchaser_email && (
+                <div className="text-xs text-muted-foreground">
+                  Achetée par: {card.purchaser_email}
                 </div>
               )}
             </div>

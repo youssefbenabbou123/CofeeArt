@@ -7,6 +7,8 @@ import { useState, use, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { fetchProduct, fetchProducts, type Product } from "@/lib/api"
 import { addToCart } from "@/lib/cart"
+import { addToWishlist, removeFromWishlist, isInWishlist } from "@/lib/wishlist"
+import { useToast } from "@/hooks/use-toast"
 
 // Map product titles to categories
 function getCategory(title: string): string {
@@ -31,6 +33,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
   const [addingToCart, setAddingToCart] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
     async function loadProduct() {
@@ -39,6 +42,9 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       setLoading(false);
       
       if (data) {
+        // Check if product is in wishlist
+        setIsFavorite(isInWishlist(data.id))
+        
         // Load related products
         const allProducts = await fetchProducts();
         const category = getCategory(data.title);
@@ -49,7 +55,19 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       }
     }
     loadProduct();
-  }, [id])
+    
+    // Listen for wishlist updates
+    const handleWishlistUpdate = () => {
+      if (product) {
+        setIsFavorite(isInWishlist(product.id))
+      }
+    }
+    window.addEventListener('wishlist-update', handleWishlistUpdate)
+    
+    return () => {
+      window.removeEventListener('wishlist-update', handleWishlistUpdate)
+    }
+  }, [id, product])
 
   if (loading) {
     return (
@@ -105,11 +123,33 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               </div>
               <div className="flex gap-3 mt-4">
                 <button
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  onClick={() => {
+                    if (product) {
+                      if (isFavorite) {
+                        removeFromWishlist(product.id)
+                        toast({
+                          title: "Retiré de la wishlist",
+                          description: `${product.title} a été retiré`,
+                        })
+                      } else {
+                        addToWishlist({
+                          id: product.id,
+                          title: product.title,
+                          price: product.price,
+                          image: product.image
+                        })
+                        toast({
+                          title: "Ajouté à la wishlist",
+                          description: `${product.title} a été ajouté`,
+                        })
+                      }
+                      setIsFavorite(!isFavorite)
+                    }
+                  }}
                   className={`p-3 rounded-lg border-2 transition-colors ${
                     isFavorite
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      ? "border-red-500 bg-red-500 text-white"
+                      : "border-primary text-primary hover:bg-red-500 hover:border-red-500 hover:text-white"
                   }`}
                 >
                   <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
@@ -160,7 +200,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               {/* Quantity & Add to Cart */}
               <div className="mt-auto">
                 <div className="flex items-center gap-4 mb-6">
-                  <span className="font-semibold text-primary">Quantité:</span>
+                  <span className="font-semibold text-primary">Quantité :</span>
                   <div className="flex items-center gap-2 border-2 border-primary rounded-lg">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}

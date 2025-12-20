@@ -9,23 +9,19 @@ import Image from "next/image"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
 import { useToast } from "@/hooks/use-toast"
 
-interface ProductFormProps {
+interface GoodiesProductFormProps {
   product?: Product | null
   onSubmit: (product: Omit<Product, "id" | "created_at">) => Promise<void>
   onCancel: () => void
 }
 
-// Main categories used in boutique
-const mainCategories = [
-  "Tasses",
-  "Assiettes",
-  "Pièces uniques",
-  "Collections spéciales",
+// Goodies categories only
+const goodiesCategories = [
   "Tote bags",
   "Affiches / prints",
 ]
 
-export default function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
+export default function GoodiesProductForm({ product, onSubmit, onCancel }: GoodiesProductFormProps) {
   const { toast } = useToast()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [formData, setFormData] = useState({
@@ -47,7 +43,9 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
     async function loadCategories() {
       try {
         const data = await fetchProductCategories()
-        setCategories(data)
+        // Filter only goodies categories
+        const goodiesCats = data.filter(cat => goodiesCategories.includes(cat.name))
+        setCategories(goodiesCats)
       } catch (error) {
         console.error("Error loading categories:", error)
       }
@@ -70,6 +68,25 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!formData.category) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner une catégorie",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!goodiesCategories.includes(formData.category)) {
+      toast({
+        title: "Erreur",
+        description: "La catégorie doit être 'Tote bags' ou 'Affiches / prints'",
+        variant: "destructive",
+      })
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -133,7 +150,7 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-primary">Catégorie</label>
+          <label className="text-sm font-medium text-primary">Catégorie *</label>
           <div className="space-y-2">
             <select
               value={formData.category}
@@ -146,23 +163,23 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
                   setShowNewCategory(false)
                 }
               }}
+              required
               disabled={loading}
               className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             >
               <option value="">Sélectionner une catégorie</option>
-              {mainCategories.map((cat) => (
+              {goodiesCategories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
               {categories
-                .filter(cat => !mainCategories.includes(cat.name))
+                .filter(cat => !goodiesCategories.includes(cat.name))
                 .map((cat) => (
                   <option key={cat.id} value={cat.name}>
                     {cat.name}
                   </option>
                 ))}
-              <option value="new">+ Ajouter une nouvelle catégorie</option>
             </select>
             
             {showNewCategory && (
@@ -332,4 +349,5 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
     </motion.form>
   )
 }
+
 

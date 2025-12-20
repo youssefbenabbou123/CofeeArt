@@ -54,7 +54,7 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black text-primary mb-2">Gestion des Utilisateurs</h1>
+          <h1 className="text-4xl font-black text-primary mb-2">Utilisateurs</h1>
           <p className="text-muted-foreground">Gérer les utilisateurs et leurs rôles</p>
         </div>
         <div className="flex items-center gap-4">

@@ -1,11 +1,193 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { fetchProducts, fetchWorkshops, fetchBlogs, type Product } from "@/lib/api"
+
+interface SignatureItem {
+  id: string
+  category: string
+  name: string
+  image?: string
+  video?: string
+  link?: string
+  type: 'image' | 'video'
+}
 
 export default function Home() {
+  const [signatureItems, setSignatureItems] = useState<SignatureItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadSignatureItems() {
+      try {
+        const [products, workshops, blogs] = await Promise.all([
+          fetchProducts(),
+          fetchWorkshops(),
+          fetchBlogs()
+        ])
+
+        // Create signature items from fetched data
+        const items: SignatureItem[] = []
+
+        // Add video item (Coffee pouring)
+        items.push({
+          id: 'coffee-pouring',
+          category: 'Café du moment',
+          name: 'Café de spécialité',
+          video: '/coffevideo.mp4',
+          type: 'video',
+          link: '/carte'
+        })
+
+        // Helper function to check if product is goodies (exclude prints, affiches, tote bags)
+        const isGoodies = (product: Product & { category?: string }): boolean => {
+          const titleLower = product.title.toLowerCase()
+          const category = product.category?.toLowerCase() || ''
+          
+          return (
+            titleLower.includes('print') ||
+            titleLower.includes('affiche') ||
+            titleLower.includes('poster') ||
+            titleLower.includes('tote') ||
+            titleLower.includes('sac') ||
+            category === 'goodies / lifestyle' ||
+            category === 'tote bags' ||
+            category === 'affiches / prints'
+          )
+        }
+
+        // Filter out goodies and get only real products
+        const realProducts = products.filter(p => !isGoodies(p))
+
+        // Add real products (up to 3) with categories DRINK, BAKE, FOOD
+        realProducts.slice(0, 3).forEach((product, index) => {
+          const categories = ['DRINK', 'BAKE', 'FOOD']
+          items.push({
+            id: product.id,
+            category: categories[index] || 'BAKE',
+            name: product.title.toLowerCase(),
+            image: product.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: `/boutique/${product.id}`
+          })
+        })
+
+        // Add workshops (up to 2)
+        workshops.slice(0, 2).forEach((workshop) => {
+          items.push({
+            id: workshop.id,
+            category: 'ATELIER',
+            name: workshop.title.toLowerCase(),
+            image: workshop.image,
+            type: 'image',
+            link: `/ateliers#${workshop.id}`
+          })
+        })
+
+        // Add blog/coffee of the moment (1 item)
+        if (blogs.length > 0) {
+          items.push({
+            id: blogs[0].id,
+            category: 'CAFÉ DU MOMENT',
+            name: blogs[0].title.toLowerCase(),
+            image: blogs[0].image,
+            type: 'image',
+            link: `/blog/${blogs[0].slug || blogs[0].id}`
+          })
+        }
+
+        // Ensure we have exactly 8 items (pad with placeholders if needed)
+        while (items.length < 8) {
+          items.push({
+            id: `placeholder-${items.length}`,
+            category: 'BAKE',
+            name: 'nouveauté',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image'
+          })
+        }
+
+        setSignatureItems(items.slice(0, 8))
+      } catch (error) {
+        console.error('Error loading signature items:', error)
+        // Fallback to placeholder items
+        setSignatureItems([
+          {
+            id: 'coffee-pouring',
+            category: 'Café du moment',
+            name: 'Café de spécialité',
+            video: '/coffevideo.mp4',
+            type: 'video',
+            link: '/carte'
+          },
+          {
+            id: 'flat-white',
+            category: 'DRINK',
+            name: 'flat white',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/carte'
+          },
+          {
+            id: 'espresso-tonic',
+            category: 'DRINK',
+            name: 'espresso tonic',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/carte'
+          },
+          {
+            id: 'cinnamon-rolls',
+            category: 'BAKE',
+            name: 'cinnamon & cardamom rolls',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/boutique'
+          },
+          {
+            id: 'matcha',
+            category: 'DRINK',
+            name: 'matcha',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/carte'
+          },
+          {
+            id: 'granolas',
+            category: 'FOOD',
+            name: 'homemade granolas',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/boutique'
+          },
+          {
+            id: 'banana-bread',
+            category: 'BAKE',
+            name: 'banana bread',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/boutique'
+          },
+          {
+            id: 'matcha-cookies',
+            category: 'BAKE',
+            name: 'matcha cookies',
+            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            type: 'image',
+            link: '/boutique'
+          }
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadSignatureItems()
+  }, [])
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
@@ -125,6 +307,80 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Signatures Section - Video/Photos & New Items */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="section-title mb-4">Signatures</h2>
+          <p className="text-primary/70 text-lg max-w-2xl mx-auto">
+            Vidéo / photos du lieu et mise en avant des nouveautés (produits, ateliers, café du moment).
+          </p>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-neutral-200 animate-pulse rounded-2xl" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {signatureItems.map((item) => {
+              const content = (
+                <div className="relative group overflow-hidden rounded-2xl aspect-square cursor-pointer bg-neutral-100">
+                  {item.type === 'video' ? (
+                    <video
+                      src={item.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        // Fallback to image if video fails to load
+                        const target = e.target as HTMLVideoElement
+                        target.style.display = 'none'
+                        const img = document.createElement('img')
+                        img.src = item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'
+                        img.className = 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+                        target.parentElement?.appendChild(img)
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      src={item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'}
+                      alt={item.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  )}
+                  <div className="absolute inset-0 flex flex-col justify-between p-4">
+                    {/* Category at top */}
+                    <div className="self-start">
+                      <span className="text-white text-[10px] md:text-xs font-bold uppercase tracking-wider bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
+                        {item.category}
+                      </span>
+                    </div>
+                    {/* Name at bottom */}
+                    <div className="self-start">
+                      <h3 className="text-white font-medium text-sm md:text-base leading-tight drop-shadow-lg">
+                        {item.name}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              )
+
+              return item.link ? (
+                <Link key={item.id} href={item.link} className="block">
+                  {content}
+                </Link>
+              ) : (
+                <div key={item.id}>{content}</div>
+              )
+            })}
+          </div>
+        )}
+      </section>
 
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">

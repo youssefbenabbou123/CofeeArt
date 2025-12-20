@@ -306,7 +306,7 @@ export async function fetchWorkshops(filters?: { level?: string }): Promise<Work
   }
 }
 
-export async function fetchWorkshop(id: string): Promise<{ workshop: Workshop; sessions: WorkshopSession[] } | null> {
+export async function fetchWorkshop(id: string): Promise<(Workshop & { sessions: WorkshopSession[] }) | null> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/workshops/${id}`, {
       cache: 'no-store',
@@ -323,6 +323,143 @@ export async function fetchWorkshop(id: string): Promise<{ workshop: Workshop; s
     return data.success ? data.data : null;
   } catch (error) {
     console.error('Error fetching workshop:', error);
+    return null;
+  }
+}
+
+export interface UserReservation {
+  id: string;
+  quantity: number;
+  status: string;
+  created_at: string;
+  waitlist_position?: number;
+  workshop_id: string;
+  workshop_title: string;
+  workshop_description?: string;
+  level: string;
+  duration: number;
+  price: number;
+  workshop_image?: string;
+  session_id: string;
+  session_date: string;
+  session_time: string;
+}
+
+export async function fetchUserReservations(): Promise<UserReservation[]> {
+  try {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    
+    if (!token) {
+      return [];
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/workshops/reservations`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        return [];
+      }
+      throw new Error('Failed to fetch reservations');
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching user reservations:', error);
+    return [];
+  }
+}
+
+// ========== USER ORDERS ==========
+
+export interface UserOrder {
+  id: string;
+  total: number;
+  status: string;
+  created_at: string;
+  item_count: number;
+}
+
+export interface OrderDetail extends UserOrder {
+  items: Array<{
+    id: string;
+    product_id: string;
+    quantity: number;
+    price: number;
+    title?: string;  // Product title from backend
+    image?: string;  // Product image from backend
+    product_title?: string;  // Alias for title
+    product_image?: string;  // Alias for image
+  }>;
+  shipping_address?: string;
+  shipping_city?: string;
+  shipping_postal_code?: string;
+  shipping_country?: string;
+  payment_status?: string;
+  payment_method?: string;
+}
+
+export async function fetchUserOrders(): Promise<UserOrder[]> {
+  try {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    
+    if (!token) {
+      return [];
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/orders`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        return [];
+      }
+      throw new Error('Failed to fetch orders');
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    return [];
+  }
+}
+
+export async function fetchOrderDetails(orderId: string): Promise<OrderDetail | null> {
+  try {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    
+    if (!token) {
+      return null;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error('Failed to fetch order details');
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error('Error fetching order details:', error);
     return null;
   }
 }

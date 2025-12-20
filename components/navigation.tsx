@@ -221,7 +221,7 @@ export default function Navigation() {
     { href: "/blog", label: "Blog" },
     { href: "/apropos", label: "À Propos" },
     { href: "/contact", label: "Contact" },
-    { href: "/espace-client", label: "Espace Client" },
+    { href: "/espace-client", label: "Espace client" },
   ]
 
   const menuLinks = [...leftLinks, ...rightLinks]

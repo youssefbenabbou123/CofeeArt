@@ -56,7 +56,7 @@ export default function BlogDetail() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
+      <section className="relative pt-20 md:pt-32 pb-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
@@ -72,11 +72,11 @@ export default function BlogDetail() {
               <span className="font-medium">Retour aux blogs</span>
             </Link>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary mb-4 leading-tight">
               {blog.title}
             </h1>
 
-            <div className="flex items-center gap-6 text-sm text-primary/60 mb-8">
+            <div className="flex items-center gap-6 text-sm text-primary/60 mb-2">
               <div className="flex items-center gap-2">
                 <span>{date}</span>
               </div>
@@ -87,7 +87,7 @@ export default function BlogDetail() {
 
       {/* Featured Image */}
       {blog.image && (
-        <section className="relative w-full h-[400px] md:h-[500px] mb-8">
+        <section className="relative w-full h-[400px] md:h-[500px] mb-12">
           <Image
             src={blog.image}
             alt={blog.title}
@@ -107,7 +107,7 @@ export default function BlogDetail() {
           className="prose prose-lg max-w-none"
         >
           <div
-            className="text-primary/80 leading-relaxed space-y-6 text-lg"
+            className="text-primary/80 leading-relaxed space-y-6 text-xl"
             dangerouslySetInnerHTML={{ __html: blog.content.replace(/\n/g, '<br />') }}
           />
         </motion.article>
