@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Gift, ArrowRight, Check } from "lucide-react"
 import Image from "next/image"
@@ -8,6 +8,7 @@ import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import { loadStripe } from "@stripe/stripe-js"
 import { getCurrentUser } from "@/lib/auth"
+import { useRouter } from "next/navigation"
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '')
 
@@ -47,6 +48,40 @@ export default function GiftCardsPage() {
   const [purchaserEmail, setPurchaserEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
+  const router = useRouter()
+
+  // Check for payment success/cancel in URL params
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('success') === 'true') {
+        const code = params.get('code')
+        toast({
+          title: "Paiement réussi !",
+          description: code 
+            ? `Votre carte cadeau a été créée avec succès. Le code ${code} vous a été envoyé par email.`
+            : "Votre carte cadeau a été créée avec succès. Le code vous a été envoyé par email.",
+        })
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname)
+        // Reset form
+        setSelectedType(null)
+        setAmount("")
+        setRecipientName("")
+        setRecipientEmail("")
+        setPurchaserName("")
+        setPurchaserEmail("")
+      } else if (params.get('cancelled') === 'true') {
+        toast({
+          title: "Paiement annulé",
+          description: "Votre carte cadeau n'a pas été créée. Vous pouvez réessayer.",
+          variant: "destructive",
+        })
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname)
+      }
+    }
+  }, [toast])
 
   const handlePurchase = async () => {
     if (!selectedType) {

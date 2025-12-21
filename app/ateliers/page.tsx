@@ -8,10 +8,14 @@ import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
 import { fetchWorkshops, type Workshop } from "@/lib/api"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
+import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function Ateliers() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
   const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
+  const router = useRouter()
 
   useEffect(() => {
     async function loadWorkshops() {
@@ -26,6 +30,33 @@ export default function Ateliers() {
     }
     loadWorkshops()
   }, [])
+
+  // Check for payment success/cancel in URL params
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('success') === 'true') {
+        toast({
+          title: "Paiement réussi !",
+          description: "Votre réservation a été confirmée. Vous recevrez un email de confirmation.",
+        })
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname)
+        // Redirect to client space after a delay
+        setTimeout(() => {
+          router.push('/espace-client')
+        }, 2000)
+      } else if (params.get('cancelled') === 'true') {
+        toast({
+          title: "Paiement annulé",
+          description: "Votre réservation n'a pas été confirmée. Vous pouvez réessayer.",
+          variant: "destructive",
+        })
+        // Clean URL
+        window.history.replaceState({}, '', window.location.pathname)
+      }
+    }
+  }, [toast, router])
 
   return (
     <div className="min-h-screen bg-background">
