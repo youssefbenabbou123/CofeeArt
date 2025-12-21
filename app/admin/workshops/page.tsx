@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Plus, Calendar, Users, Edit, Trash2, Eye, Upload, X } from "lucide-react"
-import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, type Workshop } from "@/lib/admin-api"
+import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, type Workshop, fetchWorkshopReservations, type WorkshopReservation } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
@@ -19,6 +19,9 @@ export default function WorkshopsPage() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [selectedWorkshopForDates, setSelectedWorkshopForDates] = useState<string | null>(null)
   const [workshopSessions, setWorkshopSessions] = useState<Record<string, any[]>>({})
+  const [selectedWorkshopForReservations, setSelectedWorkshopForReservations] = useState<string | null>(null)
+  const [workshopReservations, setWorkshopReservations] = useState<Record<string, WorkshopReservation[]>>({})
+  const [loadingReservations, setLoadingReservations] = useState<Record<string, boolean>>({})
   const { toast } = useToast()
 
   const loadWorkshops = async () => {
@@ -222,6 +225,13 @@ export default function WorkshopsPage() {
                 Modifier
               </button>
               <button
+                onClick={() => loadWorkshopReservations(workshop.id)}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                title="Voir les réservations"
+              >
+                <Users size={16} />
+              </button>
+              <button
                 onClick={() => {
                   setSelectedWorkshopForDates(workshop.id)
                   loadWorkshopSessions(workshop.id)
@@ -239,6 +249,87 @@ export default function WorkshopsPage() {
               </button>
             </div>
             
+            {selectedWorkshopForReservations === workshop.id && (
+              <div className="mt-4 pt-4 border-t border-primary/10">
+                {loadingReservations[workshop.id] ? (
+                  <div className="text-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                    <p className="text-sm text-muted-foreground mt-2">Chargement des réservations...</p>
+                  </div>
+                ) : workshopReservations[workshop.id]?.length > 0 ? (
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-primary mb-3">Réservations ({workshopReservations[workshop.id].length})</h4>
+                    <div className="max-h-96 overflow-y-auto space-y-2">
+                      {workshopReservations[workshop.id].map((reservation) => (
+                        <div
+                          key={reservation.id}
+                          className="bg-white/50 rounded-lg p-3 border border-primary/10"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex-1">
+                              <div className="font-semibold text-primary">
+                                {reservation.user_name || reservation.guest_name || 'Inconnu'}
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                {reservation.user_email || reservation.guest_email || ''}
+                                {reservation.guest_phone && ` • ${reservation.guest_phone}`}
+                              </div>
+                            </div>
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-semibold ${
+                                reservation.status === 'confirmed'
+                                  ? 'bg-green-100 text-green-800'
+                                  : reservation.status === 'pending'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : reservation.status === 'waitlist'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : 'bg-red-100 text-red-800'
+                              }`}
+                            >
+                              {reservation.status === 'confirmed'
+                                ? 'Confirmé'
+                                : reservation.status === 'pending'
+                                ? 'En attente'
+                                : reservation.status === 'waitlist'
+                                ? `Liste d'attente${reservation.waitlist_position ? ` #${reservation.waitlist_position}` : ''}`
+                                : 'Annulé'}
+                            </span>
+                          </div>
+                          <div className="text-sm text-primary space-y-1">
+                            {reservation.session_date && (
+                              <div>
+                                📅 {new Date(reservation.session_date).toLocaleDateString('fr-FR', {
+                                  weekday: 'long',
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric'
+                                })}
+                                {reservation.session_time && ` à ${reservation.session_time}`}
+                              </div>
+                            )}
+                            <div>
+                              👥 {reservation.quantity} place{reservation.quantity > 1 ? 's' : ''}
+                              {reservation.session_capacity && reservation.booked_count !== undefined && (
+                                <span className="text-muted-foreground ml-2">
+                                  ({reservation.booked_count}/{reservation.session_capacity})
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Réservé le {new Date(reservation.created_at).toLocaleDateString('fr-FR')}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-muted-foreground">
+                    Aucune réservation pour cet atelier
+                  </div>
+                )}
+              </div>
+            )}
             {selectedWorkshopForDates === workshop.id && (
               <div className="mt-4 pt-4 border-t border-primary/10">
                 <WorkshopDatePicker

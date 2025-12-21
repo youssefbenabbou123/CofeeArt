@@ -492,6 +492,34 @@ export async function createWorkshopSession(workshopId: string, session: {
   return data.data;
 }
 
+export interface WorkshopReservation {
+  id: string;
+  workshop_id: string;
+  session_id?: string;
+  user_id?: string;
+  quantity: number;
+  status: string;
+  guest_name?: string;
+  guest_email?: string;
+  guest_phone?: string;
+  created_at: string;
+  cancelled_at?: string;
+  cancellation_reason?: string;
+  waitlist_position?: number;
+  session_date?: string;
+  session_time?: string;
+  session_capacity?: number;
+  booked_count?: number;
+  user_name?: string;
+  user_email?: string;
+  user_phone?: string;
+}
+
+export async function fetchWorkshopReservations(workshopId: string): Promise<WorkshopReservation[]> {
+  const data = await apiCall(`/api/admin/workshops/${workshopId}/reservations`);
+  return data.success ? data.data : [];
+}
+
 export async function fetchWorkshopBookings(workshopId: string, filters?: {
   session_id?: string;
   status?: string;
