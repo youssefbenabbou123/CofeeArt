@@ -44,6 +44,31 @@ export default function WorkshopsPage() {
     loadWorkshops()
   }, [])
 
+  const loadWorkshopReservations = async (workshopId: string) => {
+    if (workshopReservations[workshopId]) {
+      // Already loaded, just toggle
+      setSelectedWorkshopForReservations(
+        selectedWorkshopForReservations === workshopId ? null : workshopId
+      )
+      return
+    }
+
+    try {
+      setLoadingReservations(prev => ({ ...prev, [workshopId]: true }))
+      const data = await fetchWorkshopReservations(workshopId)
+      setWorkshopReservations(prev => ({ ...prev, [workshopId]: data }))
+      setSelectedWorkshopForReservations(workshopId)
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error.message || "Impossible de charger les réservations",
+        variant: "destructive",
+      })
+    } finally {
+      setLoadingReservations(prev => ({ ...prev, [workshopId]: false }))
+    }
+  }
+
   const loadWorkshopSessions = async (workshopId: string) => {
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
