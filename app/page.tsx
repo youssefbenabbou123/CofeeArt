@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { Instagram } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { fetchProducts, fetchWorkshops, fetchBlogs, type Product } from "@/lib/api"
 
@@ -188,6 +188,8 @@ export default function Home() {
 
     loadSignatureItems()
   }, [])
+
+
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
@@ -209,16 +211,16 @@ export default function Home() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h1 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tight leading-tight animate-fade-up opacity-0" style={{ animationDelay: "0.4s" }}>
             L'Art de la <br />
-            <span className="text-accent italic">Céramique</span> & du Café
+            <span className="italic text-[#e9d7c1]">céramique</span> & du café
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
             Un espace hybride unique où la créativité rencontre la dégustation.
             Ateliers, Boutique & Coffee Shop.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-up opacity-0" style={{ animationDelay: "0.8s" }}>
-            <Link href="/ateliers" className="group relative px-8 py-4 bg-accent text-primary font-bold rounded-xl overflow-hidden transition-all hover:scale-105 active:scale-95">
-              <span className="relative z-10 flex items-center gap-2">
-                Réserver un atelier <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            <Link href="/ateliers" className="group relative px-8 py-4 bg-[#e9d7c1] text-[#58604C] font-bold rounded-xl overflow-hidden transition-all hover:scale-105 active:scale-95">
+              <span className="relative z-10 flex items-center justify-center">
+                Réserver un atelier
               </span>
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>
@@ -239,9 +241,9 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
-          {/* Card 1: Café - Large Left */}
-          <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl cursor-pointer">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Café */}
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
             <Image
               src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
               alt="Café"
@@ -250,56 +252,63 @@ export default function Home() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="flex items-center gap-3 mb-2 text-accent">
+                <div className="mb-2 text-accent h-5">
                   <span className="font-bold uppercase tracking-wider text-sm">Coffee Shop</span>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-2">Café de Spécialité</h3>
+                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Café de spécialité</h3>
                 <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  Des grains sélectionnés avec soin, torréfiés localement et préparés par nos baristas passionnés.
+                  Grains sélectionnés et torréfiés localement.
                 </p>
-                <Link href="/carte" className="inline-flex items-center gap-2 text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Voir la carte <ArrowUpRight size={16} />
+                <Link href="/carte" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                  Voir la carte
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Card 2: Ateliers - Top Right */}
-          <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[280px]">
+          {/* Card 2: Ateliers */}
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
             <Image
               src="/ceramic-pottery-workshop-hands-creating-clay-potte.jpg"
               alt="Ateliers"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-primary/80 group-hover:bg-primary/70 transition-colors p-8 flex flex-col justify-between">
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Ateliers créatifs</h3>
-                <p className="text-white/80 text-sm mb-4">Initiez-vous au tournage et au modelage.</p>
-                <Link href="/ateliers" className="absolute inset-0" aria-label="Voir les ateliers" />
-              </div>
-              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
-                <ArrowUpRight className="text-white" size={20} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
+              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="mb-2 text-accent h-5">
+                  <span className="font-bold uppercase tracking-wider text-sm">Ateliers</span>
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Ateliers créatifs</h3>
+                <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  Initiez-vous au tournage et au modelage.
+                </p>
+                <Link href="/ateliers" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                  Découvrir
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* Card 3: Boutique - Bottom Right */}
-          <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[280px] bg-[#E8D6C1]">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl -mr-10 -mt-10" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full blur-xl -ml-5 -mb-5" />
-
-            <div className="relative h-full p-8 flex flex-col justify-between">
-              <div className="flex justify-between items-start">
-                <div className="bg-white/30 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary uppercase">
-                  Fait main
+          {/* Card 3: Boutique */}
+          <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
+            <Image
+              src="/boutique/tasse-artisanale.jpg"
+              alt="La boutique"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
+              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="mb-2 text-accent h-5">
+                  <span className="font-bold uppercase tracking-wider text-sm">Fait main</span>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-primary mb-2">La boutique</h3>
-                <p className="text-primary/80 text-sm mb-4">Céramiques artisanales et objets uniques.</p>
-                <Link href="/boutique" className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors shadow-lg">
-                  <ArrowRight size={18} />
+                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">La boutique</h3>
+                <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  Céramiques artisanales et objets uniques.
+                </p>
+                <Link href="/boutique" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                  Découvrir
                 </Link>
               </div>
             </div>
@@ -353,20 +362,6 @@ export default function Home() {
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   )}
-                  <div className="absolute inset-0 flex flex-col justify-between p-4">
-                    {/* Category at top */}
-                    <div className="self-start">
-                      <span className="text-white text-[10px] md:text-xs font-bold uppercase tracking-wider bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
-                        {item.category}
-                      </span>
-                    </div>
-                    {/* Name at bottom */}
-                    <div className="self-start">
-                      <h3 className="text-white font-medium text-sm md:text-base leading-tight drop-shadow-lg">
-                        {item.name}
-                      </h3>
-                    </div>
-                  </div>
                 </div>
               )
 
@@ -389,7 +384,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-1/3 h-full bg-primary/5 blur-3xl" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-8 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-extrabold text-[#8A8E74] mb-8 leading-tight">
             Prêt à mettre les mains <br /> dans la terre ?
           </h2>
           <p className="text-xl text-primary/70 mb-8 max-w-2xl mx-auto">
@@ -405,6 +400,52 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Floating Social Links */}
+      <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-4">
+        <Link 
+          href="https://www.instagram.com/coffeearts.paris/" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 border border-primary/20" 
+          style={{ 
+            animation: "slide-in-right 0.6s ease-out 0.3s forwards",
+            opacity: 0
+          }}
+          aria-label="Instagram Coffee Arts Paris"
+        >
+          <Instagram size={24} />
+        </Link>
+        <Link
+          href="https://www.tiktok.com/@coffeeartsparis"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 relative group border border-primary/20"
+          style={{ 
+            animation: "slide-in-right 0.6s ease-out 0.5s forwards",
+            opacity: 0
+          }}
+          aria-label="TikTok Coffee Arts Paris"
+        >
+          <span className="block h-6 w-6 relative">
+            <Image
+              src="/tiktok-beige.png"
+              alt="TikTok"
+              fill
+              sizes="24px"
+              className="object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+              style={{ filter: "brightness(1.15)" }}
+            />
+            <Image
+              src="/tiktok-green.png"
+              alt="TikTok"
+              fill
+              sizes="24px"
+              className="object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+            />
+          </span>
+        </Link>
+      </div>
     </div>
   )
 }

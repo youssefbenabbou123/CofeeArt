@@ -17,7 +17,7 @@ export default function APropos() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">histoire</span>
+              Notre <span className="text-[#8A8E74]">histoire</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
               La rencontre passionnée entre l'art de la terre et l'art du café.
@@ -29,15 +29,7 @@ export default function APropos() {
       {/* Story Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
-            <Image
-              src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
-              alt="Notre concept"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="space-y-8">
+          <div className="space-y-8 order-2 md:order-1">
             <h2 className="section-title">La genèse</h2>
             <div className="space-y-6 text-lg text-primary/80 leading-relaxed">
               <p>
@@ -50,6 +42,14 @@ export default function APropos() {
                 Nous croyons que l'artisanat est une forme de méditation active. Que ce soit en façonnant l'argile ou en dégustant un café torréfié avec soin, nous vous invitons à reconnecter avec la matière et le moment présent.
               </p>
             </div>
+          </div>
+          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 order-1 md:order-2">
+            <Image
+              src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
+              alt="Notre concept"
+              fill
+              className="object-cover"
+            />
           </div>
         </div>
       </section>

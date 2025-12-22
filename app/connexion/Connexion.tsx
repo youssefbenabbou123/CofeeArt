@@ -25,7 +25,7 @@ export default function Connexion() {
   const [signupPassword, setSignupPassword] = useState("")
 
   return (
-    <div className="pt-20 min-h-screen bg-gradient-to-b from-neutral-light to-background flex items-center relative overflow-hidden">
+    <div className="pt-20 min-h-screen bg-background flex items-center relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -41,8 +41,8 @@ export default function Connexion() {
             <button
               onClick={() => setTab("login")}
               className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "login"
-                  ? "bg-primary text-white shadow-lg scale-105"
-                  : "border-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50"
+                  ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
+                  : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
                 }`}
             >
               Connexion
@@ -50,8 +50,8 @@ export default function Connexion() {
             <button
               onClick={() => setTab("signup")}
               className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "signup"
-                  ? "bg-primary text-white shadow-lg scale-105"
-                  : "border-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50"
+                  ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
+                  : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
                 }`}
             >
               Inscription
@@ -119,7 +119,7 @@ export default function Connexion() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#ACB792] text-[#58604C] py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ animationDelay: "0.6s" }}
               >
                 {loading ? "Connexion..." : "Se connecter"}
@@ -192,7 +192,7 @@ export default function Connexion() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#ACB792] text-[#58604C] py-4 rounded-xl font-black hover:shadow-xl hover:scale-105 transition-all duration-300 animate-fade-up opacity-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ animationDelay: "0.7s" }}
               >
                 {loading ? "Création..." : "Créer un compte"}

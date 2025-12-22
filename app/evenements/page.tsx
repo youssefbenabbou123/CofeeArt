@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function Evenements() {
@@ -18,7 +17,7 @@ export default function Evenements() {
       color: "from-blue-500/20 to-cyan-500/20",
     },
     {
-      title: "Team Building",
+      title: "Team building",
       description: "Renforcez la cohésion de votre équipe avec nos ateliers céramique et dégustations de café. Expérience créative et conviviale.",
       color: "from-green-500/20 to-emerald-500/20",
     },
@@ -84,9 +83,9 @@ export default function Evenements() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
+            className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
           >
-            Nous contacter <ArrowRight size={20} />
+            Nous contacter
           </Link>
         </motion.div>
       </section>

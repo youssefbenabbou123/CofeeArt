@@ -1,6 +1,5 @@
 "use client"
 
-import { ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 
@@ -37,7 +36,7 @@ export default function Carte() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-neutral-light overflow-hidden">
+    <div className="min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
@@ -48,7 +47,7 @@ export default function Carte() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">carte</span>
+              Notre <span className="text-[#8A8E74]">carte</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
               Découvrez nos cafés, pâtisseries et créations artisanales.
@@ -150,9 +149,9 @@ export default function Carte() {
               <p className="text-primary/70 mb-6">Découvrez l'origine de nos grains, nos méthodes d'extraction et nos collaborations</p>
               <Link
                 href="/cafe/nos-cafes"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105"
+                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105"
               >
-                En savoir plus <ArrowRight size={20} />
+                En savoir plus
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">

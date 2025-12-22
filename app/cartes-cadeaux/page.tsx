@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Gift, ArrowRight, Check } from "lucide-react"
+import { Gift, Check } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
@@ -215,8 +215,8 @@ export default function GiftCardsPage() {
                       <span className="font-bold text-primary">
                         {card.minAmount > 0 ? `À partir de ${card.minAmount}€` : "Montant libre"}
                       </span>
-                      <div className="px-4 py-2 bg-primary text-primary-foreground rounded-xl font-bold text-sm flex items-center gap-2">
-                        Choisir <ArrowRight size={16} />
+                      <div className="px-4 py-2 bg-primary text-primary-foreground rounded-xl font-bold text-sm flex items-center justify-center">
+                        Choisir
                       </div>
                     </div>
                   </div>

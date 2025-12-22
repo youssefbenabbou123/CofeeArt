@@ -154,7 +154,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 >
                   <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
                 </button>
-                <button className="p-3 rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
+                <button className="p-3 rounded-lg border-2 border-[#8A8E74] text-[#58604C] hover:bg-[#ACB792] hover:text-[#58604C] transition-colors">
                   <Share2 size={20} />
                 </button>
               </div>
@@ -201,17 +201,17 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <div className="mt-auto">
                 <div className="flex items-center gap-4 mb-6">
                   <span className="font-semibold text-primary">Quantité :</span>
-                  <div className="flex items-center gap-2 border-2 border-primary rounded-lg">
+                  <div className="flex items-center gap-2 border-2 border-[#8A8E74] rounded-lg">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-2 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="px-4 py-2 text-[#58604C] hover:bg-[#ACB792] hover:text-[#58604C] transition-colors"
                     >
                       -
                     </button>
-                    <span className="px-4 py-2 text-primary font-semibold">{quantity}</span>
+                    <span className="px-4 py-2 text-[#58604C] font-semibold">{quantity}</span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="px-4 py-2 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      className="px-4 py-2 text-[#58604C] hover:bg-[#ACB792] hover:text-[#58604C] transition-colors"
                     >
                       +
                     </button>
@@ -277,7 +277,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="py-16 bg-neutral-light">
+        <section className="py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-primary mb-8">Produits similaires</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

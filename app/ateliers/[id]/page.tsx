@@ -303,7 +303,7 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
               <div className="mb-8 space-y-4">
                 <div className="flex items-center gap-3 text-primary">
                   <Clock size={20} className="text-accent flex-shrink-0" />
-                  <span className="font-semibold">Durée: {durationText}</span>
+                  <span className="font-semibold">Durée : {durationText}</span>
                 </div>
                 {w?.next_session_date && (
                   <div className="flex items-center gap-3 text-primary">
@@ -322,7 +322,7 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
               {/* Booking Button */}
               <button
                 onClick={() => setShowBookingForm(true)}
-                className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-colors text-lg"
+                className="w-full px-6 py-4 bg-[#ACB792] text-[#58604C] rounded-xl font-bold hover:bg-[#ACB792]/90 transition-colors text-lg"
               >
                 Réserver cet atelier
               </button>
@@ -407,15 +407,15 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1}
-                  className="px-4 py-2 border-2 border-primary rounded-lg text-primary hover:bg-primary hover:text-white transition-colors disabled:opacity-50"
+                  className="px-4 py-2 border-2 border-[#8A8E74] rounded-lg text-[#58604C] hover:bg-[#ACB792] hover:text-[#58604C] transition-colors disabled:opacity-50"
                 >
                   -
                 </button>
-                <span className="px-4 py-2 text-primary font-semibold text-lg">{quantity}</span>
+                <span className="px-4 py-2 text-[#58604C] font-semibold text-lg">{quantity}</span>
                 <button
                   onClick={() => setQuantity(Math.min(availableSpots, quantity + 1))}
                   disabled={quantity >= availableSpots}
-                  className="px-4 py-2 border-2 border-primary rounded-lg text-primary hover:bg-primary hover:text-white transition-colors disabled:opacity-50"
+                  className="px-4 py-2 border-2 border-[#8A8E74] rounded-lg text-[#58604C] hover:bg-[#ACB792] hover:text-[#58604C] transition-colors disabled:opacity-50"
                 >
                   +
                 </button>
@@ -477,11 +477,11 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
             <button
               onClick={handleBooking}
               disabled={booking || !selectedSession}
-              className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-colors text-lg disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full px-6 py-4 bg-[#ACB792] text-[#58604C] rounded-xl font-bold hover:bg-[#ACB792]/90 transition-colors text-lg disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {booking ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#58604C]"></div>
                   Traitement...
                 </>
               ) : (

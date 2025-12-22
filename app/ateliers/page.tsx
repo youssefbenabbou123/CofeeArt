@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Calendar, Clock } from "lucide-react"
+import { Calendar, Clock } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
@@ -70,7 +70,7 @@ export default function Ateliers() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Nos <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">ateliers</span>
+              Nos <span className="text-[#8A8E74]">ateliers</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
               Que vous soyez débutant ou confirmé, venez mettre les mains dans la terre et exprimer votre créativité dans notre atelier parisien.
@@ -286,9 +286,9 @@ export default function Ateliers() {
                           </span>
                           <Link
                             href={`/ateliers/${workshop.id}`}
-                            className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2"
+                            className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center"
                           >
-                            Réserver <ArrowRight size={18} />
+                            Réserver
                           </Link>
                         </div>
                       </div>

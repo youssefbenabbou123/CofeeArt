@@ -219,7 +219,7 @@ export default function Navigation() {
 
   const rightLinks = [
     { href: "/blog", label: "Blog" },
-    { href: "/apropos", label: "À Propos" },
+    { href: "/apropos", label: "À propos" },
     { href: "/contact", label: "Contact" },
     { href: "/espace-client", label: "Espace client" },
   ]
@@ -243,7 +243,7 @@ export default function Navigation() {
           <button
             className={cn(
               "md:hidden p-2 hover:bg-primary/10 rounded-full transition-colors z-10",
-              elementsScrolled ? "text-primary" : "text-accent"
+              elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -257,12 +257,12 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "font-medium hover:text-accent transition-colors text-lg relative group",
-                  elementsScrolled ? "text-primary" : "text-accent"
+                  "font-medium hover:text-[#ACB792] transition-colors text-lg relative group",
+                  elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
                 )}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ACB792] transition-all group-hover:w-full" />
               </Link>
             ))}
           </div>
@@ -290,12 +290,12 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "font-medium hover:text-accent transition-colors text-lg relative group",
-                  elementsScrolled ? "text-primary" : "text-accent"
+                  "font-medium hover:text-[#ACB792] transition-colors text-lg relative group",
+                  elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
                 )}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ACB792] transition-all group-hover:w-full" />
               </Link>
             ))}
           </div>
@@ -418,7 +418,7 @@ export default function Navigation() {
                 "relative p-2 rounded-full transition-colors",
                 elementsScrolled
                   ? "bg-primary/5 hover:bg-primary/10 text-primary" 
-                  : "bg-accent/10 hover:bg-accent/20 text-accent"
+                  : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
               )}
               aria-label="Panier"
             >
@@ -443,13 +443,13 @@ export default function Navigation() {
                       "p-2 rounded-full transition-colors flex items-center justify-center",
                       elementsScrolled
                         ? "bg-primary/5 hover:bg-primary/10 text-primary" 
-                        : "bg-accent/10 hover:bg-accent/20 text-accent"
+                        : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
                     )}>
                       <User size={24} />
                     </div>
                     <span className={cn(
                       "font-medium text-sm",
-                      elementsScrolled ? "text-primary" : "text-accent"
+                      elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
                     )}>{user.name}</span>
                   </button>
                   
@@ -479,7 +479,7 @@ export default function Navigation() {
                     "inline-flex items-center justify-center p-2 rounded-full transition-colors",
                     elementsScrolled
                       ? "bg-primary/5 hover:bg-primary/10 text-primary" 
-                      : "bg-accent/10 hover:bg-accent/20 text-accent"
+                      : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
                   )}
                   aria-label="Connexion"
                 >
@@ -503,7 +503,7 @@ export default function Navigation() {
             {/* Cart Icon */}
             <Link
               href="/panier"
-              className={cn("relative p-2 transition-colors", elementsScrolled ? "text-primary" : "text-accent")}
+              className={cn("relative p-2 transition-colors", elementsScrolled ? "text-primary" : "text-[#e9d7c1]")}
               aria-label="Panier"
             >
               <ShoppingBag size={24} />
@@ -517,12 +517,12 @@ export default function Navigation() {
             {/* User Icon */}
             {user ? (
               <div className="flex items-center gap-2">
-                <span className={cn("text-sm font-medium", elementsScrolled ? "text-primary" : "text-accent")}>
+                <span className={cn("text-sm font-medium", elementsScrolled ? "text-primary" : "text-[#e9d7c1]")}>
                   {user.name}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-accent")}
+                  className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-[#e9d7c1]")}
                   aria-label="Déconnexion"
                 >
                   <LogOut size={20} />
@@ -531,7 +531,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/connexion"
-                className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-accent")}
+                className={cn("p-2 transition-colors", elementsScrolled ? "text-primary" : "text-[#e9d7c1]")}
               >
                 <User size={24} />
               </Link>

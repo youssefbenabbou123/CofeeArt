@@ -21,14 +21,6 @@ export default function Footer() {
             <div>
               <Link href="/" className="flex items-center gap-2 mb-3">
                 <Image
-                  src="/Fichier 121.png"
-                  alt="Coffee Arts Paris"
-                  width={100}
-                  height={40}
-                  className="h-auto w-auto object-contain max-h-12"
-                  priority
-                />
-                <Image
                   src="/Fichier 95.png"
                   alt="Coffee Arts Paris"
                   width={70}
@@ -73,32 +65,54 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
+          {/* Links - Two columns */}
           <div
+            className="grid grid-cols-2"
             style={{
-              marginLeft: "var(--footer-col2-ml, 0px)",
-              marginRight: "var(--footer-col2-mr, 0px)",
+              marginLeft: 0,
+              marginRight: 0,
             }}
           >
-            <h3 className="font-bold text-lg mb-3 text-accent">Découvrir</h3>
-            <ul className="space-y-2">
-              {[
-                { label: "Accueil", href: "/" },
-                { label: "Nos Ateliers", href: "/ateliers" },
-                { label: "La Boutique", href: "/boutique" },
-                { label: "Le Blog", href: "/blog" },
-                { label: "À Propos", href: "/apropos" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-primary-foreground/80 hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Découvrir</h3>
+              <ul className="space-y-2">
+                {[
+                  { label: "Café", href: "/carte" },
+                  { label: "Céramique", href: "/ateliers" },
+                  { label: "Boutique", href: "/boutique" },
+                  { label: "Evénements", href: "/evenements" },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-primary-foreground/80 hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>&nbsp;</h3>
+              <ul className="space-y-2">
+                {[
+                  { label: "Blog", href: "/blog" },
+                  { label: "À propos", href: "/apropos" },
+                  { label: "Contact", href: "/contact" },
+                  { label: "Espace client", href: "/espace-client" },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-primary-foreground/80 hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact */}
@@ -108,7 +122,7 @@ export default function Footer() {
               marginRight: "var(--footer-col3-mr, 0px)",
             }}
           >
-            <h3 className="font-bold text-lg mb-3 text-accent">Contact</h3>
+            <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Contact</h3>
             <ul className="space-y-2">
               <li className="flex items-start gap-2 text-primary-foreground/80 group">
                 <span>06.52.48.72.24</span>
@@ -117,7 +131,7 @@ export default function Footer() {
                 <span>coffeeartsparis@gmail.com</span>
               </li>
               <li className="flex items-start gap-2 text-primary-foreground/80 group">
-                <span>25 Boulevard du Temple<br />75003 PARIS</span>
+                <span>25 Boulevard du Temple<br />75003 Paris</span>
               </li>
             </ul>
           </div>
@@ -129,7 +143,7 @@ export default function Footer() {
               marginRight: "var(--footer-col4-mr, 0px)",
             }}
           >
-            <h3 className="font-bold text-lg mb-3 text-accent">Horaires</h3>
+            <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Horaires</h3>
             <ul className="space-y-2 text-primary-foreground/80">
               <li className="border-b border-primary-foreground/10 pb-1 space-y-1">
                 <div>Mardi - Mercredi - Jeudi - Vendredi</div>

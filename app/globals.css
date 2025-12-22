@@ -85,27 +85,30 @@
 }
 
 :root {
-  /* Coffee Arts Paris - Modern Color System */
-  /* Primary: Dark Sage #58604C | Accent: Warm Beige #E8D6C1 | Background: Off-white #F7F0E7 */
-  --background: #f7f0e7; /* Off-white base */
-  --foreground: #58604c; /* Dark sage */
-  --card: rgba(255, 255, 255, 0.7);
+  /* Coffee Arts Paris - Color Palette */
+  /* 1. #58604C - Corps de texte | 2. #8A8E74 - Titres | 3. #ACB792 - CTA 1 | 4. #EBD6C1 - CTA 2 */
+  --background: #f7f0e7; /* Fond principal */
+  --foreground: #58604c; /* Corps de texte - 1ère couleur */
+  --title-color: #8a8e74; /* Titres - 2ème couleur */
+  --cta-primary: #acb792; /* CTA principal - 3ème couleur */
+  --cta-secondary: #ebd6c1; /* CTA secondaire - 4ème couleur */
+  --card: rgba(255, 255, 255, 0.9);
   --card-foreground: #58604c;
-  --popover: rgba(255, 255, 255, 0.8);
+  --popover: rgba(255, 255, 255, 0.95);
   --popover-foreground: #58604c;
-  --primary: #58604c; /* Dark sage */
-  --primary-foreground: #f7f0e7;
-  --secondary: #e8d6c1; /* Warm beige accent */
+  --primary: #58604c; /* Corps de texte */
+  --primary-foreground: #ffffff;
+  --secondary: #ebd6c1; /* CTA secondaire */
   --secondary-foreground: #58604c;
-  --accent: #e8d6c1; /* Warm beige */
+  --accent: #acb792; /* CTA principal */
   --accent-foreground: #58604c;
-  --muted: #acb792; /* Light sage - subtle accent */
+  --muted: #acb792; /* Light sage */
   --muted-foreground: #58604c;
   --destructive: #dc2626;
-  --destructive-foreground: #f7f0e7;
-  --border: rgba(232, 214, 193, 0.5);
-  --input: rgba(247, 240, 231, 0.5);
-  --ring: #58604c;
+  --destructive-foreground: #ffffff;
+  --border: rgba(138, 142, 116, 0.2);
+  --input: rgba(255, 255, 255, 0.8);
+  --ring: #8a8e74;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -124,7 +127,7 @@
   /* Footer column spacing - adjust these to move columns left/right */
   --footer-col1-ml: 0px; /* Brand - margin left */
   --footer-col1-mr: 0px; /* Brand - margin right */
-  --footer-col2-ml: 65px; /* Découvrir - margin left */
+  --footer-col2-ml: 0px; /* Découvrir - margin left */
   --footer-col2-mr: 0px; /* Découvrir - margin right */
   --footer-col3-ml: 0px; /* Contact - margin left */
   --footer-col3-mr: 0px; /* Contact - margin right */
@@ -169,6 +172,9 @@
 
 @theme inline {
   --font-sans: "Outfit", sans-serif;
+  --font-title: "Duper", sans-serif;
+  --font-subtitle: "Outfit", sans-serif;
+  --font-body: "Outfit", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -211,6 +217,7 @@
   --animate-fade-up: fade-up 0.8s ease-out forwards;
   --animate-scale-in: scale-in 0.5s ease-out forwards;
   --animate-marquee: marquee 30s linear infinite;
+  --animate-slide-in-right: slide-in-right 0.6s ease-out forwards;
   
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -227,6 +234,11 @@
     to { opacity: 1; transform: scale(1); }
   }
   
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
   @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -234,20 +246,44 @@
 }
 
 /* Modernized custom utilities with refined spacing and typography */
+/* Typography according to brand guidelines */
 .hero-text {
-  @apply text-5xl md:text-7xl font-extrabold text-primary leading-tight tracking-tight;
+  font-family: var(--font-title);
+  color: var(--title-color); /* #8A8E74 */
+  @apply text-5xl md:text-7xl font-bold leading-tight tracking-tight;
 }
 
 .section-title {
-  @apply text-3xl md:text-5xl font-bold text-primary tracking-tight;
+  font-family: var(--font-title);
+  color: var(--title-color); /* #8A8E74 */
+  @apply text-3xl md:text-5xl font-bold tracking-tight;
+}
+
+/* Typography utility classes */
+.font-title {
+  font-family: var(--font-title);
+}
+
+.font-subtitle {
+  font-family: var(--font-subtitle);
+  font-weight: 800; /* Extrabold */
+}
+
+.font-body {
+  font-family: var(--font-body);
+  font-weight: 500; /* Medium */
 }
 
 .btn-primary {
-  @apply bg-primary text-primary-foreground px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95;
+  background-color: var(--cta-primary); /* #ACB792 */
+  color: var(--foreground); /* #58604C */
+  @apply px-8 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95;
 }
 
 .btn-secondary {
-  @apply border-2 border-primary text-primary px-8 py-3 rounded-xl font-semibold hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:shadow-md active:scale-95;
+  background-color: var(--cta-secondary); /* #EBD6C1 */
+  color: var(--foreground); /* #58604C */
+  @apply px-8 py-3 rounded-xl font-semibold hover:shadow-md hover:scale-105 transition-all duration-300 active:scale-95;
 }
 
 .glass-panel {
@@ -263,6 +299,27 @@
     @apply border-border outline-ring/50;
   }
   body {
+    font-family: var(--font-body);
+    font-weight: 500; /* Outfit Medium for body text */
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+  }
+  
+  /* Main titles (h1) use Duper font with title color */
+  h1 {
+    font-family: var(--font-title);
+    color: var(--title-color); /* #8A8E74 */
+  }
+  
+  /* Subheadings (h2-h6) use Outfit Extrabold with title color */
+  h2, h3, h4, h5, h6 {
+    font-family: var(--font-subtitle);
+    font-weight: 800; /* Extrabold */
+    color: var(--title-color); /* #8A8E74 */
+  }
+  
+  /* Subtitle utility class */
+  .subtitle {
+    font-family: var(--font-subtitle);
+    font-weight: 800; /* Extrabold */
   }
 }

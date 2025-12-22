@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ShoppingCart, ArrowRight, Heart, Gift } from "lucide-react"
+import { ShoppingCart, Heart, Gift } from "lucide-react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { fetchProducts, type Product } from "@/lib/api"
@@ -156,7 +156,7 @@ export default function Boutique() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">boutique</span>
+              Notre <span className="text-[#8A8E74]">boutique</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
               Une sélection curatée de pièces céramiques uniques, façonnées à la main pour sublimer votre quotidien.
@@ -222,7 +222,7 @@ export default function Boutique() {
 
       {/* Céramiques Section */}
       {selectedSection === "ceramiques" && (
-        <section className="py-20 bg-neutral-light/50">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               layout
@@ -333,8 +333,8 @@ export default function Boutique() {
                             </span>
                           </div>
                           <div className="w-full h-px bg-primary/10 my-4 group-hover:bg-primary/20 transition-colors" />
-                          <div className="flex items-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
-                            Voir le détail <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                          <div className="flex items-center justify-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
+                            Voir le détail
                           </div>
                         </div>
                       </div>
@@ -351,7 +351,7 @@ export default function Boutique() {
 
         {/* Goodies / Lifestyle Section */}
         {selectedSection === "goodies" && (
-          <section className="py-20 bg-neutral-light/50">
+        <section className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="mb-12">
                 <h2 className="text-3xl font-black text-primary mb-4">Goodies / Lifestyle</h2>
@@ -461,8 +461,8 @@ export default function Boutique() {
                                   </span>
                                 </div>
                                 <div className="w-full h-px bg-primary/10 my-4 group-hover:bg-primary/20 transition-colors" />
-                                <div className="flex items-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
-                                  Voir le détail <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                <div className="flex items-center justify-center text-sm text-muted-foreground font-medium group-hover:text-primary transition-colors">
+                                  Voir le détail
                                 </div>
                               </div>
                             </div>
@@ -479,7 +479,7 @@ export default function Boutique() {
 
         {/* Cartes cadeaux Section */}
         {selectedSection === "cartes" && (
-          <section className="py-20 bg-neutral-light/50">
+          <section className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="mb-12">
                 <h2 className="text-3xl font-black text-primary mb-4">Cartes cadeaux</h2>
@@ -513,8 +513,8 @@ export default function Boutique() {
                           <span className="font-bold text-primary">
                             {card.minAmount > 0 ? `À partir de ${card.minAmount}€` : "Montant libre"}
                           </span>
-                          <div className="px-4 py-2 bg-primary text-primary-foreground rounded-xl font-bold text-sm flex items-center gap-2">
-                            Commander <ArrowRight size={16} />
+                          <div className="px-4 py-2 bg-primary text-primary-foreground rounded-xl font-bold text-sm flex items-center justify-center">
+                            Commander
                           </div>
                         </div>
                       </div>
@@ -761,10 +761,9 @@ export default function Boutique() {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-accent hover:text-primary transition-all duration-300 hover:scale-105 shadow-lg shadow-black/5"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-accent hover:text-primary transition-all duration-300 hover:scale-105 shadow-lg shadow-black/5"
             >
               Nous contacter
-              <ArrowRight className="ml-2" size={20} />
             </Link>
           </div>
         </div>

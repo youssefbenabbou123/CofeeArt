@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 import { fetchBlogs, type Blog } from "@/lib/api"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
@@ -47,7 +46,7 @@ export default function Blog() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">blog</span>
+              Notre <span className="text-[#8A8E74]">blog</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
               Plongez dans l'univers fascinant de la céramique artisanale et de l'art de vivre.
@@ -57,7 +56,7 @@ export default function Blog() {
       </section>
 
       {/* Blog Posts */}
-      <section className="pt-12 pb-20 bg-gradient-to-b from-neutral-light to-background relative overflow-hidden">
+      <section className="pt-12 pb-20 bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-accent/5 to-transparent pointer-events-none" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
@@ -116,9 +115,9 @@ export default function Blog() {
                       <div className="flex items-center justify-between pt-8 border-t-2 border-primary/10 group-hover:border-accent/30 transition-colors duration-500 mt-8">
                         <Link
                           href={`/blog/${post.slug || post.id}`}
-                          className="inline-flex items-center gap-2 text-primary font-black group-hover:gap-4 transition-all duration-500 text-sm uppercase tracking-wide"
+                          className="inline-flex items-center justify-center text-primary font-black transition-all duration-500 text-sm uppercase tracking-wide"
                         >
-                          Lire <ArrowRight size={18} strokeWidth={3} />
+                          Lire
                         </Link>
                       </div>
                     </div>

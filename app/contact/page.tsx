@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Send, Instagram } from "lucide-react"
+import { Send, Phone, Mail, Clock, MapPin } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
@@ -63,7 +63,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden">
+      <section className="relative pt-24 pb-6 md:pt-32 md:pb-8 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
@@ -71,102 +71,41 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Contactez-<span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">nous</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-4 tracking-tight leading-tight">
+              Contactez-<span className="text-[#8A8E74]">nous</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-6 font-light leading-relaxed">
               Une question sur nos ateliers, notre café ou nos produits ? Nous sommes là pour vous répondre.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-
-          {/* Contact Info Side */}
-          <div className="space-y-12 animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
-            <div>
-              <h2 className="text-3xl font-bold text-primary mb-6">Restons en contact</h2>
-              <p className="text-primary/70 text-lg leading-relaxed">
-                Passez nous voir au café pour discuter de vos projets céramiques autour d'un bon café, ou envoyez-nous un message pour toute demande spécifique.
-              </p>
+      {/* Contact Info */}
+      <section className="pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 text-center md:text-left">
+          <div className="flex items-center gap-3">
+            <Phone size={20} className="text-primary" />
+            <span className="text-primary/80">+33 1 42 55 66 77</span>
             </div>
-
-            <div className="space-y-8">
-              <div className="flex items-start gap-6 group">
-                <div>
-                  <h3 className="font-bold text-xl text-primary mb-2">Notre adresse</h3>
-                  <p className="text-primary/70">25 Boulevard du Temple<br />75003 PARIS</p>
+          <div className="flex items-center gap-3">
+            <Mail size={20} className="text-primary" />
+            <span className="text-primary/80">hello@coffeearts.fr</span>
                 </div>
-              </div>
-
-              <div className="flex items-start gap-6 group">
-                <div>
-                  <h3 className="font-bold text-xl text-primary mb-2">Téléphone</h3>
-                  <p className="text-primary/70">+33 1 42 55 66 77</p>
-                  <p className="text-sm text-primary/50 mt-1">Du lundi au vendredi, 9h-18h</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-6 group">
-                <div>
-                  <h3 className="font-bold text-xl text-primary mb-2">Email</h3>
-                  <p className="text-primary/70">hello@coffeearts.fr</p>
-                  <p className="text-sm text-primary/50 mt-1">Réponse sous 24h</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-8 border-t border-primary/10">
-              <h3 className="font-bold text-xl text-primary mb-6">Suivez-nous</h3>
-              <div className="flex gap-4">
-                <Link 
-                  href="https://www.instagram.com/coffeearts.paris/" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                  aria-label="Instagram Coffee Arts Paris"
-                >
-                  <Instagram size={20} />
-                </Link>
-                <Link
-                  href="https://www.tiktok.com/@coffeeartsparis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 relative group"
-                  aria-label="TikTok Coffee Arts Paris"
-                >
-                  <span className="block h-5 w-5 relative">
-                    <Image
-                      src="/tiktok-green.png"
-                      alt="TikTok"
-                      fill
-                      sizes="20px"
-                      className="object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
-                    />
-                    <Image
-                      src="/tiktok-beige.png"
-                      alt="TikTok"
-                      fill
-                      sizes="20px"
-                      className="object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                      style={{ filter: "brightness(1.15)" }}
-                    />
-                  </span>
-                </Link>
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <Clock size={20} className="text-primary" />
+            <span className="text-primary/80">Lundi - Vendredi 9h - 18h</span>
           </div>
+        </div>
+      </section>
 
-          {/* Form Side */}
-          <div className="relative animate-fade-up opacity-0" style={{ animationDelay: "0.8s" }}>
-            <div className="absolute inset-0 bg-accent/20 rounded-3xl blur-3xl -z-10 transform rotate-3" />
+      {/* Form Section */}
+      <section className="pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
             <div className="bg-white/80 backdrop-blur-xl border border-white/50 p-8 md:p-10 rounded-3xl shadow-xl">
-              <h2 className="text-2xl font-bold text-primary mb-8">Envoyez-nous un message</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-primary mb-6">Envoyez-nous un message</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
                     <label className="text-sm font-medium text-primary ml-1">Nom</label>
                     <input
                       type="text"
@@ -177,7 +116,7 @@ export default function Contact() {
                       disabled={loading}
                     />
                   </div>
-                  <div className="space-y-2">
+              <div className="space-y-1.5">
                     <label className="text-sm font-medium text-primary ml-1">Email</label>
                     <input
                       type="email"
@@ -190,7 +129,7 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
+            <div className="space-y-1.5">
                   <label className="text-sm font-medium text-primary ml-1">Sujet</label>
                   <select
                     name="subject"
@@ -205,7 +144,7 @@ export default function Contact() {
                   </select>
                 </div>
 
-                <div className="space-y-2">
+            <div className="space-y-1.5">
                   <label className="text-sm font-medium text-primary ml-1">Message</label>
                   <textarea
                     name="message"
@@ -226,13 +165,18 @@ export default function Contact() {
                 </button>
               </form>
             </div>
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* Map Section */}
-      <section className="py-16 bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Notre café</h2>
+            <div className="flex items-center justify-center gap-2 text-primary/80">
+              <MapPin size={20} className="text-primary" />
+              <span>25 Boulevard du Temple, 75003 PARIS</span>
+            </div>
+          </div>
           <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
             <iframe
               src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
@@ -245,21 +189,13 @@ export default function Contact() {
               className="absolute inset-0"
               title="Coffee Arts Paris Location"
             />
-            <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-3 rounded-lg shadow-lg border border-primary/10 z-10">
-              <div className="flex items-center gap-3">
-                <div>
-                  <p className="font-bold text-primary text-sm">Coffee Arts Paris</p>
-                  <p className="text-primary/70 text-xs">25 Boulevard du Temple, 75003 PARIS</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Collaboration / Influenceurs / Presse Section */}
-      <section className="py-20 bg-gradient-to-b from-background to-neutral-light/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -271,7 +207,7 @@ export default function Contact() {
               Partenariats & Presse
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-              <div className="space-y-4">
+              <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Collaborations</h3>
                 <p className="text-primary/70 leading-relaxed">
                   Vous souhaitez collaborer avec Coffee Arts Paris ? Nous sommes ouverts aux partenariats créatifs et aux projets innovants qui partagent nos valeurs d'artisanat et d'authenticité.
@@ -280,7 +216,7 @@ export default function Contact() {
                   Contactez-nous pour discuter de votre projet et découvrir comment nous pouvons travailler ensemble.
                 </p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Influenceurs</h3>
                 <p className="text-primary/70 leading-relaxed">
                   Vous êtes influenceur ou créateur de contenu ? Nous serions ravis de vous accueillir dans notre espace pour découvrir notre univers unique.
@@ -289,7 +225,7 @@ export default function Contact() {
                   Pour toute demande de partenariat, merci de nous contacter avec vos statistiques et votre univers créatif.
                 </p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Presse</h3>
                 <p className="text-primary/70 leading-relaxed">
                   Journalistes et médias, nous sommes disponibles pour répondre à vos questions et vous fournir les informations nécessaires à vos articles.
