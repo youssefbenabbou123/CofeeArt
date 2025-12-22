@@ -73,8 +73,8 @@ export default function Footer() {
               marginRight: 0,
             }}
           >
+            <h3 className="col-span-2 font-bold text-lg mb-3 text-center" style={{ color: "#e9d7c1", marginLeft: "-80px" }}>Découvrir</h3>
             <div>
-              <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Découvrir</h3>
               <ul className="space-y-2">
                 {[
                   { label: "Café", href: "/carte" },
@@ -94,7 +94,6 @@ export default function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>&nbsp;</h3>
               <ul className="space-y-2">
                 {[
                   { label: "Blog", href: "/blog" },

@@ -7,6 +7,8 @@ export interface Product {
   description: string;
   price: number;
   image: string;
+  images?: string[]; // Array of image URLs
+  features?: string[]; // Array of features/characteristics
   created_at?: string;
 }
 
@@ -269,6 +271,7 @@ export interface Workshop {
   duration: number;
   price: number;
   image?: string;
+  images?: string[]; // Array of image URLs
   status: string;
   session_count?: number;
   next_session_date?: string;

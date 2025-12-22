@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import ConditionalNavigation from "@/components/conditional-navigation"
 import ConditionalFooter from "@/components/conditional-footer"
+import FloatingSocialIcons from "@/components/floating-social-icons"
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
         <ConditionalNavigation />
         <main className="min-h-screen">{children}</main>
         <ConditionalFooter />
+        <FloatingSocialIcons />
         <Toaster />
         <Analytics />
       </body>

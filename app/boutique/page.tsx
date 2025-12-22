@@ -28,7 +28,7 @@ function getCategory(product: Product): string {
   if (titleLower.includes("bol")) return "Bols";
   if (titleLower.includes("vase")) return "Vases";
   if (titleLower.includes("théière") || titleLower.includes("theiere")) return "Théières";
-  if (titleLower.includes("baguette")) return "Accessoires";
+  if (titleLower.includes("baguette") || titleLower.includes("gobelet") || titleLower.includes("isotherme")) return "Accessoires";
   if (titleLower.includes("pot")) return "Décoration";
   if (titleLower.includes("plateau")) return "Plateaux";
   if (titleLower.includes("tote") || titleLower.includes("sac")) return "Tote bags";
@@ -38,7 +38,7 @@ function getCategory(product: Product): string {
 
 // Check if product is ceramic (belongs to Céramiques section)
 function isCeramic(category: string): boolean {
-  const ceramicCategories = ["Céramiques", "Tasses", "Assiettes", "Bols", "Vases", "Théières", "Décoration", "Plateaux"];
+  const ceramicCategories = ["Céramiques", "Tasses", "Assiettes", "Bols", "Vases", "Théières", "Décoration", "Plateaux", "Accessoires"];
   return ceramicCategories.includes(category);
 }
 
@@ -752,7 +752,7 @@ export default function Boutique() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-16 text-center shadow-2xl">
-            <h2 className="text-4xl md:text-5xl font-black mb-6 text-white tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-title mb-6 text-white tracking-tight">
               Commandes spéciales & en gros
             </h2>
             <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">

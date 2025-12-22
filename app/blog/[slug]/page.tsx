@@ -55,7 +55,7 @@ export default function BlogDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Back Link */}
       <section className="relative pt-20 md:pt-32 pb-4 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -71,7 +71,31 @@ export default function BlogDetail() {
               <ArrowLeft size={20} />
               <span className="font-medium">Retour aux blogs</span>
             </Link>
+          </motion.div>
+        </div>
+      </section>
 
+      {/* Featured Image - First */}
+      {blog.image && (
+        <section className="relative w-full h-[400px] md:h-[500px] mb-8">
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </section>
+      )}
+
+      {/* Title and Date - Below Image */}
+      <section className="relative pb-4 overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-primary mb-4 leading-tight">
               {blog.title}
             </h1>
@@ -84,19 +108,6 @@ export default function BlogDetail() {
           </motion.div>
         </div>
       </section>
-
-      {/* Featured Image */}
-      {blog.image && (
-        <section className="relative w-full h-[400px] md:h-[500px] mb-12">
-          <Image
-            src={blog.image}
-            alt={blog.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        </section>
-      )}
 
       {/* Content */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
@@ -119,29 +130,24 @@ export default function BlogDetail() {
           transition={{ delay: 0.4 }}
           className="mt-12 pt-8 border-t border-primary/10"
         >
-          <div className="flex items-center gap-4">
-            <Share2 size={20} className="text-primary/60" />
-            <span className="text-sm font-bold text-primary/60 uppercase tracking-wider">Partager</span>
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: blog.title,
-                      text: blog.excerpt || blog.content.substring(0, 150),
-                      url: window.location.href,
-                    })
-                  } else {
-                    navigator.clipboard.writeText(window.location.href)
-                    alert("Lien copié dans le presse-papiers!")
-                  }
-                }}
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors font-medium"
-              >
-                Partager
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: blog.title,
+                  text: blog.excerpt || blog.content.substring(0, 150),
+                  url: window.location.href,
+                })
+              } else {
+                navigator.clipboard.writeText(window.location.href)
+                alert("Lien copié dans le presse-papiers!")
+              }
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors font-medium"
+          >
+            <Share2 size={20} />
+            <span>Partager</span>
+          </button>
         </motion.div>
       </section>
     </div>

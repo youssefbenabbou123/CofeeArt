@@ -62,8 +62,8 @@ export default function Evenements() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
               >
-                <h2 className="text-3xl font-black text-primary mb-4">{event.title}</h2>
-                <p className="text-primary/80 leading-relaxed mb-6">{event.description}</p>
+                <h2 className="text-3xl font-title text-[#58604C] mb-4">{event.title}</h2>
+                <p className="text-[#58604C] leading-relaxed mb-6">{event.description}</p>
               </motion.div>
             )
           })}
@@ -77,8 +77,8 @@ export default function Evenements() {
           transition={{ duration: 0.6 }}
           className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/20 text-center"
         >
-          <h2 className="text-4xl font-black text-primary mb-6">Réserver un événement</h2>
-          <p className="text-primary/80 text-lg mb-8 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-title text-[#58604C] mb-6">Réserver un événement</h2>
+          <p className="text-[#58604C] text-lg mb-8 max-w-2xl mx-auto">
             Contactez-nous pour discuter de votre projet et créer un événement sur mesure.
           </p>
           <Link

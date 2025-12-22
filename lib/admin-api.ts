@@ -129,6 +129,7 @@ export interface Product {
   description?: string;
   price: number;
   image?: string;
+  images?: string[]; // Array of image URLs
   category?: string;
   status?: string;
   created_at?: string;

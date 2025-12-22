@@ -43,10 +43,10 @@ export default function APropos() {
               </p>
             </div>
           </div>
-          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 order-1 md:order-2">
+          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl order-1 md:order-2">
             <Image
-              src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
-              alt="Notre concept"
+              src="/LA GENESE.jpg"
+              alt="La genèse"
               fill
               className="object-cover"
             />
@@ -59,7 +59,7 @@ export default function APropos() {
         <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Nos valeurs</h2>
+            <h2 className="text-4xl md:text-5xl font-title mb-6">Nos valeurs</h2>
             <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto">
               Les piliers qui soutiennent notre démarche au quotidien.
             </p>

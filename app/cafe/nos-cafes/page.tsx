@@ -24,7 +24,7 @@ export default function NosCafes() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-title text-primary mb-8 tracking-tight leading-tight">
               Nos <span className="text-[#8A8E74]">cafés</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
@@ -46,9 +46,9 @@ export default function NosCafes() {
             className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60"
           >
             <div className="flex items-center gap-4 mb-8">
-              <h2 className="text-4xl font-black text-primary">Origine des grains</h2>
+              <h2 className="text-4xl font-black text-[#58604C]">Origine des grains</h2>
             </div>
-            <div className="space-y-4 text-primary/80 leading-relaxed">
+            <div className="space-y-4 text-[#58604C] leading-relaxed">
               <p>
                 Nous sélectionnons rigoureusement nos grains de café auprès de producteurs engagés dans une agriculture durable et équitable. 
                 Chaque origine est choisie pour ses caractéristiques uniques et son terroir exceptionnel.
@@ -73,7 +73,7 @@ export default function NosCafes() {
             className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60"
           >
             <div className="flex items-center gap-4 mb-8">
-              <h2 className="text-4xl font-black text-primary">Méthodes d'extraction</h2>
+              <h2 className="text-4xl font-black text-[#58604C]">Méthodes d'extraction</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
@@ -116,9 +116,9 @@ export default function NosCafes() {
             className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60"
           >
             <div className="flex items-center gap-4 mb-8">
-              <h2 className="text-4xl font-black text-primary">Collaboration avec torréfacteurs</h2>
+              <h2 className="text-4xl font-black text-[#58604C]">Collaboration avec torréfacteurs</h2>
             </div>
-            <div className="space-y-4 text-primary/80 leading-relaxed">
+            <div className="space-y-4 text-[#58604C] leading-relaxed">
               <p>
                 Nous travaillons en étroite collaboration avec des torréfacteurs artisanaux parisiens et français, 
                 partageant nos valeurs de qualité, de durabilité et d'excellence.

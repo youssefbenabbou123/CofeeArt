@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Send, Phone, Mail, Clock, MapPin } from "lucide-react"
+import { Phone, Mail, Clock, MapPin } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
@@ -86,15 +86,18 @@ export default function Contact() {
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 text-center md:text-left">
           <div className="flex items-center gap-3">
             <Phone size={20} className="text-primary" />
-            <span className="text-primary/80">+33 1 42 55 66 77</span>
+            <span className="text-primary/80">06.52.48.72.24</span>
             </div>
           <div className="flex items-center gap-3">
             <Mail size={20} className="text-primary" />
-            <span className="text-primary/80">hello@coffeearts.fr</span>
+            <span className="text-primary/80">coffeeartsparis@gmail.com</span>
                 </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:items-center">
             <Clock size={20} className="text-primary" />
-            <span className="text-primary/80">Lundi - Vendredi 9h - 18h</span>
+            <div className="flex flex-col text-primary/80">
+              <span>Mardi - Mercredi - Jeudi - Vendredi 08h - 20h</span>
+              <span>Samedi - Dimanche 10h - 21h</span>
+            </div>
           </div>
         </div>
       </section>
@@ -161,7 +164,7 @@ export default function Contact() {
                   disabled={loading}
                   className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary/90 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? "Envoi en cours..." : "Envoyer le message"} <Send size={18} />
+                  {loading ? "Envoi en cours..." : "Envoyer"}
                 </button>
               </form>
             </div>
@@ -171,10 +174,10 @@ export default function Contact() {
       <section className="py-12 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">Notre café</h2>
+            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-4">Notre café</h2>
             <div className="flex items-center justify-center gap-2 text-primary/80">
               <MapPin size={20} className="text-primary" />
-              <span>25 Boulevard du Temple, 75003 PARIS</span>
+              <span>25 Boulevard du Temple, 75003 Paris</span>
             </div>
           </div>
           <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
@@ -203,7 +206,7 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 md:p-12 shadow-xl border border-white/60"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-8 text-center">
+            <h2 className="text-4xl md:text-5xl font-title text-primary mb-8 text-center">
               Partenariats & Presse
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
@@ -257,7 +260,7 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-4">FAQ</h2>
+            <h2 className="text-4xl md:text-5xl font-title text-primary mb-4">FAQ</h2>
             <p className="text-xl text-primary/70">Questions fréquemment posées</p>
           </motion.div>
 

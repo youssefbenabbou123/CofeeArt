@@ -39,7 +39,7 @@ const cards = [
       <>
         <p>Des données peuvent être collectées via le formulaire de contact et par l'utilisation de cookies.</p>
         <p>Responsable du traitement : Coffee Arts Paris — coffeeartsparis@gmail.com</p>
-        <p>Le traitement est conforme au RGPD et à la législation française. Pour plus de détails, consultez la Politique de confidentialité.</p>
+        <p>Le traitement est conforme au RGPD et à la législation française. Pour plus de détails, consultez la <Link href="/legal/politique-confidentialite" className="text-accent hover:underline">Politique de confidentialité</Link>.</p>
         <p>Les utilisateurs disposent des droits : accès, rectification, suppression, opposition, portabilité, limitation du traitement.</p>
         <p>Exercer vos droits : coffeeartsparis@gmail.com</p>
       </>

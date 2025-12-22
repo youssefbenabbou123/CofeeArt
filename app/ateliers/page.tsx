@@ -80,14 +80,7 @@ export default function Ateliers() {
       </section>
 
       {/* Atelier de céramique Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-primary mb-6">Atelier de céramique</h2>
-          <p className="text-xl text-primary/70 max-w-2xl mx-auto">
-            Découvrez l'art de la céramique dans notre espace dédié au cœur de Paris
-          </p>
-        </div>
-
+      <section className="pt-8 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Présentation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -131,7 +124,7 @@ export default function Ateliers() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-black text-primary mb-12 text-center">Techniques</h2>
+          <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-12 text-center">Techniques</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -140,8 +133,8 @@ export default function Ateliers() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
             >
-              <h4 className="text-2xl font-bold text-primary mb-4">Tournage</h4>
-              <p className="text-primary/70 leading-relaxed">
+              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Tournage</h4>
+              <p className="text-[#58604C] leading-relaxed">
                 Apprenez à centrer l'argile sur le tour et à créer des formes symétriques. Technique emblématique 
                 de la céramique, le tournage permet de réaliser des pièces élégantes et régulières.
               </p>
@@ -153,8 +146,8 @@ export default function Ateliers() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
             >
-              <h4 className="text-2xl font-bold text-primary mb-4">Modelage</h4>
-              <p className="text-primary/70 leading-relaxed">
+              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Modelage</h4>
+              <p className="text-[#58604C] leading-relaxed">
                 Créez des pièces uniques à la main en utilisant différentes techniques de modelage : colombin, plaque, 
                 estampage. Plus libre et créatif, le modelage offre une grande liberté d'expression.
               </p>
@@ -166,8 +159,8 @@ export default function Ateliers() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
             >
-              <h4 className="text-2xl font-bold text-primary mb-4">Émaillage</h4>
-              <p className="text-primary/70 leading-relaxed">
+              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Émaillage</h4>
+              <p className="text-[#58604C] leading-relaxed">
                 Découvrez l'art de l'émaillage pour donner couleur et finition à vos créations. Nous proposons une 
                 palette variée d'émaux pour personnaliser vos pièces selon vos goûts.
               </p>
@@ -207,8 +200,8 @@ export default function Ateliers() {
       <section className="py-20 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-5xl font-black text-primary mb-6">Nos ateliers disponibles</h2>
-            <p className="text-xl text-primary/70 max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-6">Nos ateliers disponibles</h2>
+            <p className="text-xl text-[#58604C] max-w-2xl mx-auto">
               Réservez votre créneau parmi nos ateliers disponibles
             </p>
           </div>
@@ -257,7 +250,7 @@ export default function Ateliers() {
                         <h3 className="text-2xl font-black text-primary mb-3">
                           {workshop.title}
                         </h3>
-                        <p className="text-primary/70 leading-relaxed">
+                        <p className="text-[#58604C] leading-relaxed">
                           {workshop.description}
                         </p>
                       </div>

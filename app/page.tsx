@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Instagram } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { fetchProducts, fetchWorkshops, fetchBlogs, type Product } from "@/lib/api"
 
@@ -24,16 +23,10 @@ export default function Home() {
   useEffect(() => {
     async function loadSignatureItems() {
       try {
-        const [products, workshops, blogs] = await Promise.all([
-          fetchProducts(),
-          fetchWorkshops(),
-          fetchBlogs()
-        ])
-
-        // Create signature items from fetched data
+        // Create signature items with video and static photos
         const items: SignatureItem[] = []
 
-        // Add video item (Coffee pouring)
+        // Add video item (Coffee pouring) - keep this intact
         items.push({
           id: 'coffee-pouring',
           category: 'Café du moment',
@@ -43,78 +36,43 @@ export default function Home() {
           link: '/carte'
         })
 
-        // Helper function to check if product is goodies (exclude prints, affiches, tote bags)
-        const isGoodies = (product: Product & { category?: string }): boolean => {
-          const titleLower = product.title.toLowerCase()
-          const category = product.category?.toLowerCase() || ''
+        // Add static signature photos (PHOTO 2 to PHOTO 8)
+        const signaturePhotos = [
+          '/SIGNATURES - PHOTO 2.jpg',
+          '/SIGNATURES - PHOTO 3.jpg',
+          '/SIGNATURES - PHOTO 4.jpg',
+          '/SIGNATURES - PHOTO 5.jpg',
+          '/SIGNATURES - PHOTO 6.jpg',
+          '/SIGNATURES - PHOTO 7.jpg',
+          '/SIGNATURES - PHOTO 8.jpg'
+        ]
+
+        signaturePhotos.forEach((photo, index) => {
+          const photoIndex = index + 2; // Photo 2, 3, 4, 5, 6, 7, 8
+          let link: string | undefined;
           
-          return (
-            titleLower.includes('print') ||
-            titleLower.includes('affiche') ||
-            titleLower.includes('poster') ||
-            titleLower.includes('tote') ||
-            titleLower.includes('sac') ||
-            category === 'goodies / lifestyle' ||
-            category === 'tote bags' ||
-            category === 'affiches / prints'
-          )
-        }
-
-        // Filter out goodies and get only real products
-        const realProducts = products.filter(p => !isGoodies(p))
-
-        // Add real products (up to 3) with categories DRINK, BAKE, FOOD
-        realProducts.slice(0, 3).forEach((product, index) => {
-          const categories = ['DRINK', 'BAKE', 'FOOD']
+          // Configure links based on photo number
+          if (photoIndex === 3) {
+            link = '/blog'; // Link to blog/articles page
+          } else if (photoIndex === 6) {
+            link = '/ateliers'; // Link to ceramic/ateliers page
+          }
+          // Photo 2, 4, 5, 7, 8 have no link (undefined = no redirection)
+          
           items.push({
-            id: product.id,
-            category: categories[index] || 'BAKE',
-            name: product.title.toLowerCase(),
-            image: product.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            id: `signature-photo-${photoIndex}`,
+            category: 'Signature',
+            name: `Photo ${photoIndex}`,
+            image: photo,
             type: 'image',
-            link: `/boutique/${product.id}`
+            link: link
           })
         })
-
-        // Add workshops (up to 2)
-        workshops.slice(0, 2).forEach((workshop) => {
-          items.push({
-            id: workshop.id,
-            category: 'ATELIER',
-            name: workshop.title.toLowerCase(),
-            image: workshop.image,
-            type: 'image',
-            link: `/ateliers#${workshop.id}`
-          })
-        })
-
-        // Add blog/coffee of the moment (1 item)
-        if (blogs.length > 0) {
-          items.push({
-            id: blogs[0].id,
-            category: 'CAFÉ DU MOMENT',
-            name: blogs[0].title.toLowerCase(),
-            image: blogs[0].image,
-            type: 'image',
-            link: `/blog/${blogs[0].slug || blogs[0].id}`
-          })
-        }
-
-        // Ensure we have exactly 8 items (pad with placeholders if needed)
-        while (items.length < 8) {
-          items.push({
-            id: `placeholder-${items.length}`,
-            category: 'BAKE',
-            name: 'nouveauté',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image'
-          })
-        }
 
         setSignatureItems(items.slice(0, 8))
       } catch (error) {
         console.error('Error loading signature items:', error)
-        // Fallback to placeholder items
+        // Fallback to video and static photos
         setSignatureItems([
           {
             id: 'coffee-pouring',
@@ -125,60 +83,60 @@ export default function Home() {
             link: '/carte'
           },
           {
-            id: 'flat-white',
-            category: 'DRINK',
-            name: 'flat white',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image',
-            link: '/carte'
+            id: 'signature-photo-2',
+            category: 'Signature',
+            name: 'Photo 2',
+            image: '/SIGNATURES - PHOTO 2.jpg',
+            type: 'image'
+            // No link - no redirection
           },
           {
-            id: 'espresso-tonic',
-            category: 'DRINK',
-            name: 'espresso tonic',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            id: 'signature-photo-3',
+            category: 'Signature',
+            name: 'Photo 3',
+            image: '/SIGNATURES - PHOTO 3.jpg',
             type: 'image',
-            link: '/carte'
+            link: '/blog' // Link to blog/articles page
           },
           {
-            id: 'cinnamon-rolls',
-            category: 'BAKE',
-            name: 'cinnamon & cardamom rolls',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image',
-            link: '/boutique'
+            id: 'signature-photo-4',
+            category: 'Signature',
+            name: 'Photo 4',
+            image: '/SIGNATURES - PHOTO 4.jpg',
+            type: 'image'
+            // No link - no redirection
           },
           {
-            id: 'matcha',
-            category: 'DRINK',
-            name: 'matcha',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image',
-            link: '/carte'
+            id: 'signature-photo-5',
+            category: 'Signature',
+            name: 'Photo 5',
+            image: '/SIGNATURES - PHOTO 5.jpg',
+            type: 'image'
+            // No link - no redirection
           },
           {
-            id: 'granolas',
-            category: 'FOOD',
-            name: 'homemade granolas',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
+            id: 'signature-photo-6',
+            category: 'Signature',
+            name: 'Photo 6',
+            image: '/SIGNATURES - PHOTO 6.jpg',
             type: 'image',
-            link: '/boutique'
+            link: '/ateliers' // Link to ceramic/ateliers page
           },
           {
-            id: 'banana-bread',
-            category: 'BAKE',
-            name: 'banana bread',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image',
-            link: '/boutique'
+            id: 'signature-photo-7',
+            category: 'Signature',
+            name: 'Photo 7',
+            image: '/SIGNATURES - PHOTO 7.jpg',
+            type: 'image'
+            // No link - no redirection
           },
           {
-            id: 'matcha-cookies',
-            category: 'BAKE',
-            name: 'matcha cookies',
-            image: '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg',
-            type: 'image',
-            link: '/boutique'
+            id: 'signature-photo-8',
+            category: 'Signature',
+            name: 'Photo 8',
+            image: '/SIGNATURES - PHOTO 8.jpg',
+            type: 'image'
+            // No link - no redirection
           }
         ])
       } finally {
@@ -197,7 +155,7 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
+            src="/PAGE D'ACCUEIL - PHOTO 1.jpg"
             alt="Coffee Arts Paris Interior"
             fill
             className="object-cover"
@@ -235,8 +193,8 @@ export default function Home() {
       {/* Concept Section - Bento Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="section-title mb-4">Notre concept</h2>
-          <p className="text-primary/70 text-lg max-w-2xl mx-auto">
+          <h2 className="section-title mb-4 text-[#58604C]">Notre concept</h2>
+          <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
             Trois univers réunis en un seul lieu pour une expérience sensorielle complète.
           </p>
         </div>
@@ -319,8 +277,8 @@ export default function Home() {
       {/* Signatures Section - Video/Photos & New Items */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="section-title mb-4">Signatures</h2>
-          <p className="text-primary/70 text-lg max-w-2xl mx-auto">
+          <h2 className="section-title mb-4 text-[#58604C]">Signatures</h2>
+          <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
             Vidéo / photos du lieu et mise en avant des nouveautés (produits, ateliers, café du moment).
           </p>
         </div>
@@ -384,10 +342,10 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-1/3 h-full bg-primary/5 blur-3xl" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-6xl font-extrabold text-[#8A8E74] mb-8 leading-tight">
+          <h2 className="text-4xl md:text-6xl font-title text-[#58604C] mb-8 leading-tight">
             Prêt à mettre les mains <br /> dans la terre ?
           </h2>
-          <p className="text-xl text-primary/70 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-[#58604C] mb-8 max-w-2xl mx-auto">
             Rejoignez-nous pour un moment de création et de partage. Réservez votre atelier ou passez nous voir pour un café.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -401,51 +359,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Floating Social Links */}
-      <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-4">
-        <Link 
-          href="https://www.instagram.com/coffeearts.paris/" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 border border-primary/20" 
-          style={{ 
-            animation: "slide-in-right 0.6s ease-out 0.3s forwards",
-            opacity: 0
-          }}
-          aria-label="Instagram Coffee Arts Paris"
-        >
-          <Instagram size={24} />
-        </Link>
-        <Link
-          href="https://www.tiktok.com/@coffeeartsparis"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 relative group border border-primary/20"
-          style={{ 
-            animation: "slide-in-right 0.6s ease-out 0.5s forwards",
-            opacity: 0
-          }}
-          aria-label="TikTok Coffee Arts Paris"
-        >
-          <span className="block h-6 w-6 relative">
-            <Image
-              src="/tiktok-beige.png"
-              alt="TikTok"
-              fill
-              sizes="24px"
-              className="object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
-              style={{ filter: "brightness(1.15)" }}
-            />
-            <Image
-              src="/tiktok-green.png"
-              alt="TikTok"
-              fill
-              sizes="24px"
-              className="object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-            />
-          </span>
-        </Link>
-      </div>
     </div>
   )
 }
+

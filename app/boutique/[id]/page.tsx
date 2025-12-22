@@ -33,12 +33,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setIsFavorite] = useState(false)
   const [addingToCart, setAddingToCart] = useState(false)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const { toast } = useToast()
 
   useEffect(() => {
     async function loadProduct() {
       const data = await fetchProduct(id);
       setProduct(data);
+      setSelectedImageIndex(0); // Reset image index when product changes
       setLoading(false);
       
       if (data) {
@@ -55,19 +57,22 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       }
     }
     loadProduct();
+  }, [id]) // Only depend on id, not product
+
+  // Separate effect for wishlist updates
+  useEffect(() => {
+    if (!product) return;
     
     // Listen for wishlist updates
     const handleWishlistUpdate = () => {
-      if (product) {
-        setIsFavorite(isInWishlist(product.id))
-      }
+      setIsFavorite(isInWishlist(product.id))
     }
     window.addEventListener('wishlist-update', handleWishlistUpdate)
     
     return () => {
       window.removeEventListener('wishlist-update', handleWishlistUpdate)
     }
-  }, [id, product])
+  }, [product?.id]) // Only depend on product id, not the whole product object
 
   if (loading) {
     return (
@@ -109,18 +114,83 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       <section className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Product Image */}
+            {/* Product Images */}
             <div className="relative">
-              <div className="aspect-square bg-neutral-warm rounded-lg overflow-hidden shadow-xl">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
+              {(() => {
+                const images = product.images && product.images.length > 0 
+                  ? product.images 
+                  : product.image 
+                    ? [product.image] 
+                    : [];
+                
+                if (images.length === 0) return null;
+                
+                return (
+                  <>
+                    <div className="aspect-square bg-neutral-warm rounded-lg overflow-hidden shadow-xl relative">
+                      <Image
+                        src={images[selectedImageIndex]}
+                        alt={product.title}
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                      {images.length > 1 && (
+                        <>
+                          <button
+                            onClick={() => setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10"
+                            aria-label="Image précédente"
+                          >
+                            <ArrowLeft size={20} />
+                          </button>
+                          <button
+                            onClick={() => setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all z-10 rotate-180"
+                            aria-label="Image suivante"
+                          >
+                            <ArrowLeft size={20} />
+                          </button>
+                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                            {images.map((_, index) => (
+                              <button
+                                key={index}
+                                onClick={() => setSelectedImageIndex(index)}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                  index === selectedImageIndex ? 'bg-white' : 'bg-white/50'
+                                }`}
+                                aria-label={`Image ${index + 1}`}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    {images.length > 1 && (
+                      <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                        {images.map((img, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setSelectedImageIndex(index)}
+                            className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                              index === selectedImageIndex ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
+                            }`}
+                          >
+                            <Image
+                              src={img}
+                              alt={`${product.title} - Image ${index + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="80px"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
               <div className="flex gap-3 mt-4">
                 <button
                   onClick={() => {
@@ -179,23 +249,28 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               </p>
 
               {/* Product Details */}
-              <div className="mb-8 space-y-3">
-                <h3 className="font-bold text-lg text-primary mb-3">Caractéristiques</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-3 text-primary">
-                    <Check size={18} className="text-accent flex-shrink-0" />
-                    <span>Pièce artisanale unique</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-primary">
-                    <Check size={18} className="text-accent flex-shrink-0" />
-                    <span>Fait main en France</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-primary">
-                    <Check size={18} className="text-accent flex-shrink-0" />
-                    <span>Qualité céramique premium</span>
-                  </li>
-                </ul>
-              </div>
+              {(() => {
+                // Get features from product, fallback to empty array
+                const features = (product as any).features && Array.isArray((product as any).features) && (product as any).features.length > 0
+                  ? (product as any).features
+                  : [];
+                
+                if (features.length === 0) return null;
+                
+                return (
+                  <div className="mb-8 space-y-3">
+                    <h3 className="font-bold text-lg text-primary mb-3">Caractéristiques</h3>
+                    <ul className="space-y-2">
+                      {features.map((feature: string, index: number) => (
+                        <li key={index} className="flex items-center gap-3 text-primary">
+                          <Check size={18} className="text-accent flex-shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })()}
 
               {/* Quantity & Add to Cart */}
               <div className="mt-auto">
