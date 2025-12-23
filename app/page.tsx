@@ -168,12 +168,13 @@ export default function Home() {
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h1 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tight leading-tight animate-fade-up opacity-0" style={{ animationDelay: "0.4s" }}>
-            L'Art de la <br />
-            <span className="italic text-[#e9d7c1]">céramique</span> & du café
+            Café, <span className="italic text-[#e9d7c1]">céramique</span> et moments partagés
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
-            Un espace hybride unique où la créativité rencontre la dégustation.
-            Ateliers, Boutique & Coffee Shop.
+          <p className="text-xl md:text-2xl text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
+            Un lieu hybride où l'on vient savourer un café, créer de ses mains et partager un moment, simplement.
+          </p>
+          <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.65s" }}>
+            25 boulevard du Temple, 75003 Paris
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-up opacity-0" style={{ animationDelay: "0.8s" }}>
             <Link href="/ateliers" className="group relative px-8 py-4 bg-[#e9d7c1] text-[#58604C] font-bold rounded-xl overflow-hidden transition-all hover:scale-105 active:scale-95">
@@ -193,9 +194,9 @@ export default function Home() {
       {/* Concept Section - Bento Grid */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="section-title mb-4 text-[#58604C]">Notre concept</h2>
+          <h2 className="section-title mb-4 text-[#58604C]">Trois expériences, un même lieu</h2>
           <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
-            Trois univers réunis en un seul lieu pour une expérience sensorielle complète.
+            Un café de spécialité, des ateliers créatifs et une boutique, pensés pour se compléter.
           </p>
         </div>
 
@@ -211,14 +212,14 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">Coffee Shop</span>
+                  <span className="font-bold uppercase tracking-wider text-sm">DÉGUSTER</span>
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Café de spécialité</h3>
                 <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   Grains sélectionnés et torréfiés localement.
                 </p>
                 <Link href="/carte" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Voir la carte
+                  Découvrir la carte
                 </Link>
               </div>
             </div>
@@ -235,14 +236,14 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">Ateliers</span>
+                  <span className="font-bold uppercase tracking-wider text-sm">CRÉER</span>
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Ateliers créatifs</h3>
                 <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   Initiez-vous au tournage et au modelage.
                 </p>
                 <Link href="/ateliers" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Découvrir
+                  Participer à un atelier
                 </Link>
               </div>
             </div>
@@ -259,14 +260,14 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                 <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">Fait main</span>
+                  <span className="font-bold uppercase tracking-wider text-sm">EMPORTER</span>
                 </div>
                 <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">La boutique</h3>
                 <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   Céramiques artisanales et objets uniques.
                 </p>
                 <Link href="/boutique" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Découvrir
+                  Explorer la boutique
                 </Link>
               </div>
             </div>
@@ -277,9 +278,9 @@ export default function Home() {
       {/* Signatures Section - Video/Photos & New Items */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="section-title mb-4 text-[#58604C]">Signatures</h2>
+          <h2 className="section-title mb-4 text-[#58604C]">Au cœur de Coffee Arts Paris</h2>
           <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
-            Vidéo / photos du lieu et mise en avant des nouveautés (produits, ateliers, café du moment).
+            Des images pour découvrir l'ambiance du lieu, ses matières, et les instants qui s'y vivent au quotidien.
           </p>
         </div>
 
@@ -343,17 +344,17 @@ export default function Home() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-6xl font-title text-[#58604C] mb-8 leading-tight">
-            Prêt à mettre les mains <br /> dans la terre ?
+            Un moment autour du café <br /> et de la création
           </h2>
           <p className="text-xl text-[#58604C] mb-8 max-w-2xl mx-auto">
-            Rejoignez-nous pour un moment de création et de partage. Réservez votre atelier ou passez nous voir pour un café.
+            Un lieu où l'on vient créer, discuter, boire un café et s'attarder. Des moments simples, à vivre et à partager.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/ateliers" className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20">
-              Voir le planning
+              Découvrir les ateliers
             </Link>
-            <Link href="/contact" className="btn-secondary text-lg px-10 py-4">
-              Nous contacter
+            <Link href="/boutique" className="btn-secondary text-lg px-10 py-4">
+              Accéder à la boutique
             </Link>
           </div>
         </div>

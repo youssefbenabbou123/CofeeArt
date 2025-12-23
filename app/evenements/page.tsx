@@ -8,22 +8,22 @@ export default function Evenements() {
   const eventTypes = [
     {
       title: "Inauguration",
-      description: "Célébrez le lancement de votre événement dans un cadre unique. Organisation complète, traiteur et animations sur mesure.",
+      description: "Nous accueillons des inaugurations au sein du café, selon les possibilités du lieu et le format souhaité.",
       color: "from-purple-500/20 to-pink-500/20",
     },
     {
-      title: "Privatisations",
-      description: "Privatisez notre espace pour vos événements privés : anniversaires, EVJF, retrouvailles entre amis. Ambiance chaleureuse garantie.",
+      title: "Privatisation",
+      description: "Nous proposons des privatisations du café, selon les possibilités du lieu et le format envisagé.",
       color: "from-blue-500/20 to-cyan-500/20",
     },
     {
       title: "Team building",
-      description: "Renforcez la cohésion de votre équipe avec nos ateliers céramique et dégustations de café. Expérience créative et conviviale.",
+      description: "Le café peut accueillir des formats de team building autour du café et de la création, selon les possibilités du lieu.",
       color: "from-green-500/20 to-emerald-500/20",
     },
     {
-      title: "Expositions / Marchés créateurs",
-      description: "Mettez en avant vos créations dans notre espace. Nous accueillons régulièrement des expositions et marchés de créateurs.",
+      title: "Expositions - marché créateurs",
+      description: "Nous accueillons ponctuellement des expositions ou des temps dédiés aux créateurs, en lien avec l’univers du lieu.",
       color: "from-amber-500/20 to-orange-500/20",
     },
   ]
@@ -40,10 +40,10 @@ export default function Evenements() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Événements
+              Moments partagés
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Transformez vos moments importants en expériences inoubliables dans notre espace unique.
+              Le café s’ouvre ponctuellement à des événements, pensés pour s’intégrer naturellement au lieu.
             </p>
           </motion.div>
         </div>
@@ -77,9 +77,9 @@ export default function Evenements() {
           transition={{ duration: 0.6 }}
           className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/20 text-center"
         >
-          <h2 className="text-4xl font-title text-[#58604C] mb-6">Réserver un événement</h2>
-          <p className="text-[#58604C] text-lg mb-8 max-w-2xl mx-auto">
-            Contactez-nous pour discuter de votre projet et créer un événement sur mesure.
+          <h2 className="text-4xl font-title text-[#58604C] mb-6">Informations & demandes</h2>
+          <p className="text-[#58604C] text-lg mb-8 max-w-4xl mx-auto">
+            Nous sommes disponibles pour discuter de votre événement et des possibilités du lieu.
           </p>
           <Link
             href="/contact"

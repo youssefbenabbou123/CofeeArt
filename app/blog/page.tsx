@@ -46,10 +46,10 @@ export default function Blog() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-[#8A8E74]">blog</span>
+              Le <span className="text-[#8A8E74]">blog</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Plongez dans l'univers fascinant de la céramique artisanale et de l'art de vivre.
+              Réflexions, inspirations et savoir-faire autour de la céramique, du café et de l’art de vivre.
             </p>
           </motion.div>
         </div>

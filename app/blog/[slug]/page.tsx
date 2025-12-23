@@ -118,7 +118,7 @@ export default function BlogDetail() {
           className="prose prose-lg max-w-none"
         >
           <div
-            className="text-primary/80 leading-relaxed space-y-6 text-xl"
+            className="text-primary/80 leading-relaxed space-y-6 text-xl text-justify"
             dangerouslySetInnerHTML={{ __html: blog.content.replace(/\n/g, '<br />') }}
           />
         </motion.article>

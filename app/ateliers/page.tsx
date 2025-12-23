@@ -73,7 +73,7 @@ export default function Ateliers() {
               Nos <span className="text-[#8A8E74]">ateliers</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Que vous soyez débutant ou confirmé, venez mettre les mains dans la terre et exprimer votre créativité dans notre atelier parisien.
+              Des ateliers de céramique pour explorer la matière, s’initier aux gestes et vivre une expérience créative, au rythme de chacun.
             </p>
           </motion.div>
         </div>
@@ -87,25 +87,27 @@ export default function Ateliers() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 md:p-12 shadow-xl border border-white/60 mb-12"
+          className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 shadow-xl border border-white/60 mb-12"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-lg md:text-xl text-primary leading-relaxed font-light">
-                Notre atelier de céramique est un espace dédié à la création et à l'apprentissage de l'art de la terre. 
-                Équipé de tours de potier professionnels et d'un four de cuisson, nous vous accueillons dans un cadre 
-                chaleureux et inspirant au cœur de Paris.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-5 md:space-y-6">
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                L’atelier de céramique est un espace ouvert à celles et ceux qui souhaitent découvrir la matière, expérimenter et créer de leurs mains.
               </p>
-              <p className="text-lg md:text-xl text-primary leading-relaxed font-light">
-                Que vous soyez débutant ou expérimenté, notre équipe de céramistes passionnés vous guide à chaque étape 
-                de votre création, du façonnage à la cuisson finale.
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Peinture sur céramique, modelage ou initiation à la poterie : chaque atelier est pensé comme un moment accessible, guidé et sans pression.
               </p>
-              <p className="text-lg md:text-xl text-primary leading-relaxed font-light">
-                L'atelier peut accueillir jusqu'à 4 personnes simultanément, garantissant un suivi personnalisé et une 
-                expérience de qualité pour chaque participant.
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Que vous veniez pour la première fois ou que vous ayez déjà pratiqué, l’accompagnement se fait pas à pas, dans une atmosphère conviviale.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                L’objectif n’est pas la performance, mais le plaisir de créer, d’apprendre et de prendre le temps.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Les ateliers se déroulent en petits groupes, afin de garantir une expérience attentive et personnalisée pour chaque participant.
               </p>
             </div>
-            <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden">
+            <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden">
               <Image
                 src="/ceramic-pottery-workshop-hands-creating-clay-potte.jpg"
                 alt="Atelier de céramique"
@@ -124,73 +126,35 @@ export default function Ateliers() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-12 text-center">Techniques</h2>
+          <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-12 text-center">Une expérience pour tous</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
-            >
-              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Tournage</h4>
-              <p className="text-[#58604C] leading-relaxed">
-                Apprenez à centrer l'argile sur le tour et à créer des formes symétriques. Technique emblématique 
-                de la céramique, le tournage permet de réaliser des pièces élégantes et régulières.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
-            >
-              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Modelage</h4>
-              <p className="text-[#58604C] leading-relaxed">
-                Créez des pièces uniques à la main en utilisant différentes techniques de modelage : colombin, plaque, 
-                estampage. Plus libre et créatif, le modelage offre une grande liberté d'expression.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
-            >
-              <h4 className="text-2xl font-bold text-[#58604C] mb-4">Émaillage</h4>
-              <p className="text-[#58604C] leading-relaxed">
-                Découvrez l'art de l'émaillage pour donner couleur et finition à vos créations. Nous proposons une 
-                palette variée d'émaux pour personnaliser vos pièces selon vos goûts.
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Galerie photo */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="-mx-4 sm:-mx-6 lg:-mx-8"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 sm:px-6 lg:px-8">
             {[
-              "/ceramic-pottery-workshop-hands-creating-clay-potte.jpg",
-              "/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg",
-              "/boutique/tasse-artisanale.jpg",
-              "/boutique/Assiette-Artisanale.jpg"
-            ].map((img, index) => (
-              <div key={index} className="relative aspect-square rounded-xl overflow-hidden">
-                <Image
-                  src={img}
-                  alt={`Galerie ${index + 1}`}
-                  fill
-                  className="object-cover hover:scale-110 transition-transform duration-500"
-                />
-              </div>
+              {
+                title: "Ouvert à tous les niveaux",
+                desc: "Les ateliers sont ouverts aux débutants comme aux personnes ayant déjà pratiqué. Chacun avance à son rythme, accompagné pas à pas, sans prérequis."
+              },
+              {
+                title: "En petits groupes",
+                desc: "Les sessions se déroulent en groupes réduits afin de garantir un accompagnement attentif. Un cadre propice à l’échange, à la concentration et au plaisir de créer."
+              },
+              {
+                title: "Une expérience encadrée",
+                desc: "Chaque atelier est pensé pour être fluide, structuré et accessible. Le geste, la matière et le plaisir de créer restent au cœur de la pratique."
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+                className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow"
+              >
+                <h4 className="text-2xl font-bold text-[#58604C] mb-4">{item.title}</h4>
+                <p className="text-[#58604C] leading-relaxed">
+                  {item.desc}
+                </p>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -200,9 +164,9 @@ export default function Ateliers() {
       <section className="py-20 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-16 text-center">
-            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-6">Nos ateliers disponibles</h2>
+            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-6">Nos ateliers</h2>
             <p className="text-xl text-[#58604C] max-w-2xl mx-auto">
-              Réservez votre créneau parmi nos ateliers disponibles
+              Choisissez votre atelier et réservez un moment dédié à la création.
             </p>
           </div>
           {loading ? (

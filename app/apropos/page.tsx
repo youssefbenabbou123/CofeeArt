@@ -17,30 +17,24 @@ export default function APropos() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-[#8A8E74]">histoire</span>
+              Un lieu <span className="text-[#8A8E74]">pensé pour prendre le temps</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              La rencontre passionnée entre l'art de la terre et l'art du café.
+              Un coffee shop créatif où l’on vient pour le café, et où l’on reste pour l’expérience.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Story Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 order-2 md:order-1">
-            <h2 className="section-title">La genèse</h2>
-            <div className="space-y-6 text-lg text-primary/80 leading-relaxed">
-              <p>
-                Coffee Arts Paris est née d'une vision simple mais ambitieuse : créer un lieu de vie où le temps s'arrête, où la créativité s'exprime et où les sens sont en éveil.
-              </p>
-              <p>
-                Fondé en 2023, notre espace a été conçu comme un refuge urbain. D'un côté, le calme et la concentration de l'atelier de céramique. De l'autre, la convivialité et les arômes d'un café de spécialité.
-              </p>
-              <p>
-                Nous croyons que l'artisanat est une forme de méditation active. Que ce soit en façonnant l'argile ou en dégustant un café torréfié avec soin, nous vous invitons à reconnecter avec la matière et le moment présent.
-              </p>
+            <h2 className="section-title">Le point de départ</h2>
+            <div className="space-y-6 text-lg text-[#58604C] leading-relaxed">
+              <p>Nous sommes Kenza et Anis, deux âmes sensibles au beau, au geste et au temps qui passe lentement.</p>
+              <p>Notre histoire commence bien avant l’ouverture d’un lieu : elle naît de nos passions mêlées, entre la chaleur d’un café soigneusement préparé et la poésie d’une pièce façonnée à la main. Nous avons voulu créer un espace qui nous ressemble — doux, brut, vivant.</p>
+              <p>Un lieu où chaque détail raconte quelque chose, où chaque matière respire, où l’on entre comme on entre dans un atelier, dans un refuge, dans un moment suspendu.</p>
             </div>
           </div>
           <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl order-1 md:order-2">
@@ -52,32 +46,53 @@ export default function APropos() {
             />
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl order-1 md:order-1">
+            <Image
+              src="/PAGE D'ACCUEIL - PHOTO 1.jpg"
+              alt="Coffee Arts Paris"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="space-y-8 order-2 md:order-2">
+            <h2 className="section-title">Notre histoire</h2>
+            <div className="space-y-6 text-lg text-[#58604C] leading-relaxed">
+              <p>De fil en aiguille, nous avons rêvé un coffee shop qui n’en est pas vraiment un : c’est un terrain de jeu pour les créatifs, un havre pour les sensibles, une parenthèse pour ceux qui aiment prendre le temps.</p>
+              <p>Chaque choix a été fait avec intention : la lumière qui glisse doucement sur les tables, les teintes naturelles, les formes imparfaites, la chaleur du bois, la simplicité assumée…</p>
+              <p>Nous avons façonné ce lieu comme on façonne une pièce de céramique — avec patience, intuition et amour du geste.</p>
+              <p>Notre café-poterie est né ainsi : de l’envie de partager un espace où l’on peut s’attarder, respirer profondément, créer, rêver, goûter, et peut-être même se retrouver.</p>
+              <p>Aujourd’hui, nous continuons d’écrire cette histoire à deux mains, avec vous, à chaque tasse servie, à chaque idée qui naît, à chaque rencontre.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Values Section */}
+      {/* L'esprit du lieu Section */}
       <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-title mb-6">Nos valeurs</h2>
+            <h2 className="text-4xl md:text-5xl font-title mb-6">L’esprit du lieu</h2>
             <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto">
-              Les piliers qui soutiennent notre démarche au quotidien.
+              Une manière d’être, de créer et de recevoir.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: "Passion & authenticité",
-                description: "Nous mettons du cœur dans chaque geste, chaque tasse servie et chaque pièce façonnée."
+                title: "Le café comme point de départ",
+                description: "Nous sommes avant tout un coffee shop, avec des boissons de qualité et une vraie exigence gustative. La création vient enrichir l’expérience, sans jamais la remplacer."
               },
               {
-                title: "Durabilité",
-                description: "Nous privilégions les circuits courts, les matériaux naturels et une approche respectueuse de l'environnement."
+                title: "La création comme prolongement",
+                description: "Chez Coffee Arts Paris, la création n’est pas une performance. On vient pour essayer, apprendre, toucher et prendre plaisir au geste, simplement."
               },
               {
-                title: "Transmission",
-                description: "Le partage du savoir-faire est au cœur de notre mission. Apprendre, c'est grandir ensemble."
+                title: "Un espace où l’on se sent bien",
+                description: "Coffee Arts Paris a été pensé comme un lieu calme et accueillant, où l’on peut s’attarder, se retrouver et faire une pause, seul ou à plusieurs."
               },
             ].map((value, index) => (
               <div
@@ -139,13 +154,13 @@ export default function APropos() {
         </div>
       </section>
 
-      {/* Engagement écologique Section */}
+      {/* Engagements écologiques */}
       <section className="py-24 bg-primary/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="section-title mb-6">Engagement écologique</h2>
+            <h2 className="section-title mb-6">Nos engagements écologiques</h2>
             <p className="text-xl text-primary/80 max-w-2xl mx-auto">
-              Notre engagement pour un avenir plus durable et responsable.
+              Une attention portée aux matières, aux ressources et aux gestes.
             </p>
           </div>
 
@@ -157,12 +172,13 @@ export default function APropos() {
               className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
             >
               <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Circuits courts</h3>
+                <h3 className="text-2xl font-black text-primary">Choisir avec attention</h3>
               </div>
               <p className="text-primary/80 leading-relaxed">
-                Nous privilégions les producteurs locaux et les circuits courts pour nos ingrédients. 
-                Nos grains de café sont sélectionnés auprès de torréfacteurs parisiens, réduisant ainsi 
-                notre empreinte carbone tout en soutenant l'économie locale.
+                Nous faisons le choix de fournisseurs sélectionnés avec soin, en tenant compte de la provenance des produits et de leur impact, à notre échelle.
+              </p>
+              <p className="text-primary/80 leading-relaxed mt-4">
+                Une démarche progressive, guidée par le bon sens et le respect des ressources.
               </p>
             </motion.div>
 
@@ -174,12 +190,13 @@ export default function APropos() {
               className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
             >
               <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Matériaux durables</h3>
+                <h3 className="text-2xl font-black text-primary">Matières & usages</h3>
               </div>
               <p className="text-primary/80 leading-relaxed">
-                Dans notre atelier, nous utilisons des argiles naturelles et des émaux sans plomb. 
-                Nos céramiques sont conçues pour durer, réduisant ainsi la consommation et les déchets. 
-                Nous favorisons également le réemploi et le recyclage de nos matériaux.
+                Des argiles utilisées à l’atelier aux consommables du lieu, nous faisons des choix réfléchis pour limiter les déchets et favoriser des usages plus responsables.
+              </p>
+              <p className="text-primary/80 leading-relaxed mt-4">
+                Des choix intégrés au quotidien, dans la manière de faire et d’utiliser.
               </p>
             </motion.div>
 
@@ -191,12 +208,13 @@ export default function APropos() {
               className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
             >
               <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Commerce équitable</h3>
+                <h3 className="text-2xl font-black text-primary">Des pratiques raisonnées</h3>
               </div>
               <p className="text-primary/80 leading-relaxed">
-                Nous travaillons avec des partenaires engagés dans le commerce équitable, garantissant 
-                des conditions de travail justes et des rémunérations équitables pour les producteurs. 
-                Chaque achat contribue à un monde plus juste.
+                Dans le fonctionnement du café comme de l’atelier, nous veillons à réduire les déchets et à ajuster nos usages lorsque cela est possible.
+              </p>
+              <p className="text-primary/80 leading-relaxed mt-4">
+                Une attention constante portée aux gestes du quotidien.
               </p>
             </motion.div>
 
@@ -208,12 +226,13 @@ export default function APropos() {
               className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
             >
               <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Sensibilisation</h3>
+                <h3 className="text-2xl font-black text-primary">Sensibiliser par la pratique</h3>
               </div>
               <p className="text-primary/80 leading-relaxed">
-                À travers nos ateliers et nos événements, nous sensibilisons nos clients à l'importance 
-                de la durabilité. Nous partageons nos connaissances sur les pratiques écologiques et 
-                encourageons un mode de vie plus responsable.
+                À travers les ateliers et la vie du lieu, nous cherchons à transmettre des gestes simples et plus conscients.
+              </p>
+              <p className="text-primary/80 leading-relaxed mt-4">
+                Une approche naturelle, par l’expérience et le faire.
               </p>
             </motion.div>
           </div>

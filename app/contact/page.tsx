@@ -105,7 +105,7 @@ export default function Contact() {
       {/* Form Section */}
       <section className="pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
             <div className="bg-white/80 backdrop-blur-xl border border-white/50 p-8 md:p-10 rounded-3xl shadow-xl">
-          <h2 className="text-2xl font-bold text-primary mb-6">Envoyez-nous un message</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">Formulaire de contact</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -133,7 +133,7 @@ export default function Contact() {
                 </div>
 
             <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-primary ml-1">Sujet</label>
+                  <label className="text-sm font-medium text-primary ml-1">Objet</label>
                   <select
                     name="subject"
                     className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-primary/70"
@@ -174,7 +174,7 @@ export default function Contact() {
       <section className="py-12 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
-            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-4">Notre café</h2>
+            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-4">Nous rendre visite</h2>
             <div className="flex items-center justify-center gap-2 text-primary/80">
               <MapPin size={20} className="text-primary" />
               <span>25 Boulevard du Temple, 75003 Paris</span>
@@ -196,7 +196,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Collaboration / Influenceurs / Presse Section */}
+      {/* Collaborations / Influenceurs / Presse Section */}
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -207,44 +207,27 @@ export default function Contact() {
             className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 md:p-12 shadow-xl border border-white/60"
           >
             <h2 className="text-4xl md:text-5xl font-title text-primary mb-8 text-center">
-              Partenariats & Presse
+              Collaborations
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
               <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Collaborations</h3>
                 <p className="text-primary/70 leading-relaxed">
-                  Vous souhaitez collaborer avec Coffee Arts Paris ? Nous sommes ouverts aux partenariats créatifs et aux projets innovants qui partagent nos valeurs d'artisanat et d'authenticité.
-                </p>
-                <p className="text-primary/70 leading-relaxed">
-                  Contactez-nous pour discuter de votre projet et découvrir comment nous pouvons travailler ensemble.
+                  Coffee Arts Paris s’associe à des projets créatifs choisis avec attention, en lien avec l’artisanat, la matière et l’expérience du lieu. Si votre projet résonne avec l’univers du lieu, nous serons ravis d’en discuter.
                 </p>
               </div>
               <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Influenceurs</h3>
                 <p className="text-primary/70 leading-relaxed">
-                  Vous êtes influenceur ou créateur de contenu ? Nous serions ravis de vous accueillir dans notre espace pour découvrir notre univers unique.
-                </p>
-                <p className="text-primary/70 leading-relaxed">
-                  Pour toute demande de partenariat, merci de nous contacter avec vos statistiques et votre univers créatif.
+                  Coffee Arts Paris collabore ponctuellement avec des créateurs de contenu dont l’univers et la sensibilité font écho au lieu. Nous privilégions les approches sincères, les échanges authentiques et les contenus pensés avec soin. Si cette approche vous correspond, nous vous invitons à nous écrire.
                 </p>
               </div>
               <div className="space-y-4 text-center">
                 <h3 className="text-2xl font-bold text-primary">Presse</h3>
                 <p className="text-primary/70 leading-relaxed">
-                  Journalistes et médias, nous sommes disponibles pour répondre à vos questions et vous fournir les informations nécessaires à vos articles.
-                </p>
-                <p className="text-primary/70 leading-relaxed">
-                  N'hésitez pas à nous contacter pour toute demande d'interview, de visuels ou d'informations complémentaires.
+                  Pour toute demande presse, interview ou parution, Coffee Arts Paris reste à l’écoute des médias souhaitant découvrir le lieu, son univers et sa démarche. N’hésitez pas à nous contacter pour toute demande d’information.
                 </p>
               </div>
-            </div>
-            <div className="mt-10 text-center">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                Nous contacter
-              </Link>
             </div>
           </motion.div>
         </div>
@@ -261,42 +244,70 @@ export default function Contact() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-5xl font-title text-primary mb-4">FAQ</h2>
-            <p className="text-xl text-primary/70">Questions fréquemment posées</p>
+            <p className="text-xl text-primary/70">On vous répond ici.</p>
           </motion.div>
 
           <div className="space-y-6">
             {[
               {
-                question: "Quels sont vos horaires d'ouverture ?",
-                answer: "Nous sommes ouverts du mardi au vendredi de 8h à 20h, et le samedi et dimanche de 10h à 21h. Nous sommes fermés le lundi."
+                question: "Qu’est-ce que Coffee Arts Paris ?",
+                answer: "Coffee Arts Paris est un coffee shop artisanal mêlant café de spécialité, création céramique et moments de partage, dans un lieu pensé pour prendre le temps."
               },
               {
-                question: "Faut-il réserver pour les ateliers ?",
-                answer: "Oui, nous recommandons fortement de réserver vos ateliers à l'avance, surtout pour les weekends. Vous pouvez réserver directement en ligne ou nous contacter par téléphone."
+                question: "Peut-on venir uniquement pour boire un café ?",
+                answer: "Oui. Le lieu est avant tout un coffee shop. Il est tout à fait possible de venir simplement profiter d’un café, sans participer à un atelier."
               },
               {
-                question: "Les débutants peuvent-ils participer aux ateliers ?",
-                answer: "Absolument ! Nos ateliers sont ouverts à tous les niveaux, des débutants complets aux personnes expérimentées. Nos formateurs s'adaptent à votre niveau."
+                question: "Faut-il réserver pour venir chez Coffee Arts Paris ?",
+                answer: "La réservation n’est pas nécessaire pour le café. Elle est en revanche recommandée pour les ateliers, notamment en période d’affluence."
               },
               {
-                question: "Combien de temps faut-il pour récupérer une pièce créée ?",
-                answer: "Le temps de séchage et de cuisson varie selon la pièce, mais comptez généralement 2 à 3 semaines avant de pouvoir récupérer votre création émaillée et cuite."
+                question: "Le lieu est-il accessible à tous ?",
+                answer: "Oui, Coffee Arts Paris accueille aussi bien les curieux que les habitués. Aucun prérequis n’est nécessaire, que ce soit pour le café ou pour les ateliers."
               },
               {
-                question: "Proposez-vous des ateliers pour les groupes ?",
-                answer: "Oui, nous proposons des ateliers pour groupes et des privatisations. Contactez-nous pour discuter de vos besoins spécifiques et organiser votre événement."
+                question: "Où trouver les informations pratiques (horaires, adresse) ?",
+                answer: "Toutes les informations pratiques sont disponibles sur la page Contact, avec un lien direct vers Google Maps."
               },
               {
-                question: "Acceptez-vous les paiements par carte ?",
-                answer: "Oui, nous acceptons les cartes bancaires, les espèces et les paiements sans contact. Nous acceptons également les chèques pour les réservations d'ateliers."
+                question: "Quels types d’ateliers proposez-vous ?",
+                answer: "Des ateliers de peinture sur céramique, de modelage et des initiations à la poterie sont proposés, selon les périodes et les thématiques."
               },
               {
-                question: "Vendez-vous du café en grains ?",
-                answer: "Oui, nous proposons une sélection de cafés en grains de nos torréfacteurs partenaires. N'hésitez pas à nous demander conseil pour choisir selon vos préférences."
+                question: "Les ateliers sont-ils accessibles aux débutants ?",
+                answer: "Oui. Les ateliers sont ouverts à tous, sans niveau requis. L’objectif est de découvrir et de créer dans un cadre détendu."
               },
               {
-                question: "Organisez-vous des événements privés ?",
-                answer: "Oui, nous proposons la privatisation de notre espace pour des événements privés, team building, anniversaires, EVJF, etc. Contactez-nous pour discuter de votre projet."
+                question: "Comment réserver un atelier ?",
+                answer: "Les réservations se font principalement en ligne via le site. Il est parfois possible de s’inscrire sur place, sous réserve de places disponibles."
+              },
+              {
+                question: "Combien de personnes participent à un atelier ?",
+                answer: "Les ateliers se déroulent en petits groupes afin de garantir une expérience agréable. Le nombre de places varie selon le type d’atelier."
+              },
+              {
+                question: "Quelle est la politique d’annulation ou de modification ?",
+                answer: "Les réservations peuvent être annulées ou modifiées jusqu’à 48 heures avant l’événement, par email."
+              },
+              {
+                question: "Que peut-on retrouver dans la boutique en ligne ?",
+                answer: "La boutique en ligne propose des kits créatifs, des accessoires et des objets en lien avec l’univers de Coffee Arts Paris."
+              },
+              {
+                question: "Les produits sont-ils fabriqués à la main ?",
+                answer: "Certains produits sont issus d’un travail artisanal ou de collaborations soigneusement sélectionnées, en cohérence avec l’esprit du lieu."
+              },
+              {
+                question: "Quels sont les délais d’expédition et de livraison ?",
+                answer: "Les commandes sont expédiées sous 24 à 72 heures. La livraison s’effectue ensuite en environ 5 jours en France, selon le transporteur."
+              },
+              {
+                question: "Puis-je offrir un produit ou un kit en cadeau ?",
+                answer: "Oui, les produits de la boutique se prêtent très bien aux cadeaux et peuvent être commandés directement en ligne. Il est également possible d’offrir une expérience Coffee Arts Paris grâce à nos cartes cadeaux."
+              },
+              {
+                question: "Que faire en cas de question ou de problème avec une commande ?",
+                answer: "Pour toute question liée à une commande, vous pouvez nous contacter via la page Contact."
               }
             ].map((faq, index) => (
               <motion.div
@@ -304,7 +315,7 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.05 }}
                 className="bg-white/50 backdrop-blur-xl rounded-2xl p-6 md:p-8 shadow-lg border border-white/60 hover:shadow-xl transition-all"
               >
                 <h3 className="text-xl font-bold text-primary mb-3">{faq.question}</h3>

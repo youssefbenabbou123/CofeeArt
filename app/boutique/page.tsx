@@ -156,10 +156,10 @@ export default function Boutique() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Notre <span className="text-[#8A8E74]">boutique</span>
+              La <span className="text-[#8A8E74]">boutique</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Une sélection curatée de pièces céramiques uniques, façonnées à la main pour sublimer votre quotidien.
+              Des pièces choisies avec soin, à utiliser au quotidien ou à offrir, dans l’esprit du café et de l’atelier.
             </p>
           </motion.div>
         </div>
@@ -743,7 +743,7 @@ export default function Boutique() {
           </section>
         )}
 
-      {/* Modern CTA Section */}
+      {/* Commandes sur mesure */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary" />
         {/* <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" /> */}
@@ -753,11 +753,10 @@ export default function Boutique() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-16 text-center shadow-2xl">
             <h2 className="text-4xl md:text-5xl font-title mb-6 text-white tracking-tight">
-              Commandes spéciales & en gros
+              Commandes sur mesure
             </h2>
             <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">
-              Vous recherchez une commande personnalisée ou une collaboration ?
-              Créez quelque chose d'unique avec nous.
+              Vous avez un projet particulier, une envie spécifique ou un besoin pour <br className="hidden sm:block" /> un événement ? Nous étudions les demandes au cas par cas, selon les possibilités de l’atelier.
             </p>
             <Link
               href="/contact"
