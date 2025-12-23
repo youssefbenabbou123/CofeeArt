@@ -25,6 +25,7 @@ export default function GoodiesPage() {
   const { toast } = useToast()
 
   const goodiesCategories = [
+    "Goodies / Lifestyle",
     "Tote bags",
     "Affiches / prints",
   ]
@@ -38,8 +39,26 @@ export default function GoodiesPage() {
       )
       // Filter only goodies/lifestyle products
       const goodiesProducts = data.filter(p => {
-        const category = p.category || ""
-        return category === "Tote bags" || category === "Affiches / prints"
+        const category = (p.category || "").toLowerCase()
+        const titleLower = (p.title || "").toLowerCase()
+        
+        // Check by category
+        const isGoodiesCategory = 
+          category === "goodies / lifestyle" ||
+          category === "tote bags" ||
+          category === "affiches / prints"
+        
+        // Check by title keywords (for products that might not have the right category)
+        const isGoodiesByTitle = 
+          titleLower.includes("gobelet") ||
+          titleLower.includes("isotherme") ||
+          titleLower.includes("tote") ||
+          titleLower.includes("sac") ||
+          titleLower.includes("affiche") ||
+          titleLower.includes("print") ||
+          titleLower.includes("poster")
+        
+        return isGoodiesCategory || isGoodiesByTitle
       })
       setProducts(goodiesProducts)
     } catch (error: any) {
@@ -139,7 +158,7 @@ export default function GoodiesPage() {
       >
         <div>
           <h1 className="text-4xl font-black text-primary mb-2">Goodies / Lifestyle</h1>
-          <p className="text-muted-foreground">Gérez les tote bags et affiches / prints</p>
+          <p className="text-muted-foreground">Gérez les goodies, tote bags et affiches / prints</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }}

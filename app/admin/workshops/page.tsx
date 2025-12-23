@@ -144,7 +144,7 @@ export default function WorkshopsPage() {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       level: formData.get('level') as string,
-      duration: parseInt(formData.get('duration') as string),
+      duration: Math.round(parseFloat(formData.get('duration') as string) * 60), // Convert hours to minutes
       price: parseFloat(formData.get('price') as string),
       image: imageUrl,
       status: formData.get('status') as string,
@@ -414,16 +414,19 @@ export default function WorkshopsPage() {
                     className="w-full px-4 py-2 border border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
                   >
                     <option value="débutant">Débutant</option>
+                    <option value="intermédiaire">Intermédiaire</option>
                     <option value="avancé">Avancé</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-primary mb-2">Durée (min)</label>
+                  <label className="block text-sm font-bold text-primary mb-2">Durée (heures)</label>
                   <input
                     type="number"
                     name="duration"
                     required
-                    defaultValue={editingWorkshop?.duration || 120}
+                    step="0.5"
+                    min="0.5"
+                    defaultValue={editingWorkshop?.duration ? (editingWorkshop.duration / 60).toFixed(1) : 2}
                     className="w-full px-4 py-2 border border-primary/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
                   />
                 </div>

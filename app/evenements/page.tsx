@@ -3,6 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { ScrollAnimation } from "@/components/scroll-animation"
 
 export default function Evenements() {
   const eventTypes = [
@@ -54,29 +55,19 @@ export default function Evenements() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {eventTypes.map((event, index) => {
             return (
-              <motion.div
-                key={event.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
-              >
-                <h2 className="text-3xl font-title text-[#58604C] mb-4">{event.title}</h2>
-                <p className="text-[#58604C] leading-relaxed mb-6">{event.description}</p>
-              </motion.div>
+              <ScrollAnimation key={event.title} direction="up" delay={index * 100}>
+                <div className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-10 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  <h2 className="text-3xl font-title text-[#58604C] mb-4">{event.title}</h2>
+                  <p className="text-[#58604C] leading-relaxed mb-6">{event.description}</p>
+                </div>
+              </ScrollAnimation>
             )
           })}
         </div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/20 text-center"
-        >
+        <ScrollAnimation direction="up" delay={400}>
+          <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/20 text-center">
           <h2 className="text-4xl font-title text-[#58604C] mb-6">Informations & demandes</h2>
           <p className="text-[#58604C] text-lg mb-8 max-w-4xl mx-auto">
             Nous sommes disponibles pour discuter de votre événement et des possibilités du lieu.
@@ -87,7 +78,8 @@ export default function Evenements() {
           >
             Nous contacter
           </Link>
-        </motion.div>
+          </div>
+        </ScrollAnimation>
       </section>
     </div>
   )

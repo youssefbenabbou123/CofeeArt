@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
+import { ScrollAnimation } from "@/components/scroll-animation"
 
 export default function Carte() {
 
@@ -35,45 +36,38 @@ export default function Carte() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Menu Images */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
-              style={{ backgroundColor: '#f2eadf' }}
-            >
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
-                <Image
-                  src="/MENU PARTIE 1.jpg"
-                  alt="Menu Partie 1"
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+            <ScrollAnimation direction="up" delay={0}>
+              <div className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden" style={{ backgroundColor: '#f2eadf' }}>
+                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
+                  <Image
+                    src="/MENU PARTIE 1.jpg"
+                    alt="Menu Partie 1"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
               </div>
-            </motion.div>
+            </ScrollAnimation>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
-              style={{ backgroundColor: '#f2eadf' }}
-            >
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
-                <Image
-                  src="/MENU PARTIE 2.jpg"
-                  alt="Menu Partie 2"
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+            <ScrollAnimation direction="up" delay={100}>
+              <div className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden" style={{ backgroundColor: '#f2eadf' }}>
+                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
+                  <Image
+                    src="/MENU PARTIE 2.jpg"
+                    alt="Menu Partie 2"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
               </div>
-            </motion.div>
+            </ScrollAnimation>
           </div>
 
           {/* Nos cafés */}
-          <div className="mt-12 bg-white/70 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/10 shadow-xl animate-fade-up opacity-0" style={{ animationDelay: "0.8s" }}>
+          <ScrollAnimation direction="up" delay={200}>
+            <div className="mt-12 bg-white/70 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/10 shadow-xl">
             <div className="text-center mb-8">
               <h3 className="text-3xl font-title text-[#58604C] mb-4">Nos cafés</h3>
               <p className="text-[#58604C] mb-6">Une sélection de cafés de spécialité, travaillés avec attention, de l'origine à l'extraction.</p>
@@ -99,7 +93,8 @@ export default function Carte() {
                 </div>
               ))}
             </div>
-          </div>
+            </div>
+          </ScrollAnimation>
         </div>
       </section>
 

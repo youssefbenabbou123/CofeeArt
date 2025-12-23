@@ -212,6 +212,9 @@ export interface Stats {
   unreadMessages: number;
   revenue: number;
   orders: number;
+  workshops: number;
+  blogs?: number;
+  giftCards?: number;
   salesData: Array<{ month: string; sales: number }>;
   categoryData: Array<{ name: string; value: number }>;
   registrationsData: Array<{ month: string; users: number }>;

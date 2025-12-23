@@ -11,6 +11,7 @@ import { addToWishlist, removeFromWishlist, isInWishlist, getWishlistItems, type
 import { useToast } from "@/hooks/use-toast"
 import { loadStripe } from "@stripe/stripe-js"
 import { getCurrentUser } from "@/lib/auth"
+import { ScrollAnimation } from "@/components/scroll-animation"
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '')
 
@@ -28,7 +29,8 @@ function getCategory(product: Product): string {
   if (titleLower.includes("bol")) return "Bols";
   if (titleLower.includes("vase")) return "Vases";
   if (titleLower.includes("théière") || titleLower.includes("theiere")) return "Théières";
-  if (titleLower.includes("baguette") || titleLower.includes("gobelet") || titleLower.includes("isotherme")) return "Accessoires";
+  if (titleLower.includes("gobelet") || titleLower.includes("isotherme")) return "Goodies / Lifestyle";
+  if (titleLower.includes("baguette")) return "Accessoires";
   if (titleLower.includes("pot")) return "Décoration";
   if (titleLower.includes("plateau")) return "Plateaux";
   if (titleLower.includes("tote") || titleLower.includes("sac")) return "Tote bags";
@@ -238,10 +240,10 @@ export default function Boutique() {
                 </div>
               ) : (
                 <AnimatePresence mode="popLayout">
-                  {filteredCeramicProducts.map((product) => (
+                  {filteredCeramicProducts.map((product, index) => (
+                  <ScrollAnimation key={product.id} direction="up" delay={index * 50}>
                   <motion.div
                     layout
-                    key={product.id}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
@@ -341,6 +343,7 @@ export default function Boutique() {
                     </Link>
                   </div>
                   </motion.div>
+                  </ScrollAnimation>
                 ))}
                   </AnimatePresence>
                 )}
@@ -371,10 +374,10 @@ export default function Boutique() {
                   </div>
                 ) : (
                   <AnimatePresence mode="popLayout">
-                    {filteredGoodiesProducts.map((product) => (
+                    {filteredGoodiesProducts.map((product, index) => (
+                      <ScrollAnimation key={product.id} direction="up" delay={index * 50}>
                       <motion.div
                         layout
-                        key={product.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
@@ -469,6 +472,7 @@ export default function Boutique() {
                           </Link>
                         </div>
                       </motion.div>
+                      </ScrollAnimation>
                     ))}
                   </AnimatePresence>
                 )}
@@ -489,15 +493,15 @@ export default function Boutique() {
               {!selectedGiftCardType ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {giftCardTypes.map((card, index) => (
-                    <motion.div
-                      key={card.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      onClick={() => setSelectedGiftCardType(card.id)}
-                      className="bg-white/50 backdrop-blur-xl rounded-2xl overflow-hidden shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
-                    >
+                    <ScrollAnimation key={card.id} direction="up" delay={index * 100}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        onClick={() => setSelectedGiftCardType(card.id)}
+                        className="bg-white/50 backdrop-blur-xl rounded-2xl overflow-hidden shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
+                      >
                       <div className="relative h-48">
                         <Image
                           src={card.image}
@@ -518,7 +522,8 @@ export default function Boutique() {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                      </motion.div>
+                    </ScrollAnimation>
                   ))}
                 </div>
               ) : (

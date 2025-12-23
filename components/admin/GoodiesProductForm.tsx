@@ -17,6 +17,7 @@ interface GoodiesProductFormProps {
 
 // Goodies categories only
 const goodiesCategories = [
+  "Goodies / Lifestyle",
   "Tote bags",
   "Affiches / prints",
 ]
@@ -29,6 +30,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
     description: "",
     price: "",
     image: "",
+    images: [] as string[], // Array of image URLs
     category: "",
     status: "active",
   })
@@ -55,11 +57,19 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
 
   useEffect(() => {
     if (product) {
+      // Get images array from product, fallback to single image
+      const images = product.images && product.images.length > 0 
+        ? product.images 
+        : product.image 
+          ? [product.image] 
+          : [];
+      
       setFormData({
         title: product.title || "",
         description: product.description || "",
         price: product.price?.toString() || "",
         image: product.image || "",
+        images: images,
         category: product.category || "",
         status: product.status || "active",
       })
@@ -81,7 +91,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
     if (!goodiesCategories.includes(formData.category)) {
       toast({
         title: "Erreur",
-        description: "La catégorie doit être 'Tote bags' ou 'Affiches / prints'",
+        description: "La catégorie doit être une catégorie goodies / lifestyle",
         variant: "destructive",
       })
       return
@@ -94,7 +104,8 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
         title: formData.title,
         description: formData.description || undefined,
         price: parseFloat(formData.price),
-        image: formData.image || undefined,
+        image: formData.images.length > 0 ? formData.images[0] : formData.image || undefined,
+        images: formData.images.length > 0 ? formData.images : undefined,
         category: formData.category || undefined,
         status: formData.status,
       })
@@ -260,70 +271,161 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium text-primary">Image</label>
-        <div className="flex gap-4">
+        <label className="text-sm font-medium text-primary">Images</label>
+        
+        {/* Multiple file input */}
+        <div className="space-y-4">
           <input
             type="file"
             ref={fileInputRef}
             accept="image/*"
+            multiple
             onChange={async (e) => {
-              const file = e.target.files?.[0]
-              if (file) {
+              const files = Array.from(e.target.files || [])
+              if (files.length > 0) {
                 setUploading(true)
                 try {
-                  const imageUrl = await uploadImageToCloudinary(file)
-                  setFormData({ ...formData, image: imageUrl })
+                  const uploadPromises = files.map(file => uploadImageToCloudinary(file))
+                  const imageUrls = await Promise.all(uploadPromises)
+                  
+                  setFormData({ 
+                    ...formData, 
+                    images: [...formData.images, ...imageUrls],
+                    image: formData.images.length === 0 ? imageUrls[0] : formData.image // Set first image if none exists
+                  })
+                  
                   toast({
-                    title: "Image uploadée",
-                    description: "L'image a été uploadée avec succès sur Cloudinary",
+                    title: "Images uploadées",
+                    description: `${imageUrls.length} image(s) uploadée(s) avec succès`,
                   })
                 } catch (error: any) {
                   toast({
                     title: "Erreur",
-                    description: error.message || "Erreur lors de l'upload de l'image",
+                    description: error.message || "Erreur lors de l'upload des images",
                     variant: "destructive",
                   })
                 } finally {
                   setUploading(false)
+                  // Reset input
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = ''
+                  }
                 }
               }
             }}
             disabled={loading || uploading}
             className="hidden"
           />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={loading || uploading}
-            className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-bold hover:bg-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
-          >
-            <Upload size={18} />
-            {uploading ? "Upload en cours..." : "Uploader une image"}
-          </button>
-          <input
-            type="url"
-            value={formData.image}
-            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-            placeholder="Ou entrez une URL d'image"
-            disabled={loading || uploading}
-            className="flex-1 px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-          />
-          {formData.image && (
-            <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-primary/10">
-              <Image
-                src={formData.image}
-                alt="Preview"
-                fill
-                className="object-cover"
-                onError={() => setFormData({ ...formData, image: "" })}
-              />
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, image: "" })}
-                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-              >
-                <X size={12} />
-              </button>
+          
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={loading || uploading}
+              className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-bold hover:bg-primary/20 transition-all disabled:opacity-50 flex items-center gap-2"
+            >
+              <Upload size={18} />
+              {uploading ? "Upload en cours..." : "Ajouter des images"}
+            </button>
+            
+            <input
+              type="url"
+              placeholder="Ou entrez une URL d'image"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  const url = e.currentTarget.value.trim()
+                  if (url) {
+                    setFormData({ 
+                      ...formData, 
+                      images: [...formData.images, url],
+                      image: formData.images.length === 0 ? url : formData.image
+                    })
+                    e.currentTarget.value = ''
+                    toast({
+                      title: "Image ajoutée",
+                      description: "L'URL a été ajoutée",
+                    })
+                  }
+                }
+              }}
+              disabled={loading || uploading}
+              className="flex-1 px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            />
+          </div>
+          
+          {/* Display all images with remove option */}
+          {formData.images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              {formData.images.map((img, index) => (
+                <div key={index} className="relative group">
+                  <div 
+                    className="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-primary/10 cursor-pointer"
+                    onClick={() => {
+                      if (index !== 0) {
+                        // Move image to first position
+                        const newImages = [...formData.images]
+                        const [moved] = newImages.splice(index, 1)
+                        newImages.unshift(moved)
+                        setFormData({ 
+                          ...formData, 
+                          images: newImages,
+                          image: newImages[0]
+                        })
+                        toast({
+                          title: "Image principale",
+                          description: "Cette image est maintenant l'image principale",
+                        })
+                      }
+                    }}
+                  >
+                    <Image
+                      src={img}
+                      alt={`Image ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      onError={() => {
+                        // Remove broken image
+                        const newImages = formData.images.filter((_, i) => i !== index)
+                        setFormData({ 
+                          ...formData, 
+                          images: newImages,
+                          image: index === 0 && newImages.length > 0 ? newImages[0] : formData.image
+                        })
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const newImages = formData.images.filter((_, i) => i !== index)
+                        setFormData({ 
+                          ...formData, 
+                          images: newImages,
+                          image: index === 0 && newImages.length > 0 ? newImages[0] : (newImages.length > 0 ? newImages[0] : '')
+                        })
+                        toast({
+                          title: "Image supprimée",
+                          description: "L'image a été retirée",
+                        })
+                      }}
+                      className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100 z-10"
+                    >
+                      <X size={16} />
+                    </button>
+                    {index === 0 && (
+                      <div className="absolute bottom-2 left-2 px-2 py-1 bg-primary text-white text-xs font-bold rounded">
+                        Principale
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-center mt-1 text-muted-foreground">
+                    Image {index + 1}
+                    {index === 0 && " (Principale)"}
+                    {index !== 0 && " (Cliquez pour définir comme principale)"}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>

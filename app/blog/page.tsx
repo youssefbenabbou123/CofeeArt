@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { fetchBlogs, type Blog } from "@/lib/api"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 import Image from "next/image"
+import { ScrollAnimation } from "@/components/scroll-animation"
 
 
 export default function Blog() {
@@ -29,7 +30,7 @@ export default function Blog() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner message="Chargement des blogs..." />
+        <LoadingSpinner message="Chargement du blog..." />
       </div>
     )
   }
@@ -76,52 +77,51 @@ export default function Blog() {
                 }) : ''
 
                 return (
-                  <article
-                    key={post.id}
-                    className="group relative bg-white/50 backdrop-blur-xl border border-white/60 p-10 rounded-[2rem] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] hover:border-white/80 transition-all duration-700 hover:-translate-y-6 hover:scale-[1.02] overflow-hidden animate-fade-up opacity-0 flex flex-col"
-                    style={{ animationDelay: `${0.1 + index * 0.08}s` }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <ScrollAnimation key={post.id} direction="up" delay={index * 100}>
+                    <Link href={`/blog/${post.slug || post.id}`} className="block">
+                      <article
+                        className="group relative bg-white/50 backdrop-blur-xl border border-white/60 p-10 rounded-[2rem] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] hover:border-white/80 transition-all duration-700 hover:-translate-y-6 hover:scale-[1.02] overflow-hidden flex flex-col cursor-pointer"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                    <div className="relative z-10 flex flex-col h-full">
+                        <div className="relative z-10 flex flex-col h-full">
 
-                      {/* Image */}
-                      {post.image && (
-                        <div className="relative w-full h-48 mb-6 rounded-2xl overflow-hidden">
-                          <Image
-                            src={post.image}
-                            alt={post.title}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
+                          {/* Image */}
+                          {post.image && (
+                            <div className="relative w-full h-48 mb-6 rounded-2xl overflow-hidden">
+                              <Image
+                                src={post.image}
+                                alt={post.title}
+                                fill
+                                className="object-cover group-hover:scale-110 transition-transform duration-700"
+                              />
+                            </div>
+                          )}
+
+                          {/* Content */}
+                          <div className="flex-1 space-y-4">
+                            <div className="flex items-center gap-2 text-xs text-primary/50 font-semibold uppercase tracking-wider">
+                              {date}
+                            </div>
+
+                            <h2 className="text-3xl font-black text-primary mb-4 group-hover:text-accent transition-colors duration-500 leading-tight line-clamp-2">
+                              {post.title}
+                            </h2>
+                            <p className="text-base text-primary/70 leading-relaxed line-clamp-3 font-medium">
+                              {post.excerpt || post.content.substring(0, 150) + "..."}
+                            </p>
+                          </div>
+
+                          {/* Footer */}
+                          <div className="flex items-center justify-between pt-8 border-t-2 border-primary/10 group-hover:border-accent/30 transition-colors duration-500 mt-8">
+                            <span className="inline-flex items-center justify-center text-primary font-black transition-all duration-500 text-sm uppercase tracking-wide">
+                              Lire
+                            </span>
+                          </div>
                         </div>
-                      )}
-
-                      {/* Content */}
-                      <div className="flex-1 space-y-4">
-                        <div className="flex items-center gap-2 text-xs text-primary/50 font-semibold uppercase tracking-wider">
-                          {date}
-                        </div>
-
-                        <h2 className="text-3xl font-black text-primary mb-4 group-hover:text-accent transition-colors duration-500 leading-tight line-clamp-2">
-                          {post.title}
-                        </h2>
-                        <p className="text-base text-primary/70 leading-relaxed line-clamp-3 font-medium">
-                          {post.excerpt || post.content.substring(0, 150) + "..."}
-                        </p>
-                      </div>
-
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-8 border-t-2 border-primary/10 group-hover:border-accent/30 transition-colors duration-500 mt-8">
-                        <Link
-                          href={`/blog/${post.slug || post.id}`}
-                          className="inline-flex items-center justify-center text-primary font-black transition-all duration-500 text-sm uppercase tracking-wide"
-                        >
-                          Lire
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
+                      </article>
+                    </Link>
+                  </ScrollAnimation>
                 )
               })}
             </div>

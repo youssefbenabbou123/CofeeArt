@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, ShoppingCart, Heart, Share2, Check, Truck, Shield } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Heart, Share2, Check } from "lucide-react"
 import { useState, use, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { fetchProduct, fetchProducts, type Product } from "@/lib/api"
@@ -330,21 +330,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 </button>
               </div>
 
-              {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-accent">
-                <div className="text-center">
-                  <Truck className="mx-auto mb-2 text-primary" size={24} />
-                  <p className="text-xs text-primary-light">Livraison gratuite</p>
-                </div>
-                <div className="text-center">
-                  <Shield className="mx-auto mb-2 text-primary" size={24} />
-                  <p className="text-xs text-primary-light">Paiement sécurisé</p>
-                </div>
-                <div className="text-center">
-                  <Check className="mx-auto mb-2 text-primary" size={24} />
-                  <p className="text-xs text-primary-light">Satisfait ou remboursé</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

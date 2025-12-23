@@ -87,7 +87,7 @@
 :root {
   /* Coffee Arts Paris - Color Palette */
   /* 1. #58604C - Corps de texte | 2. #8A8E74 - Titres | 3. #ACB792 - CTA 1 | 4. #EBD6C1 - CTA 2 */
-  --background: #f7f0e7; /* Fond principal */
+  --background: #ffffff; /* Fond principal */
   --foreground: #58604c; /* Corps de texte - 1ère couleur */
   --title-color: #8a8e74; /* Titres - 2ème couleur */
   --cta-primary: #acb792; /* CTA principal - 3ème couleur */
@@ -298,9 +298,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    background-color: #ffffff;
+  }
   body {
     font-family: var(--font-body);
     font-weight: 500; /* Outfit Medium for body text */
+    background-color: #ffffff;
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
   }
   
