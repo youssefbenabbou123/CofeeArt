@@ -66,7 +66,7 @@ export default function Home() {
           '/SIGNATURES - PHOTO 5.jpg',
           '/SIGNATURES - PHOTO 6.jpg',
           '/SIGNATURES - PHOTO 7.jpg',
-          '/SIGNATURES - PHOTO 8 REMPLACEMENT.jpg'
+          '/SIGNATURES - PHOTO 8 REMPLACEMENT.JPG'
         ]
 
         signaturePhotos.forEach((photo, index) => {
@@ -157,7 +157,7 @@ export default function Home() {
             id: 'signature-photo-8',
             category: 'Signature',
             name: 'Photo 8',
-            image: '/SIGNATURES - PHOTO 8 REMPLACEMENT.jpg',
+            image: '/SIGNATURES - PHOTO 8 REMPLACEMENT.JPG',
             type: 'image'
             // No link - no redirection
           }
