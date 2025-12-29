@@ -47,7 +47,7 @@ const cards = [
     body: (
       <ul className="list-disc list-inside space-y-1">
         <li>Carte bancaire</li>
-        <li>Stripe / PayPal (si activé)</li>
+        <li>Square (si activé)</li>
       </ul>
     )
   },

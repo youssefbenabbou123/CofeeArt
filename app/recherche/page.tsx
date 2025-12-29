@@ -160,14 +160,17 @@ function SearchContent() {
                       href={`/boutique/${product.id}`}
                       className="bg-white/80 backdrop-blur-xl rounded-2xl border border-primary/10 shadow-lg overflow-hidden hover:shadow-xl transition-all group"
                     >
-                      <div className="relative h-48 bg-neutral-100">
+                      <div className="relative h-48 bg-neutral-100 overflow-hidden">
                         {product.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform"
-                          />
+                          <>
+                            <Image
+                              src={product.image}
+                              alt={product.title}
+                              fill
+                              className="object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+                          </>
                         ) : null}
                       </div>
                       <div className="p-4">

@@ -66,7 +66,7 @@ export default function Home() {
           '/SIGNATURES - PHOTO 5.jpg',
           '/SIGNATURES - PHOTO 6.jpg',
           '/SIGNATURES - PHOTO 7.jpg',
-          '/SIGNATURES - PHOTO 8.jpg'
+          '/SIGNATURES - PHOTO 8 REMPLACEMENT.jpg'
         ]
 
         signaturePhotos.forEach((photo, index) => {
@@ -157,7 +157,7 @@ export default function Home() {
             id: 'signature-photo-8',
             category: 'Signature',
             name: 'Photo 8',
-            image: '/SIGNATURES - PHOTO 8.jpg',
+            image: '/SIGNATURES - PHOTO 8 REMPLACEMENT.jpg',
             type: 'image'
             // No link - no redirection
           }
@@ -186,14 +186,16 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" style={{ background: "linear-gradient(to bottom, transparent 0%, transparent 85%, rgba(255,255,255,0.3) 95%, rgba(255,255,255,0.6) 100%)" }} />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h1 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tight leading-tight animate-fade-up opacity-0 text-[#e9d7c1]" style={{ animationDelay: "0.4s" }}>
-            Café, céramique et moments partagés
+          <h1 className="text-6xl md:text-8xl font-extrabold mb-4 tracking-tight leading-tight animate-fade-up opacity-0 text-[#e9d7c1]" style={{ animationDelay: "0.4s" }}>
+            Specialty coffee & Pottery studio
           </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.5s" }}>
+            Sip, create and connect
+          </p>
           <p className="text-xl md:text-2xl text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed animate-fade-up opacity-0" style={{ animationDelay: "0.6s" }}>
             Un lieu hybride où l'on vient savourer un café, créer de ses mains et partager un moment, simplement.
           </p>
@@ -213,6 +215,75 @@ export default function Home() {
           </div>
         </div>
 
+      </section>
+
+      {/* Signatures Section - Video/Photos & New Items */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <ScrollAnimation direction="up" delay={0}>
+          <div className="text-center mb-16">
+            <h2 className="section-title mb-4 text-[#58604C]">Au cœur de Coffee Arts Paris</h2>
+            <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
+              Des images pour découvrir l'ambiance du lieu, ses matières, et les instants qui s'y vivent au quotidien.
+            </p>
+          </div>
+        </ScrollAnimation>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-neutral-200 animate-pulse rounded-2xl" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {signatureItems.map((item, index) => {
+              const content = (
+                <div className="relative group overflow-hidden rounded-2xl aspect-square cursor-pointer bg-neutral-100">
+                  {item.type === 'video' ? (
+                    <video
+                      src={item.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        // Fallback to image if video fails to load
+                        const target = e.target as HTMLVideoElement
+                        target.style.display = 'none'
+                        const img = document.createElement('img')
+                        img.src = item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'
+                        img.className = 'w-full h-full object-cover transition-all duration-700 group-hover:scale-110'
+                        target.parentElement?.appendChild(img)
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      src={item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'}
+                      alt={item.name}
+                      fill
+                      className="object-cover transition-all duration-700 group-hover:scale-110"
+                    />
+                  )}
+                  {/* Dark overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+                </div>
+              )
+
+              return item.link ? (
+                <ScrollAnimation key={item.id} direction="up" delay={index * 50}>
+                  <Link href={item.link} className="block">
+                    {content}
+                  </Link>
+                </ScrollAnimation>
+              ) : (
+                <ScrollAnimation key={item.id} direction="up" delay={index * 50}>
+                  {content}
+                </ScrollAnimation>
+              )
+            })}
+          </div>
+        )}
       </section>
 
       {/* Concept Section - Bento Grid */}
@@ -305,75 +376,6 @@ export default function Home() {
             </div>
           </ScrollAnimation>
         </div>
-      </section>
-
-      {/* Signatures Section - Video/Photos & New Items */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <ScrollAnimation direction="up" delay={0}>
-          <div className="text-center mb-16">
-            <h2 className="section-title mb-4 text-[#58604C]">Au cœur de Coffee Arts Paris</h2>
-            <p className="text-[#58604C] text-lg max-w-2xl mx-auto">
-              Des images pour découvrir l'ambiance du lieu, ses matières, et les instants qui s'y vivent au quotidien.
-            </p>
-          </div>
-        </ScrollAnimation>
-
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="aspect-[3/4] bg-neutral-200 animate-pulse rounded-2xl" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {signatureItems.map((item, index) => {
-              const content = (
-                <div className="relative group overflow-hidden rounded-2xl aspect-square cursor-pointer bg-neutral-100">
-                  {item.type === 'video' ? (
-                    <video
-                      src={item.video}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                      onError={(e) => {
-                        // Fallback to image if video fails to load
-                        const target = e.target as HTMLVideoElement
-                        target.style.display = 'none'
-                        const img = document.createElement('img')
-                        img.src = item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'
-                        img.className = 'w-full h-full object-cover transition-all duration-700 group-hover:scale-110'
-                        target.parentElement?.appendChild(img)
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      src={item.image || '/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg'}
-                      alt={item.name}
-                      fill
-                      className="object-cover transition-all duration-700 group-hover:scale-110"
-                    />
-                  )}
-                  {/* Dark overlay on hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
-                </div>
-              )
-
-              return item.link ? (
-                <ScrollAnimation key={item.id} direction="up" delay={index * 50}>
-                  <Link href={item.link} className="block">
-                    {content}
-                  </Link>
-                </ScrollAnimation>
-              ) : (
-                <ScrollAnimation key={item.id} direction="up" delay={index * 50}>
-                  {content}
-                </ScrollAnimation>
-              )
-            })}
-          </div>
-        )}
       </section>
 
       {/* Latest Products Section */}

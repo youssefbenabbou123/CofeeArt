@@ -9,7 +9,7 @@ import { fetchWorkshop, type Workshop, type WorkshopSession } from "@/lib/api"
 import { getCurrentUser } from "@/lib/auth"
 import { motion } from "framer-motion"
 import { useToast } from "@/hooks/use-toast"
-// Stripe will be handled via backend checkout session
+// Square will be handled via backend checkout session
 
 export default function WorkshopDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
@@ -170,17 +170,17 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
         throw new Error(bookingData.message || 'Erreur lors de la réservation')
       }
 
-      // If checkout URL is provided, redirect to Stripe
+      // If checkout URL is provided, redirect to Square
       if (bookingData.data.checkout_url) {
         window.location.href = bookingData.data.checkout_url
       } else if (bookingData.data.payment_intent?.client_secret) {
-        // If payment intent is created, we'll handle it with Stripe Elements
+        // Square checkout is handled via redirect to Square's hosted checkout
         // For now, redirect to a payment page or show success
         toast({
           title: "Réservation en attente de paiement",
           description: "Vous allez être redirigé vers la page de paiement",
         })
-        // TODO: Implement Stripe Elements payment form
+        // Square checkout redirects to hosted checkout page
         router.push(`/paiement?payment_intent=${bookingData.data.payment_intent.payment_intent_id}`)
       } else {
         // Booking confirmed without payment

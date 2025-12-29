@@ -2,27 +2,10 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { User, CreditCard, Lock, CheckCircle } from "lucide-react"
-import { loadStripe } from "@stripe/stripe-js"
-import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js"
-import { createOrder, confirmPayment, checkStripeConfig } from "@/lib/api"
+import { User, CreditCard, Lock } from "lucide-react"
+import { createOrder, checkSquareConfig } from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
-import { clearCart } from "@/lib/cart"
-
-// Get Stripe publishable key
-const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
-
-// Load Stripe only if key is provided
-const stripePromise = stripePublishableKey 
-  ? loadStripe(stripePublishableKey)
-  : null
-
-// Warn if Stripe key is missing (only in development)
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development' && !stripePublishableKey) {
-  console.warn('⚠️ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Stripe payments will not work.')
-  console.warn('   Add it to your .env.local file. Get your key from: https://dashboard.stripe.com/apikeys')
-}
 
 interface CheckoutFormProps {
   cartItems: Array<{ id: string; title: string; price: number; quantity: number }>
@@ -30,127 +13,10 @@ interface CheckoutFormProps {
   onSuccess?: () => void
 }
 
-// Payment form component (uses Stripe hooks)
-function PaymentForm({
-  onSuccess,
-  orderId,
-  paymentIntentId
-}: {
-  onSuccess: () => void
-  orderId: string
-  paymentIntentId: string
-}) {
-  const stripe = useStripe()
-  const elements = useElements()
-  const { toast } = useToast()
-  const [processing, setProcessing] = useState(false)
-  const [ready, setReady] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!stripe || !elements) {
-      return
-    }
-
-    setProcessing(true)
-
-    try {
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/boutique?order=success`,
-        },
-        redirect: 'if_required',
-      })
-
-      if (error) {
-        toast({
-          title: "Erreur de paiement",
-          description: error.message || "Le paiement a échoué",
-          variant: "destructive",
-        })
-      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // Confirm payment on backend to update order status
-        try {
-          await confirmPayment(orderId, paymentIntent.id)
-          console.log('✅ Payment confirmed on backend, order status updated to paid')
-        } catch (e: any) {
-          console.error('❌ Error confirming payment on backend:', e)
-          // Still show success to user since Stripe payment succeeded
-          toast({
-            title: "Paiement réussi",
-            description: "Le paiement a été traité, mais il y a eu un problème lors de la mise à jour du statut. Veuillez contacter le support.",
-            variant: "default",
-          })
-        }
-
-        // Clear cart
-        clearCart()
-
-        toast({
-          title: "Paiement réussi!",
-          description: "Votre commande a été confirmée.",
-        })
-
-        onSuccess()
-      }
-    } catch (err: any) {
-      toast({
-        title: "Erreur",
-        description: err.message || "Une erreur est survenue",
-        variant: "destructive",
-      })
-    } finally {
-      setProcessing(false)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-white rounded-xl p-4 border border-primary/10">
-        <PaymentElement
-          onReady={() => setReady(true)}
-          options={{
-            layout: 'tabs',
-          }}
-        />
-      </div>
-
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Lock size={14} />
-        <span>Paiement sécurisé par Stripe</span>
-      </div>
-
-      <button
-        type="submit"
-        disabled={!stripe || !elements || processing || !ready}
-        className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-      >
-        {processing ? (
-          <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            Traitement en cours...
-          </>
-        ) : (
-          <>
-            <CreditCard size={20} />
-            Payer maintenant
-          </>
-        )}
-      </button>
-    </form>
-  )
-}
-
 export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFormProps) {
   const { toast } = useToast()
   const router = useRouter()
-  const [step, setStep] = useState<'info' | 'payment'>('info')
   const [loading, setLoading] = useState(false)
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [orderId, setOrderId] = useState<string | null>(null)
-  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     guest_name: '',
     guest_email: '',
@@ -166,20 +32,20 @@ export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFo
     setLoading(true)
 
     try {
-      // First, check if Stripe is configured on the backend
-      const stripeConfig = await checkStripeConfig()
+      // First, check if Square is configured on the backend
+      const squareConfig = await checkSquareConfig()
       
-      if (!stripeConfig.configured) {
+      if (!squareConfig.configured) {
         toast({
           title: "Configuration requise",
-          description: "Le paiement Stripe n'est pas configuré sur le serveur. Veuillez ajouter STRIPE_SECRET_KEY à votre backend. Pour les services déployés (Vercel/Railway), ajoutez-la dans les variables d'environnement du tableau de bord.",
+          description: "Le paiement Square n'est pas configuré sur le serveur. Veuillez ajouter SQUARE_ACCESS_TOKEN et SQUARE_APPLICATION_ID à votre backend. Pour les services déployés (Vercel/Railway), ajoutez-les dans les variables d'environnement du tableau de bord.",
           variant: "destructive",
         })
         setLoading(false)
         return
       }
 
-      // Create order WITH payment intent using existing orders API
+      // Create order WITH checkout link using existing orders API
       const orderData = {
         items: cartItems.map(item => ({
           id: item.id,
@@ -187,23 +53,21 @@ export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFo
           price: item.price
         })),
         total: total,
-        create_payment_intent: true, // This tells the backend to create a Stripe PaymentIntent
+        create_payment_intent: true, // This tells the backend to create a Square checkout link
         ...formData
       }
 
       const result = await createOrder(orderData)
-      setOrderId(result.order_id)
 
-      // Check if payment intent was created
-      if (result.payment_intent?.client_secret) {
-        setClientSecret(result.payment_intent.client_secret)
-        setPaymentIntentId(result.payment_intent.payment_intent_id)
-        setStep('payment')
+      // Check if checkout link was created
+      if (result.checkout?.checkout_url) {
+        // Redirect to Square checkout page
+        window.location.href = result.checkout.checkout_url
       } else {
-        // Payment intent not available - check for error details
+        // Checkout link not available - check for error details
         const errorMsg = (result as any).payment_intent_error 
-          ? `Erreur Stripe: ${(result as any).payment_intent_error}`
-          : "Le paiement Stripe n'est pas configuré sur le serveur. Veuillez ajouter STRIPE_SECRET_KEY à votre backend."
+          ? `Erreur Square: ${(result as any).payment_intent_error}`
+          : "Le paiement Square n'est pas configuré sur le serveur. Veuillez ajouter Square credentials à votre backend."
         
         toast({
           title: "Configuration requise",
@@ -220,86 +84,6 @@ export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFo
     } finally {
       setLoading(false)
     }
-  }
-
-  const handlePaymentSuccess = () => {
-    if (onSuccess) {
-      onSuccess()
-    } else {
-      router.push('/boutique?order=success')
-    }
-  }
-
-  if (step === 'payment' && clientSecret && orderId && paymentIntentId) {
-    // Check if Stripe is configured
-    if (!stripePromise) {
-      return (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-            <h2 className="text-xl font-bold text-red-600 mb-2">Stripe non configuré</h2>
-            <p className="text-red-600">
-              Le paiement Stripe n'est pas configuré. Veuillez ajouter NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY à votre fichier .env.local
-            </p>
-          </div>
-        </motion.div>
-      )
-    }
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
-      >
-        <div className="bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <CheckCircle size={24} className="text-green-500" />
-            <h2 className="text-xl font-bold text-primary">Commande créée</h2>
-          </div>
-
-          <div className="mb-6 p-4 bg-primary/5 rounded-xl">
-            <p className="text-sm text-muted-foreground mb-1">Total à payer</p>
-            <p className="text-2xl font-bold text-primary">{total.toFixed(2)}€</p>
-          </div>
-
-          <Elements
-            stripe={stripePromise}
-            options={{
-              clientSecret,
-              appearance: {
-                theme: 'stripe',
-                variables: {
-                  colorPrimary: '#1a1a2e',
-                  colorBackground: '#ffffff',
-                  colorText: '#1a1a2e',
-                  colorDanger: '#df1b41',
-                  fontFamily: 'system-ui, sans-serif',
-                  spacingUnit: '4px',
-                  borderRadius: '12px',
-                },
-              },
-            }}
-          >
-            <PaymentForm
-              onSuccess={handlePaymentSuccess}
-              orderId={orderId}
-              paymentIntentId={paymentIntentId}
-            />
-          </Elements>
-        </div>
-
-        <button
-          onClick={() => setStep('info')}
-          className="w-full text-primary hover:text-accent transition-colors text-sm font-medium"
-        >
-          ← Modifier mes informations
-        </button>
-      </motion.div>
-    )
   }
 
   return (
@@ -436,7 +220,7 @@ export default function CheckoutForm({ cartItems, total, onSuccess }: CheckoutFo
 
       <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
         <Lock size={14} />
-        <span>Paiement sécurisé par Stripe</span>
+        <span>Paiement sécurisé par Square</span>
       </div>
     </motion.form>
   )

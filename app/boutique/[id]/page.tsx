@@ -127,15 +127,16 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                 
                 return (
                   <>
-                    <div className="aspect-square bg-neutral-warm rounded-lg overflow-hidden shadow-xl relative">
+                    <div className="aspect-square bg-neutral-warm rounded-lg overflow-hidden shadow-xl relative group">
                       <Image
                         src={images[selectedImageIndex]}
                         alt={product.title}
                         fill
-                        className="object-cover"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                         priority
                         sizes="(max-width: 1024px) 100vw, 50vw"
                       />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                       {images.length > 1 && (
                         <>
                           <button
@@ -173,7 +174,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                           <button
                             key={index}
                             onClick={() => setSelectedImageIndex(index)}
-                            className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                            className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 group ${
                               index === selectedImageIndex ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
                             }`}
                           >
@@ -181,9 +182,10 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                               src={img}
                               alt={`${product.title} - Image ${index + 1}`}
                               fill
-                              className="object-cover"
+                              className="object-cover group-hover:scale-110 transition-transform duration-700"
                               sizes="80px"
                             />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                           </button>
                         ))}
                       </div>

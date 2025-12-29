@@ -135,9 +135,9 @@ export interface OrderResponse {
     order_id: string;
     total: number;
     created_at: string;
-    payment_intent?: {
-      client_secret: string;
-      payment_intent_id: string;
+    checkout?: {
+      checkout_url: string;
+      checkout_session_id: string;
     };
   };
 }
@@ -174,18 +174,20 @@ export async function createOrder(orderData: GuestOrderData): Promise<OrderRespo
   }
 }
 
-// ========== STRIPE PAYMENTS ==========
+// ========== SQUARE PAYMENTS ==========
 
-export interface StripeConfigResponse {
+export interface SquareConfigResponse {
   success: boolean;
   configured: boolean;
-  hasSecretKey: boolean;
-  keyPrefix?: string | null;
+  hasAccessToken: boolean;
+  hasApplicationId: boolean;
+  environment?: string;
+  applicationIdPrefix?: string | null;
 }
 
-export async function checkStripeConfig(): Promise<StripeConfigResponse> {
+export async function checkSquareConfig(): Promise<SquareConfigResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/stripe/check-config`, {
+    const response = await fetch(`${API_BASE_URL}/api/square/check-config`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -193,62 +195,62 @@ export async function checkStripeConfig(): Promise<StripeConfigResponse> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to check Stripe configuration');
+      throw new Error('Failed to check Square configuration');
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error checking Stripe config:', error);
+    console.error('Error checking Square config:', error);
     return {
       success: false,
       configured: false,
-      hasSecretKey: false,
+      hasAccessToken: false,
+      hasApplicationId: false,
     };
   }
 }
 
-export interface PaymentIntentResponse {
+export interface PaymentResponse {
   success: boolean;
-  clientSecret: string;
-  paymentIntentId: string;
+  paymentId: string;
+  status: string;
 }
 
-export async function createPaymentIntent(amount: number): Promise<PaymentIntentResponse> {
+export async function createPayment(sourceId: string, amount: number, idempotencyKey: string): Promise<PaymentResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/stripe/create-payment-intent`, {
+    const response = await fetch(`${API_BASE_URL}/api/square/create-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        sourceId,
         amount,
-        currency: 'eur',
-        metadata: {
-          type: 'product_order'
-        }
+        currency: 'EUR',
+        idempotencyKey,
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to create payment intent');
+      throw new Error(errorData.message || 'Failed to create payment');
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error creating payment intent:', error);
+    console.error('Error creating payment:', error);
     throw error;
   }
 }
 
-export async function confirmPayment(orderId: string, paymentIntentId: string): Promise<void> {
+export async function confirmPayment(orderId: string, paymentId: string): Promise<void> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/stripe/confirm-payment`, {
+    const response = await fetch(`${API_BASE_URL}/api/square/confirm-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ orderId, paymentIntentId }),
+      body: JSON.stringify({ orderId, paymentId }),
     });
 
     if (!response.ok) {

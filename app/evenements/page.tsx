@@ -2,10 +2,18 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { ScrollAnimation } from "@/components/scroll-animation"
+import { useRef } from "react"
 
 export default function Evenements() {
+  const parallaxRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: parallaxRef,
+    offset: ["start end", "end start"]
+  })
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
   const eventTypes = [
     {
       title: "Inauguration",
@@ -30,7 +38,23 @@ export default function Evenements() {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
+      {/* Fixed Background Image - Behind everything */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: "url('/EVENEMENTS - PHOTO 1.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      />
+      
+      {/* White background layer on top of image */}
+      <div className="fixed inset-0 z-[1] bg-background" />
+      
+      {/* Content with parallax effect */}
+      <div className="relative z-10 bg-background">
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-32 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
@@ -64,8 +88,31 @@ export default function Evenements() {
             )
           })}
         </div>
+      </section>
 
-        {/* CTA Section */}
+      {/* Parallax Image Section - Transparent window revealing background image */}
+      <section 
+        ref={parallaxRef}
+        className="relative h-[600px] md:h-[800px] overflow-hidden"
+        style={{ backgroundColor: 'transparent' }}
+      >
+        <motion.div
+          style={{ y }}
+          className="absolute inset-0"
+        >
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/EVENEMENTS - PHOTO 1.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        </motion.div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <ScrollAnimation direction="up" delay={400}>
           <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/20 text-center">
           <h2 className="text-4xl font-title text-[#58604C] mb-6">Informations & demandes</h2>
@@ -81,6 +128,7 @@ export default function Evenements() {
           </div>
         </ScrollAnimation>
       </section>
+      </div>
     </div>
   )
 }

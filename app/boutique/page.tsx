@@ -9,11 +9,11 @@ import { fetchProducts, type Product } from "@/lib/api"
 import { addToCart } from "@/lib/cart"
 import { addToWishlist, removeFromWishlist, isInWishlist, getWishlistItems, type WishlistItem } from "@/lib/wishlist"
 import { useToast } from "@/hooks/use-toast"
-import { loadStripe } from "@stripe/stripe-js"
+// Square checkout handled via backend
 import { getCurrentUser } from "@/lib/auth"
 import { ScrollAnimation } from "@/components/scroll-animation"
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '')
+// Square checkout handled via backend
 
 // Get category from product or use title-based fallback
 function getCategory(product: Product): string {
@@ -29,11 +29,14 @@ function getCategory(product: Product): string {
   if (titleLower.includes("bol")) return "Bols";
   if (titleLower.includes("vase")) return "Vases";
   if (titleLower.includes("théière") || titleLower.includes("theiere")) return "Théières";
-  if (titleLower.includes("gobelet") || titleLower.includes("isotherme")) return "Goodies / Lifestyle";
+  if (titleLower.includes("gobelet") || titleLower.includes("isotherme") || titleLower.includes("cup")) return "Cup";
+  if (titleLower.includes("casquette") || titleLower.includes("cap")) return "Casquette";
+  if (titleLower.includes("chaussette") || titleLower.includes("sock")) return "Chaussette";
+  if (titleLower.includes("tee-shirt") || titleLower.includes("t-shirt") || titleLower.includes("tshirt")) return "Tee-shirt";
+  if (titleLower.includes("tote") || titleLower.includes("tote bag") || (titleLower.includes("sac") && !titleLower.includes("assiette"))) return "Tote bag";
   if (titleLower.includes("baguette")) return "Accessoires";
   if (titleLower.includes("pot")) return "Décoration";
   if (titleLower.includes("plateau")) return "Plateaux";
-  if (titleLower.includes("tote") || titleLower.includes("sac")) return "Tote bags";
   if (titleLower.includes("affiche") || titleLower.includes("print") || titleLower.includes("poster")) return "Affiches / prints";
   return "Autres";
 }
@@ -46,7 +49,7 @@ function isCeramic(category: string): boolean {
 
 // Check if product is goodies/lifestyle
 function isGoodies(category: string): boolean {
-  return category === "Goodies / Lifestyle" || category === "Tote bags" || category === "Affiches / prints";
+  return category === "Goodies / Lifestyle" || category === "Cup" || category === "Casquette" || category === "Chaussette" || category === "Tee-shirt" || category === "Tote bag" || category === "Tote bags" || category === "Affiches / prints";
 }
 
 const giftCardTypes = [
@@ -128,6 +131,9 @@ export default function Boutique() {
   // Ceramic categories
   const ceramicCategories = ["Tous", "Tasses", "Assiettes", "Pièces uniques", "Collections spéciales"];
   
+  // Goodies categories
+  const goodiesCategories = ["Tous", "Cup", "Casquette", "Chaussette", "Tee-shirt", "Tote bag"];
+  
   // Filter ceramic products
   const filteredCeramicProducts = selectedFilter === "Tous"
     ? ceramicProducts
@@ -144,7 +150,31 @@ export default function Boutique() {
     : ceramicProducts.filter(product => getCategory(product) === selectedFilter);
 
   // Filter goodies products
-  const filteredGoodiesProducts = goodiesProducts;
+  const filteredGoodiesProducts = selectedFilter === "Tous"
+    ? goodiesProducts
+    : goodiesProducts.filter(product => {
+        const cat = getCategory(product);
+        const filterLower = selectedFilter.toLowerCase();
+        const catLower = cat.toLowerCase();
+        
+        // Map filter names to category names
+        if (filterLower === "cup") {
+          return catLower.includes("cup") || catLower.includes("gobelet") || catLower.includes("isotherme");
+        }
+        if (filterLower === "casquette") {
+          return catLower.includes("casquette") || catLower.includes("cap");
+        }
+        if (filterLower === "chaussette") {
+          return catLower.includes("chaussette") || catLower.includes("sock");
+        }
+        if (filterLower === "tee-shirt" || filterLower === "t-shirt") {
+          return catLower.includes("tee-shirt") || catLower.includes("t-shirt") || catLower.includes("tshirt");
+        }
+        if (filterLower === "tote bag" || filterLower === "tote bag") {
+          return catLower.includes("tote") || catLower.includes("bag") || catLower.includes("sac");
+        }
+        return cat === selectedFilter;
+      });
 
   return (
     <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
@@ -219,6 +249,25 @@ export default function Boutique() {
               ))}
             </div>
           )}
+
+          {/* Filters for Goodies / Lifestyle - Smaller, secondary style */}
+          {selectedSection === "goodies" && (
+            <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar justify-start md:justify-center">
+              {goodiesCategories.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setSelectedFilter(filter)}
+                  className={`relative px-4 py-1.5 rounded-full font-normal text-xs transition-all duration-300 whitespace-nowrap ${
+                    selectedFilter === filter
+                      ? "text-primary-foreground bg-primary"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/10 bg-primary/5"
+                  }`}
+                >
+                  <span className="relative z-10">{filter}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -263,7 +312,7 @@ export default function Boutique() {
                             className="object-cover transition-transform duration-700 group-hover:scale-110"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                           />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
 
                           {/* Wishlist Button - Top Right */}
                           <div className="absolute top-4 right-4 z-20">
@@ -397,7 +446,7 @@ export default function Boutique() {
                                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                 />
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                                 {/* Wishlist Button - Top Right */}
                                 <div className="absolute top-4 right-4 z-20">
                                   <button 
@@ -695,13 +744,16 @@ export default function Boutique() {
                           }
 
                           if (data.data?.checkout_url) {
-                            // Redirect directly to Stripe Checkout URL
+                            // Redirect directly to Square Checkout URL
                             window.location.href = data.data.checkout_url
                           } else if (data.data?.checkout_session_id || data.data?.checkoutSessionId) {
                             // Fallback: if only session ID is provided, construct the URL
                             // This shouldn't happen if backend is updated, but keeping for compatibility
                             const sessionId = data.data.checkout_session_id || data.data.checkoutSessionId
-                            window.location.href = `https://checkout.stripe.com/pay/${sessionId}`
+                            // Redirect to Square checkout URL from backend
+                            if (data.data.checkout_url) {
+                              window.location.href = data.data.checkout_url
+                            }
                           } else {
                             toast({
                               title: "Succès",
@@ -752,8 +804,6 @@ export default function Boutique() {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary" />
         {/* <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay" /> */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-16 text-center shadow-2xl">

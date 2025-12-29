@@ -11,10 +11,11 @@ export default function FloatingSocialIcons() {
         href="https://www.instagram.com/coffeearts.paris/" 
         target="_blank"
         rel="noopener noreferrer"
-        className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 border border-primary/20" 
+        className="w-14 h-14 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110"
         style={{ 
+          backgroundColor: '#ACB792',
           animation: "slide-in-right 0.6s ease-out 0.3s forwards"
-        }}
+        }} 
         aria-label="Instagram Coffee Arts Paris"
       >
         <Instagram size={24} />
@@ -23,8 +24,9 @@ export default function FloatingSocialIcons() {
         href="https://www.tiktok.com/@coffeeartsparis"
         target="_blank"
         rel="noopener noreferrer"
-        className="w-14 h-14 bg-primary/90 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 relative group border border-primary/20"
+        className="w-14 h-14 backdrop-blur-sm text-primary-foreground rounded-full flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-300 shadow-xl hover:scale-110 relative group"
         style={{ 
+          backgroundColor: '#ACB792',
           animation: "slide-in-right 0.6s ease-out 0.5s forwards"
         }}
         aria-label="TikTok Coffee Arts Paris"

@@ -90,7 +90,7 @@ export default function Contact() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 text-center md:text-left">
             <div className="flex items-center gap-3">
               <Phone size={20} className="text-primary" />
-              <span className="text-primary/80">06.52.48.72.24</span>
+              <span className="text-primary/80">07.66.91.82.94</span>
             </div>
             <div className="flex items-center gap-3">
               <Mail size={20} className="text-primary" />
@@ -105,6 +105,36 @@ export default function Contact() {
             </div>
           </div>
         </ScrollAnimation>
+      </section>
+
+      {/* Map Section */}
+      <section className="py-12 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollAnimation direction="up" delay={0}>
+            <div className="text-center mb-6">
+              <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-4">Nous rendre visite</h2>
+              <div className="flex items-center justify-center gap-2 text-primary/80">
+                <MapPin size={20} className="text-primary" />
+                <span>25 Boulevard du Temple, 75003 Paris</span>
+              </div>
+            </div>
+          </ScrollAnimation>
+          <ScrollAnimation direction="up" delay={100}>
+            <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
+            <iframe
+              src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0"
+              title="Coffee Arts Paris Location"
+            />
+            </div>
+          </ScrollAnimation>
+        </div>
       </section>
 
       {/* Form Section */}
@@ -176,36 +206,6 @@ export default function Contact() {
               </form>
           </div>
         </ScrollAnimation>
-      </section>
-
-      {/* Map Section */}
-      <section className="py-12 bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollAnimation direction="up" delay={0}>
-            <div className="text-center mb-6">
-              <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-4">Nous rendre visite</h2>
-              <div className="flex items-center justify-center gap-2 text-primary/80">
-                <MapPin size={20} className="text-primary" />
-                <span>25 Boulevard du Temple, 75003 Paris</span>
-              </div>
-            </div>
-          </ScrollAnimation>
-          <ScrollAnimation direction="up" delay={100}>
-            <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
-            <iframe
-              src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0"
-              title="Coffee Arts Paris Location"
-            />
-            </div>
-          </ScrollAnimation>
-        </div>
       </section>
 
       {/* Collaborations / Influenceurs / Presse Section */}

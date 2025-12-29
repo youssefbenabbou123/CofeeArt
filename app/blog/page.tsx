@@ -95,6 +95,7 @@ export default function Blog() {
                                 fill
                                 className="object-cover group-hover:scale-110 transition-transform duration-700"
                               />
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                             </div>
                           )}
 

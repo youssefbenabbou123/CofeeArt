@@ -30,8 +30,6 @@ export default function Carte() {
 
       {/* Menu Section */}
       <section className="pt-10 pb-20 md:pt-12 relative">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Menu Images */}
@@ -40,7 +38,7 @@ export default function Carte() {
               <div className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden" style={{ backgroundColor: '#f2eadf' }}>
                 <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
                   <Image
-                    src="/MENU PARTIE 1.jpg"
+                    src="/menu1.jpg"
                     alt="Menu Partie 1"
                     fill
                     className="object-contain"

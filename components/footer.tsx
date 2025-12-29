@@ -4,7 +4,7 @@ import { Instagram } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground pt-12 pb-6 relative overflow-hidden selection:bg-primary-foreground/80 selection:text-primary">
+    <footer className="bg-primary text-primary-foreground pt-12 pb-6 relative overflow-hidden selection:bg-primary-foreground/80 selection:text-primary z-50">
       {/* Decorative background element */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
 
@@ -124,10 +124,15 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Contact</h3>
             <ul className="space-y-2">
               <li className="flex items-start gap-2 text-primary-foreground/80 group">
-                <span>06.52.48.72.24</span>
+                <span>07.66.91.82.94</span>
               </li>
               <li className="flex items-start gap-2 text-primary-foreground/80 group">
-                <span>coffeeartsparis@gmail.com</span>
+                <Link 
+                  href="mailto:coffeeartsparis@gmail.com"
+                  className="hover:text-accent transition-colors"
+                >
+                  coffeeartsparis@gmail.com
+                </Link>
               </li>
               <li className="flex items-start gap-2 text-primary-foreground/80 group">
                 <span>25 Boulevard du Temple<br />75003 Paris</span>

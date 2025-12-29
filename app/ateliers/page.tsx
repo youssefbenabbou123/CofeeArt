@@ -80,113 +80,9 @@ export default function Ateliers() {
         </div>
       </section>
 
-      {/* Atelier de céramique Section */}
-      <section className="pt-8 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Présentation */}
-        <ScrollAnimation direction="up" delay={0}>
-          <div className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 shadow-xl border border-white/60 mb-16 md:mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="space-y-5 md:space-y-6">
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                L'atelier de céramique est un espace ouvert à celles et ceux qui souhaitent découvrir la matière, expérimenter et créer de leurs mains.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Peinture sur céramique, modelage ou initiation à la poterie : chaque atelier est pensé comme un moment accessible, guidé et sans pression.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Que vous veniez pour la première fois ou que vous ayez déjà pratiqué, l'accompagnement se fait pas à pas, dans une atmosphère conviviale.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                L'objectif n'est pas la performance, mais le plaisir de créer, d'apprendre et de prendre le temps.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Les ateliers se déroulent en petits groupes, afin de garantir une expérience attentive et personnalisée pour chaque participant.
-              </p>
-            </div>
-            <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden">
-              <Image
-                src="/jennifer-burk-CHG8eMpD1Aw-unsplash.jpg"
-                alt="Atelier de céramique"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-          </div>
-        </ScrollAnimation>
-
-        {/* Techniques */}
-        <ScrollAnimation direction="up" delay={100}>
-          <div className="mb-12 mt-8 md:mt-12">
-            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-12 text-center">Une expérience pour tous</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {[
-                {
-                  title: "Ouvert à tous les niveaux",
-                  desc: "Les ateliers sont ouverts aux débutants comme aux personnes ayant déjà pratiqué. Chacun avance à son rythme, accompagné pas à pas, sans prérequis."
-                },
-                {
-                  title: "En petits groupes",
-                  desc: "Les sessions se déroulent en groupes réduits afin de garantir un accompagnement attentif. Un cadre propice à l'échange, à la concentration et au plaisir de créer."
-                },
-                {
-                  title: "Une expérience encadrée",
-                  desc: "Chaque atelier est pensé pour être fluide, structuré et accessible. Le geste, la matière et le plaisir de créer restent au cœur de la pratique."
-                }
-              ].map((item, i) => (
-                <ScrollAnimation key={item.title} direction="up" delay={200 + i * 100}>
-                  <div className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow">
-                    <h4 className="text-2xl font-bold text-[#58604C] mb-4">{item.title}</h4>
-                    <p className="text-[#58604C] leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </ScrollAnimation>
-              ))}
-            </div>
-          </div>
-        </ScrollAnimation>
-
-        {/* Photo Gallery */}
-        <div className="mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {[
-              "/CERAMIQUE - PHOTO 1.jpg",
-              "/CERAMIQUE - PHOTO 2.jpg",
-              "/CERAMIQUE - PHOTO 3.jpg",
-              "/CERAMIQUE - PHOTO 4.jpg"
-            ].map((photo, i) => (
-              <motion.div
-                key={photo}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-white/60 hover:shadow-xl transition-shadow"
-              >
-                <Image
-                  src={photo}
-                  alt={`Céramique ${i + 1}`}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Nos ateliers disponibles Section */}
       <section className="py-20 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollAnimation direction="up" delay={0}>
-            <div className="mb-16 text-center">
-              <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-6">Nos ateliers</h2>
-              <p className="text-xl text-[#58604C] max-w-2xl mx-auto">
-                Choisissez votre atelier et réservez un moment dédié à la création.
-              </p>
-            </div>
-          </ScrollAnimation>
           {loading ? (
             <div className="flex justify-center py-20">
               <LoadingSpinner message="Chargement des ateliers..." />
@@ -215,6 +111,7 @@ export default function Ateliers() {
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-700"
                         />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                       </div>
                     )}
 
@@ -268,6 +165,104 @@ export default function Ateliers() {
               })}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Atelier de céramique Section */}
+      <section className="pt-8 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Présentation */}
+        <ScrollAnimation direction="up" delay={0}>
+          <div className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 shadow-xl border border-white/60 mb-16 md:mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-5 md:space-y-6">
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                L'atelier de céramique est un espace ouvert à celles et ceux qui souhaitent découvrir la matière, expérimenter et créer de leurs mains.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Peinture sur céramique, modelage ou initiation à la poterie : chaque atelier est pensé comme un moment accessible, guidé et sans pression.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Que vous veniez pour la première fois ou que vous ayez déjà pratiqué, l'accompagnement se fait pas à pas, dans une atmosphère conviviale.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                L'objectif n'est pas la performance, mais le plaisir de créer, d'apprendre et de prendre le temps.
+              </p>
+              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                Les ateliers se déroulent en petits groupes, afin de garantir une expérience attentive et personnalisée pour chaque participant.
+              </p>
+            </div>
+            <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden group">
+              <Image
+                src="/jennifer-burk-CHG8eMpD1Aw-unsplash.jpg"
+                alt="Atelier de céramique"
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+            </div>
+          </div>
+          </div>
+        </ScrollAnimation>
+
+        {/* Techniques */}
+        <ScrollAnimation direction="up" delay={100}>
+          <div className="mb-12 mt-8 md:mt-12">
+            <h2 className="text-4xl md:text-5xl font-title text-[#58604C] mb-12 text-center">Une expérience pour tous</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {[
+                {
+                  title: "Ouvert à tous les niveaux",
+                  desc: "Les ateliers sont ouverts aux débutants comme aux personnes ayant déjà pratiqué. Chacun avance à son rythme, accompagné pas à pas, sans prérequis."
+                },
+                {
+                  title: "En petits groupes",
+                  desc: "Les sessions se déroulent en groupes réduits afin de garantir un accompagnement attentif. Un cadre propice à l'échange, à la concentration et au plaisir de créer."
+                },
+                {
+                  title: "Une expérience encadrée",
+                  desc: "Chaque atelier est pensé pour être fluide, structuré et accessible. Le geste, la matière et le plaisir de créer restent au cœur de la pratique."
+                }
+              ].map((item, i) => (
+                <ScrollAnimation key={item.title} direction="up" delay={200 + i * 100}>
+                  <div className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow">
+                    <h4 className="text-2xl font-bold text-[#58604C] mb-4">{item.title}</h4>
+                    <p className="text-[#58604C] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </ScrollAnimation>
+              ))}
+            </div>
+          </div>
+        </ScrollAnimation>
+
+        {/* Photo Gallery */}
+        <div className="mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              "/CERAMIQUE - PHOTO 1.jpg",
+              "/CERAMIQUE - PHOTO 2.jpg",
+              "/CERAMIQUE - PHOTO 3.jpg",
+              "/CERAMIQUE - PHOTO 4.jpg"
+            ].map((photo, i) => (
+              <motion.div
+                key={photo}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-white/60 hover:shadow-xl transition-shadow group"
+              >
+                <Image
+                  src={photo}
+                  alt={`Céramique ${i + 1}`}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -6,11 +6,11 @@ import { Gift, Check } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
-import { loadStripe } from "@stripe/stripe-js"
+// Square checkout handled via backend
 import { getCurrentUser } from "@/lib/auth"
 import { useRouter } from "next/navigation"
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '')
+// Square checkout handled via backend
 
 const giftCardTypes = [
   {
@@ -146,12 +146,15 @@ export default function GiftCardsPage() {
       }
 
       if (data.data.checkout_url) {
-        // Redirect directly to Stripe Checkout URL
+        // Redirect directly to Square Checkout URL
         window.location.href = data.data.checkout_url
       } else if (data.data.checkout_session_id) {
         // Fallback: if only session ID is provided, construct the URL
         // This shouldn't happen if backend is updated, but keeping for compatibility
-        window.location.href = `https://checkout.stripe.com/pay/${data.data.checkout_session_id}`
+        // Redirect to Square checkout URL from backend
+        if (data.data.checkout_url) {
+          window.location.href = data.data.checkout_url
+        }
       } else {
         toast({
           title: "Succès",
@@ -200,13 +203,14 @@ export default function GiftCardsPage() {
                   onClick={() => setSelectedType(card.id)}
                   className="bg-white/50 backdrop-blur-xl rounded-2xl overflow-hidden shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
                 >
-                  <div className="relative h-48">
+                  <div className="relative h-48 overflow-hidden group">
                     <Image
                       src={card.image}
                       alt={card.title}
                       fill
-                      className="object-cover"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
                   </div>
                   <div className="p-6">
                     <h3 className="text-2xl font-black text-primary mb-3">{card.title}</h3>
