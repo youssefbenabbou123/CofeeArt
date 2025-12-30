@@ -5,7 +5,7 @@ import Image from "next/image"
 import { ShoppingCart, Heart, Gift } from "lucide-react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { fetchProducts, type Product } from "@/lib/api"
+import { fetchProducts, fetchProductCategories, type Product, type ProductCategory } from "@/lib/api"
 import { addToCart } from "@/lib/cart"
 import { addToWishlist, removeFromWishlist, isInWishlist, getWishlistItems, type WishlistItem } from "@/lib/wishlist"
 import { useToast } from "@/hooks/use-toast"
@@ -43,13 +43,16 @@ function getCategory(product: Product): string {
 
 // Check if product is ceramic (belongs to Céramiques section)
 function isCeramic(category: string): boolean {
-  const ceramicCategories = ["Céramiques", "Tasses", "Assiettes", "Bols", "Vases", "Théières", "Décoration", "Plateaux", "Accessoires"];
-  return ceramicCategories.includes(category);
+  const ceramicBase = ["Tasses", "Assiettes", "Pièces uniques", "Collections spéciales"];
+  const oldCeramic = ["Bols", "Vases", "Théières", "Décoration", "Plateaux", "Accessoires", "Céramiques"];
+  return ceramicBase.includes(category) || oldCeramic.includes(category);
 }
 
 // Check if product is goodies/lifestyle
 function isGoodies(category: string): boolean {
-  return category === "Goodies / Lifestyle" || category === "Cup" || category === "Casquette" || category === "Chaussette" || category === "Tee-shirt" || category === "Tote bag" || category === "Tote bags" || category === "Affiches / prints";
+  const goodiesBase = ["Cup", "Casquette", "Chaussette", "Tee-shirt", "Tote bag"];
+  const oldGoodies = ["Goodies / Lifestyle", "Tote bags", "Affiches / prints"];
+  return goodiesBase.includes(category) || oldGoodies.includes(category);
 }
 
 const giftCardTypes = [
@@ -92,6 +95,8 @@ export default function Boutique() {
   const [purchaserName, setPurchaserName] = useState("")
   const [purchaserEmail, setPurchaserEmail] = useState("")
   const [giftCardLoading, setGiftCardLoading] = useState(false)
+  const [ceramicCategories, setCeramicCategories] = useState<string[]>(["Tous", "Tasses", "Assiettes", "Pièces uniques", "Collections spéciales"])
+  const [goodiesCategories, setGoodiesCategories] = useState<string[]>(["Tous", "Cup", "Casquette", "Chaussette", "Tee-shirt", "Tote bag"])
   const { toast } = useToast()
 
   useEffect(() => {
@@ -101,6 +106,72 @@ export default function Boutique() {
       setLoading(false);
     }
     loadProducts();
+  }, [])
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const allCategories = await fetchProductCategories();
+        
+        // Base categories
+        const ceramicBase = ["Tasses", "Assiettes", "Pièces uniques", "Collections spéciales"];
+        const goodiesBase = ["Cup", "Casquette", "Chaussette", "Tee-shirt", "Tote bag"];
+        const oldGoodiesCategories = ["Goodies / Lifestyle", "Tote bags", "Affiches / prints"];
+        const oldCeramicCategories = ["Bols", "Vases", "Théières", "Décoration", "Plateaux", "Accessoires"];
+        
+        // Get ceramic categories: base + old ceramic + categories with type='ceramic'
+        const ceramicCats = allCategories
+          .filter(cat => {
+            const name = cat.name;
+            return ceramicBase.includes(name) || 
+                   oldCeramicCategories.includes(name) ||
+                   cat.type === 'ceramic';
+          })
+          .map(cat => cat.name);
+        
+        // Get goodies categories: base + old goodies + categories with type='goodies'
+        const goodiesCats = allCategories
+          .filter(cat => {
+            const name = cat.name;
+            return goodiesBase.includes(name) || 
+                   oldGoodiesCategories.includes(name) ||
+                   cat.type === 'goodies';
+          })
+          .map(cat => cat.name);
+
+        // Build final lists: "Tous" first, then base categories, then custom categories
+        const finalCeramic = ["Tous"];
+        ceramicBase.forEach(cat => {
+          if (ceramicCats.includes(cat) || !allCategories.some(c => c.name === cat)) {
+            finalCeramic.push(cat);
+          }
+        });
+        ceramicCats.forEach(cat => {
+          if (!ceramicBase.includes(cat) && !oldCeramicCategories.includes(cat)) {
+            finalCeramic.push(cat);
+          }
+        });
+        
+        const finalGoodies = ["Tous"];
+        goodiesBase.forEach(cat => {
+          if (goodiesCats.includes(cat) || !allCategories.some(c => c.name === cat)) {
+            finalGoodies.push(cat);
+          }
+        });
+        oldGoodiesCategories.forEach(cat => {
+          if (goodiesCats.includes(cat)) {
+            finalGoodies.push(cat);
+          }
+        });
+        
+        setCeramicCategories(Array.from(new Set(finalCeramic)));
+        setGoodiesCategories(Array.from(new Set(finalGoodies)));
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        // Keep defaults if error
+      }
+    }
+    loadCategories();
   }, [])
 
   // Load wishlist on mount and listen for updates
@@ -128,11 +199,7 @@ export default function Boutique() {
     return isGoodies(cat);
   });
 
-  // Ceramic categories
-  const ceramicCategories = ["Tous", "Tasses", "Assiettes", "Pièces uniques", "Collections spéciales"];
-  
-  // Goodies categories
-  const goodiesCategories = ["Tous", "Cup", "Casquette", "Chaussette", "Tee-shirt", "Tote bag"];
+  // Categories are now loaded from API (state variables above)
   
   // Filter ceramic products
   const filteredCeramicProducts = selectedFilter === "Tous"

@@ -4,7 +4,7 @@ import { useState, useEffect, use } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Calendar, Clock, Users, MapPin, Check, CreditCard } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, Users, MapPin, Check, CreditCard, Gift } from "lucide-react"
 import { fetchWorkshop, type Workshop, type WorkshopSession } from "@/lib/api"
 import { getCurrentUser } from "@/lib/auth"
 import { motion } from "framer-motion"
@@ -26,6 +26,9 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
     email: "",
     phone: ""
   })
+  const [giftCardCode, setGiftCardCode] = useState('')
+  const [giftCardApplied, setGiftCardApplied] = useState<any>(null)
+  const [checkingGiftCard, setCheckingGiftCard] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -147,6 +150,9 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
       
+      // Calculate total price
+      const totalPrice = parseFloat(workshop.price || 0) * quantity
+      
       // First, create the booking
       const bookingResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'}/api/workshops/${id}/book`, {
         method: 'POST',
@@ -160,6 +166,7 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
           guest_name: !user ? guestInfo.name : undefined,
           guest_email: !user ? guestInfo.email : undefined,
           guest_phone: guestInfo.phone || undefined,
+          gift_card_code: giftCardApplied?.card_code || giftCardCode || undefined,
           create_payment_intent: true
         })
       })
@@ -168,6 +175,16 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
 
       if (!bookingData.success) {
         throw new Error(bookingData.message || 'Erreur lors de la réservation')
+      }
+
+      // If gift card fully covered the booking
+      if (bookingData.data.gift_card?.fully_covered) {
+        toast({
+          title: "Réservation confirmée",
+          description: "Votre réservation a été payée avec votre carte cadeau !",
+        })
+        router.push('/ateliers?success=true')
+        return
       }
 
       // If checkout URL is provided, redirect to Square
@@ -354,6 +371,15 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
               <label className="block text-sm font-bold text-primary/70 mb-2">
                 Choisir une session
               </label>
+              {sessions.length === 0 ? (
+                <div className="p-6 bg-amber-50 border border-amber-200 rounded-xl text-center">
+                  <p className="text-amber-800 font-bold mb-2">Aucune session disponible</p>
+                  <p className="text-amber-600 text-sm">
+                    Toutes les sessions sont complètes ou passées. 
+                    Revenez bientôt pour de nouvelles dates !
+                  </p>
+                </div>
+              ) : (
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {sessions.filter(s => s.status === 'active').map((session) => {
                   const spots = session.capacity - session.booked_count
@@ -396,6 +422,7 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
                   )
                 })}
               </div>
+              )}
             </div>
 
             {/* Quantity */}
@@ -463,8 +490,134 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
               </div>
             )}
 
+            {/* Gift Card Section */}
+            <div className="mb-6 space-y-4">
+              <h3 className="text-lg font-bold text-primary/70 flex items-center gap-2">
+                <Gift size={20} />
+                Carte cadeau
+              </h3>
+              {!giftCardApplied ? (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={giftCardCode}
+                    onChange={(e) => setGiftCardCode(e.target.value.toUpperCase())}
+                    placeholder="Entrez votre code"
+                    className="flex-1 px-4 py-3 border-2 border-primary/10 rounded-xl focus:border-primary focus:outline-none"
+                    maxLength={8}
+                  />
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!giftCardCode.trim()) {
+                        toast({
+                          title: "Code requis",
+                          description: "Veuillez entrer un code de carte cadeau",
+                          variant: "destructive",
+                        })
+                        return
+                      }
+
+                      setCheckingGiftCard(true)
+                      try {
+                        const totalPrice = parseFloat(workshop.price || 0) * quantity
+                        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://cofee-art-backend.vercel.app'
+                        const response = await fetch(`${apiUrl}/api/gift-cards/apply`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            code: giftCardCode.toUpperCase(),
+                            order_total: totalPrice
+                          })
+                        })
+
+                        const data = await response.json()
+
+                        if (!data.success) {
+                          throw new Error(data.message || 'Erreur lors de l\'application de la carte cadeau')
+                        }
+
+                        setGiftCardApplied(data.data)
+                        toast({
+                          title: "Carte cadeau appliquée",
+                          description: `${data.data.amount_applied}€ appliqués. Reste à payer: ${data.data.remaining_to_pay}€`,
+                        })
+                      } catch (error: any) {
+                        toast({
+                          title: "Erreur",
+                          description: error.message || "Impossible d'appliquer la carte cadeau",
+                          variant: "destructive",
+                        })
+                        setGiftCardApplied(null)
+                      } finally {
+                        setCheckingGiftCard(false)
+                      }
+                    }}
+                    disabled={checkingGiftCard || !giftCardCode.trim()}
+                    className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {checkingGiftCard ? 'Vérification...' : 'Appliquer'}
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-bold text-green-800">Carte cadeau appliquée</p>
+                      <p className="text-sm text-green-600">
+                        Code: {giftCardApplied.card_code} • 
+                        {giftCardApplied.amount_applied}€ appliqués • 
+                        Reste: {giftCardApplied.remaining_to_pay}€
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setGiftCardApplied(null)
+                        setGiftCardCode('')
+                      }}
+                      className="text-red-600 hover:text-red-800 font-bold text-sm"
+                    >
+                      Retirer
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Total */}
             <div className="mb-6 p-4 bg-primary/5 rounded-xl">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-primary">Sous-total :</span>
+                  <span className="text-xl font-black text-primary">
+                    {w?.price ? ((typeof w.price === 'number' ? w.price : parseFloat(w.price)) * quantity).toFixed(2) : "0.00"}€
+                  </span>
+                </div>
+                {giftCardApplied && (
+                  <>
+                    <div className="flex justify-between items-center text-green-600">
+                      <span className="font-bold">Carte cadeau :</span>
+                      <span className="font-bold">-{giftCardApplied.amount_applied.toFixed(2)}€</span>
+                    </div>
+                    <div className="border-t border-primary/20 pt-2 flex justify-between items-center">
+                      <span className="font-bold text-primary">Total :</span>
+                      <span className="text-2xl font-black text-primary">
+                        {giftCardApplied.remaining_to_pay.toFixed(2)}€
+                      </span>
+                    </div>
+                  </>
+                )}
+                {!giftCardApplied && (
+                  <div className="border-t border-primary/20 pt-2 flex justify-between items-center">
+                    <span className="font-bold text-primary">Total :</span>
+                    <span className="text-2xl font-black text-primary">
+                      {w?.price ? ((typeof w.price === 'number' ? w.price : parseFloat(w.price)) * quantity).toFixed(2) : "0.00"}€
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
               <div className="flex justify-between items-center">
                 <span className="font-bold text-primary">Total :</span>
                 <span className="text-2xl font-black text-primary">

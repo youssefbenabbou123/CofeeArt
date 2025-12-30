@@ -1,13 +1,34 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { Plus, Calendar, Users, Edit, Trash2, Eye, Upload, X } from "lucide-react"
-import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, type Workshop, fetchWorkshopReservations, type WorkshopReservation } from "@/lib/admin-api"
+import { motion, AnimatePresence } from "framer-motion"
+import { Plus, Calendar, Users, Edit, Trash2, Eye, Upload, X, AlertTriangle, RefreshCw, Ban, DollarSign } from "lucide-react"
+import { fetchAdminWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, type Workshop, fetchWorkshopReservations, type WorkshopReservation, cancelBooking, refundBooking } from "@/lib/admin-api"
 import { useToast } from "@/hooks/use-toast"
 import LoadingSpinner from "@/components/admin/LoadingSpinner"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
 import WorkshopDatePicker from "@/components/admin/WorkshopDatePicker"
+
+// Permanent statuses that cannot be changed
+const PERMANENT_STATUSES = ['cancelled', 'refunded']
+
+// Status configuration
+const STATUS_CONFIG: Record<string, { label: string; color: string; bgColor: string; confirmWord?: string }> = {
+  confirmed: { label: 'Confirmé', color: '#10b981', bgColor: '#d1fae5' },
+  pending: { label: 'En attente', color: '#f59e0b', bgColor: '#fef3c7' },
+  waitlist: { label: "Liste d'attente", color: '#3b82f6', bgColor: '#dbeafe' },
+  cancelled: { label: 'Annulé', color: '#ef4444', bgColor: '#fee2e2', confirmWord: 'ANNULER' },
+  refunded: { label: 'Remboursé', color: '#6b7280', bgColor: '#f3f4f6', confirmWord: 'REMBOURSER' },
+}
+
+interface ReservationAction {
+  isOpen: boolean
+  reservationId: string
+  workshopId: string
+  action: 'cancel' | 'refund'
+  typedConfirmation: string
+  reservation?: WorkshopReservation
+}
 
 export default function WorkshopsPage() {
   const [workshops, setWorkshops] = useState<Workshop[]>([])
@@ -22,6 +43,14 @@ export default function WorkshopsPage() {
   const [selectedWorkshopForReservations, setSelectedWorkshopForReservations] = useState<string | null>(null)
   const [workshopReservations, setWorkshopReservations] = useState<Record<string, WorkshopReservation[]>>({})
   const [loadingReservations, setLoadingReservations] = useState<Record<string, boolean>>({})
+  const [processingAction, setProcessingAction] = useState(false)
+  const [actionModal, setActionModal] = useState<ReservationAction>({
+    isOpen: false,
+    reservationId: '',
+    workshopId: '',
+    action: 'cancel',
+    typedConfirmation: ''
+  })
   const { toast } = useToast()
 
   const loadWorkshops = async () => {
@@ -44,8 +73,8 @@ export default function WorkshopsPage() {
     loadWorkshops()
   }, [])
 
-  const loadWorkshopReservations = async (workshopId: string) => {
-    if (workshopReservations[workshopId]) {
+  const loadWorkshopReservations = async (workshopId: string, forceReload = false) => {
+    if (workshopReservations[workshopId] && !forceReload) {
       // Already loaded, just toggle
       setSelectedWorkshopForReservations(
         selectedWorkshopForReservations === workshopId ? null : workshopId
@@ -66,6 +95,71 @@ export default function WorkshopsPage() {
       })
     } finally {
       setLoadingReservations(prev => ({ ...prev, [workshopId]: false }))
+    }
+  }
+
+  const openActionModal = (reservation: WorkshopReservation, workshopId: string, action: 'cancel' | 'refund') => {
+    setActionModal({
+      isOpen: true,
+      reservationId: reservation.id,
+      workshopId,
+      action,
+      typedConfirmation: '',
+      reservation
+    })
+  }
+
+  const closeActionModal = () => {
+    setActionModal({
+      isOpen: false,
+      reservationId: '',
+      workshopId: '',
+      action: 'cancel',
+      typedConfirmation: ''
+    })
+  }
+
+  const handleConfirmAction = async () => {
+    const { reservationId, workshopId, action, typedConfirmation } = actionModal
+    const expectedWord = action === 'refund' ? 'REMBOURSER' : 'ANNULER'
+
+    if (typedConfirmation.toUpperCase() !== expectedWord) {
+      toast({
+        title: "Confirmation incorrecte",
+        description: `Veuillez taper "${expectedWord}" pour confirmer`,
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      setProcessingAction(true)
+      
+      if (action === 'refund') {
+        await refundBooking(reservationId, 'Demande client', true)
+        toast({
+          title: "Remboursement effectué",
+          description: "La réservation a été remboursée avec succès",
+        })
+      } else {
+        await cancelBooking(reservationId, 'Demande client', true)
+        toast({
+          title: "Réservation annulée",
+          description: "La réservation a été annulée",
+        })
+      }
+
+      closeActionModal()
+      // Reload reservations
+      await loadWorkshopReservations(workshopId, true)
+    } catch (error: any) {
+      toast({
+        title: "Erreur",
+        description: error.message || "Impossible d'effectuer l'action",
+        variant: "destructive",
+      })
+    } finally {
+      setProcessingAction(false)
     }
   }
 
@@ -285,67 +379,84 @@ export default function WorkshopsPage() {
                   <div className="space-y-3">
                     <h4 className="font-bold text-primary mb-3">Réservations ({workshopReservations[workshop.id].length})</h4>
                     <div className="max-h-96 overflow-y-auto space-y-2">
-                      {workshopReservations[workshop.id].map((reservation) => (
-                        <div
-                          key={reservation.id}
-                          className="bg-white/50 rounded-lg p-3 border border-primary/10"
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1">
-                              <div className="font-semibold text-primary">
-                                {reservation.user_name || reservation.guest_name || 'Inconnu'}
+                      {workshopReservations[workshop.id].map((reservation) => {
+                        const isPermanent = PERMANENT_STATUSES.includes(reservation.status)
+                        const statusConfig = STATUS_CONFIG[reservation.status] || STATUS_CONFIG.pending
+                        
+                        return (
+                          <div
+                            key={reservation.id}
+                            className="bg-white/50 rounded-lg p-3 border border-primary/10"
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="flex-1">
+                                <div className="font-semibold text-primary">
+                                  {reservation.user_name || reservation.guest_name || 'Inconnu'}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {reservation.user_email || reservation.guest_email || ''}
+                                  {reservation.guest_phone && ` • ${reservation.guest_phone}`}
+                                </div>
                               </div>
-                              <div className="text-sm text-muted-foreground">
-                                {reservation.user_email || reservation.guest_email || ''}
-                                {reservation.guest_phone && ` • ${reservation.guest_phone}`}
+                              <span
+                                className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1"
+                                style={{
+                                  backgroundColor: statusConfig.bgColor,
+                                  color: statusConfig.color
+                                }}
+                              >
+                                {statusConfig.label}
+                                {reservation.status === 'waitlist' && reservation.waitlist_position && ` #${reservation.waitlist_position}`}
+                                {isPermanent && <span className="text-[10px]">🔒</span>}
+                              </span>
+                            </div>
+                            <div className="text-sm text-primary space-y-1">
+                              {reservation.session_date && (
+                                <div>
+                                  📅 {new Date(reservation.session_date).toLocaleDateString('fr-FR', {
+                                    weekday: 'long',
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                  })}
+                                  {reservation.session_time && ` à ${reservation.session_time}`}
+                                </div>
+                              )}
+                              <div>
+                                👥 {reservation.quantity} place{reservation.quantity > 1 ? 's' : ''}
+                                {reservation.session_capacity && reservation.booked_count !== undefined && (
+                                  <span className="text-muted-foreground ml-2">
+                                    ({reservation.booked_count}/{reservation.session_capacity})
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Réservé le {new Date(reservation.created_at).toLocaleDateString('fr-FR')}
                               </div>
                             </div>
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-semibold ${
-                                reservation.status === 'confirmed'
-                                  ? 'bg-green-100 text-green-800'
-                                  : reservation.status === 'pending'
-                                  ? 'bg-yellow-100 text-yellow-800'
-                                  : reservation.status === 'waitlist'
-                                  ? 'bg-blue-100 text-blue-800'
-                                  : 'bg-red-100 text-red-800'
-                              }`}
-                            >
-                              {reservation.status === 'confirmed'
-                                ? 'Confirmé'
-                                : reservation.status === 'pending'
-                                ? 'En attente'
-                                : reservation.status === 'waitlist'
-                                ? `Liste d'attente${reservation.waitlist_position ? ` #${reservation.waitlist_position}` : ''}`
-                                : 'Annulé'}
-                            </span>
-                          </div>
-                          <div className="text-sm text-primary space-y-1">
-                            {reservation.session_date && (
-                              <div>
-                                📅 {new Date(reservation.session_date).toLocaleDateString('fr-FR', {
-                                  weekday: 'long',
-                                  day: 'numeric',
-                                  month: 'long',
-                                  year: 'numeric'
-                                })}
-                                {reservation.session_time && ` à ${reservation.session_time}`}
+                            
+                            {/* Action Buttons */}
+                            {!isPermanent && (
+                              <div className="mt-3 pt-3 border-t border-primary/10 flex gap-2">
+                                <button
+                                  onClick={() => openActionModal(reservation, workshop.id, 'cancel')}
+                                  className="flex-1 px-3 py-1.5 text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors flex items-center justify-center gap-1"
+                                >
+                                  <Ban size={12} />
+                                  Annuler
+                                </button>
+                                <button
+                                  onClick={() => openActionModal(reservation, workshop.id, 'refund')}
+                                  className="flex-1 px-3 py-1.5 text-xs font-medium bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-1"
+                                >
+                                  <DollarSign size={12} />
+                                  Rembourser
+                                </button>
                               </div>
                             )}
-                            <div>
-                              👥 {reservation.quantity} place{reservation.quantity > 1 ? 's' : ''}
-                              {reservation.session_capacity && reservation.booked_count !== undefined && (
-                                <span className="text-muted-foreground ml-2">
-                                  ({reservation.booked_count}/{reservation.session_capacity})
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              Réservé le {new Date(reservation.created_at).toLocaleDateString('fr-FR')}
-                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   </div>
                 ) : (
@@ -551,6 +662,122 @@ export default function WorkshopsPage() {
           </motion.div>
         </div>
       )}
+
+      {/* Reservation Action Confirmation Modal */}
+      <AnimatePresence>
+        {actionModal.isOpen && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[20000] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div 
+                    className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                      actionModal.action === 'refund' ? 'bg-red-100' : 'bg-amber-100'
+                    }`}
+                  >
+                    <AlertTriangle 
+                      size={24} 
+                      className={actionModal.action === 'refund' ? 'text-red-600' : 'text-amber-600'}
+                    />
+                  </div>
+                  <h2 className="text-xl font-bold text-primary">
+                    {actionModal.action === 'refund' ? 'Rembourser la réservation' : 'Annuler la réservation'}
+                  </h2>
+                </div>
+                <button
+                  onClick={closeActionModal}
+                  className="text-muted-foreground hover:text-primary p-1"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-muted-foreground mb-4">
+                  {actionModal.action === 'refund' ? (
+                    <>
+                      Vous êtes sur le point de <strong className="text-red-500">rembourser</strong> la réservation de 
+                      <strong> {actionModal.reservation?.user_name || actionModal.reservation?.guest_name || 'ce client'}</strong>.
+                      <br /><br />
+                      Le montant sera remboursé au client (Square et/ou carte cadeau).
+                      <br />
+                      Cette action est <strong className="text-red-500">irréversible</strong>.
+                    </>
+                  ) : (
+                    <>
+                      Vous êtes sur le point d'<strong className="text-amber-600">annuler</strong> la réservation de 
+                      <strong> {actionModal.reservation?.user_name || actionModal.reservation?.guest_name || 'ce client'}</strong>.
+                      <br /><br />
+                      Le montant sera <strong className="text-amber-600">automatiquement remboursé</strong> au client (Square et/ou carte cadeau).
+                      <br />
+                      Cette action est <strong className="text-amber-600">irréversible</strong>.
+                    </>
+                  )}
+                </p>
+                <div className={`border rounded-xl p-4 mb-4 ${
+                  actionModal.action === 'refund' ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'
+                }`}>
+                  <p className={`text-sm font-medium ${
+                    actionModal.action === 'refund' ? 'text-red-800' : 'text-amber-800'
+                  }`}>
+                    Pour confirmer, tapez <strong className={`font-mono px-2 py-0.5 rounded ${
+                      actionModal.action === 'refund' ? 'bg-red-100' : 'bg-amber-100'
+                    }`}>
+                      {actionModal.action === 'refund' ? 'REMBOURSER' : 'ANNULER'}
+                    </strong> ci-dessous :
+                  </p>
+                </div>
+                <input
+                  type="text"
+                  value={actionModal.typedConfirmation}
+                  onChange={(e) => setActionModal({
+                    ...actionModal,
+                    typedConfirmation: e.target.value
+                  })}
+                  placeholder={actionModal.action === 'refund' ? 'Tapez REMBOURSER' : 'Tapez ANNULER'}
+                  className="w-full px-4 py-3 border-2 border-primary/20 rounded-xl focus:outline-none focus:border-primary/50 text-center font-mono text-lg uppercase"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={closeActionModal}
+                  className="flex-1 px-4 py-3 border border-primary/20 text-primary rounded-xl hover:bg-primary/5 transition-colors font-medium"
+                >
+                  Retour
+                </button>
+                <button
+                  onClick={handleConfirmAction}
+                  disabled={
+                    processingAction || 
+                    actionModal.typedConfirmation.toUpperCase() !== (actionModal.action === 'refund' ? 'REMBOURSER' : 'ANNULER')
+                  }
+                  className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all ${
+                    actionModal.action === 'refund'
+                      ? 'bg-red-500 text-white hover:bg-red-600 disabled:bg-red-200'
+                      : 'bg-amber-500 text-white hover:bg-amber-600 disabled:bg-amber-200'
+                  } disabled:cursor-not-allowed`}
+                >
+                  {processingAction ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <RefreshCw size={16} className="animate-spin" />
+                      Traitement...
+                    </span>
+                  ) : (
+                    'Confirmer'
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

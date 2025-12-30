@@ -27,13 +27,8 @@ export default function ProductsPage() {
   const categories = [
     "Tasses",
     "Assiettes",
-    "Bols",
-    "Vases",
-    "Théières",
-    "Accessoires",
-    "Décoration",
-    "Plateaux",
-    "Autres",
+    "Pièces uniques",
+    "Collections spéciales",
   ]
 
   // Helper function to check if product is goodies/lifestyle
@@ -42,14 +37,25 @@ export default function ProductsPage() {
     const titleLower = product.title.toLowerCase()
     
     return (
+      category === 'cup' ||
+      category === 'casquette' ||
+      category === 'chaussette' ||
+      category === 'tee-shirt' ||
+      category === 'tote bag' ||
+      // Also check old categories for backward compatibility
       category === 'goodies / lifestyle' ||
       category === 'tote bags' ||
       category === 'affiches / prints' ||
+      titleLower.includes('cup') ||
+      titleLower.includes('casquette') ||
+      titleLower.includes('chaussette') ||
+      titleLower.includes('tee-shirt') ||
+      titleLower.includes('t-shirt') ||
+      titleLower.includes('tote') ||
+      titleLower.includes('sac') ||
       titleLower.includes('print') ||
       titleLower.includes('affiche') ||
-      titleLower.includes('poster') ||
-      titleLower.includes('tote') ||
-      titleLower.includes('sac')
+      titleLower.includes('poster')
     )
   }
 
@@ -145,7 +151,7 @@ export default function ProductsPage() {
   )
 
   if (loading) {
-    return <LoadingSpinner message="Chargement des produits..." />
+    return <LoadingSpinner message="Chargement des produits céramique..." />
   }
 
   return (
@@ -157,8 +163,8 @@ export default function ProductsPage() {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-4xl font-black text-primary mb-2">Produits</h1>
-          <p className="text-muted-foreground">Créer, modifier et supprimer des produits</p>
+          <h1 className="text-4xl font-black text-primary mb-2">Céramique</h1>
+          <p className="text-muted-foreground">Créer, modifier et supprimer des produits céramique</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }}
@@ -170,7 +176,7 @@ export default function ProductsPage() {
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg"
         >
           <Plus size={20} />
-          Nouveau produit
+          Nouveau produit céramique
         </motion.button>
       </motion.div>
 
@@ -185,7 +191,7 @@ export default function ProductsPage() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
           <input
             type="text"
-            placeholder="Rechercher un produit..."
+            placeholder="Rechercher un produit céramique..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-12 pr-4 py-3 bg-white/80 backdrop-blur-xl border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
@@ -297,7 +303,7 @@ export default function ProductsPage() {
       {filteredProducts.length === 0 && (
         <div className="text-center py-12">
           <Package size={48} className="mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">Aucun produit trouvé</p>
+          <p className="text-muted-foreground">Aucun produit céramique trouvé</p>
         </div>
       )}
     </div>

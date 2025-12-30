@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Image as ImageIcon, X, Upload, Plus } from "lucide-react"
 import type { Product } from "@/lib/admin-api"
-import { fetchProductCategories, createProductCategory, type ProductCategory } from "@/lib/admin-api"
 import Image from "next/image"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
 import { useToast } from "@/hooks/use-toast"
@@ -17,9 +16,11 @@ interface GoodiesProductFormProps {
 
 // Goodies categories only
 const goodiesCategories = [
-  "Goodies / Lifestyle",
-  "Tote bags",
-  "Affiches / prints",
+  "Cup",
+  "Casquette",
+  "Chaussette",
+  "Tee-shirt",
+  "Tote bag",
 ]
 
 export default function GoodiesProductForm({ product, onSubmit, onCancel }: GoodiesProductFormProps) {
@@ -33,27 +34,11 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
     images: [] as string[], // Array of image URLs
     category: "",
     status: "active",
+    features: [] as string[], // Array of features/characteristics
   })
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [categories, setCategories] = useState<ProductCategory[]>([])
-  const [showNewCategory, setShowNewCategory] = useState(false)
-  const [newCategoryName, setNewCategoryName] = useState("")
-  const [creatingCategory, setCreatingCategory] = useState(false)
 
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await fetchProductCategories()
-        // Filter only goodies categories
-        const goodiesCats = data.filter(cat => goodiesCategories.includes(cat.name))
-        setCategories(goodiesCats)
-      } catch (error) {
-        console.error("Error loading categories:", error)
-      }
-    }
-    loadCategories()
-  }, [])
 
   useEffect(() => {
     if (product) {
@@ -64,6 +49,11 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
           ? [product.image] 
           : [];
       
+      // Get features array from product
+      const features = (product as any).features && Array.isArray((product as any).features) 
+        ? (product as any).features 
+        : [];
+      
       setFormData({
         title: product.title || "",
         description: product.description || "",
@@ -72,6 +62,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
         images: images,
         category: product.category || "",
         status: product.status || "active",
+        features: features,
       })
     }
   }, [product])
@@ -91,7 +82,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
     if (!goodiesCategories.includes(formData.category)) {
       toast({
         title: "Erreur",
-        description: "La catégorie doit être une catégorie goodies / lifestyle",
+        description: "La catégorie doit être une des catégories goodies disponibles",
         variant: "destructive",
       })
       return
@@ -108,7 +99,8 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
         images: formData.images.length > 0 ? formData.images : undefined,
         category: formData.category || undefined,
         status: formData.status,
-      })
+        features: formData.features.length > 0 ? formData.features : undefined,
+      } as any)
     } finally {
       setLoading(false)
     }
@@ -165,15 +157,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
           <div className="space-y-2">
             <select
               value={formData.category}
-              onChange={(e) => {
-                if (e.target.value === "new") {
-                  setShowNewCategory(true)
-                  setFormData({ ...formData, category: "" })
-                } else {
-                  setFormData({ ...formData, category: e.target.value })
-                  setShowNewCategory(false)
-                }
-              }}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               required
               disabled={loading}
               className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
@@ -184,75 +168,7 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
                   {cat}
                 </option>
               ))}
-              {categories
-                .filter(cat => !goodiesCategories.includes(cat.name))
-                .map((cat) => (
-                  <option key={cat.id} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
             </select>
-            
-            {showNewCategory && (
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Nom de la nouvelle catégorie"
-                  disabled={creatingCategory}
-                  className="flex-1 px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!newCategoryName.trim()) {
-                      toast({
-                        title: "Erreur",
-                        description: "Veuillez entrer un nom de catégorie",
-                        variant: "destructive",
-                      })
-                      return
-                    }
-                    setCreatingCategory(true)
-                    try {
-                      const newCategory = await createProductCategory(newCategoryName.trim())
-                      setCategories([...categories, newCategory])
-                      setFormData({ ...formData, category: newCategory.name })
-                      setShowNewCategory(false)
-                      setNewCategoryName("")
-                      toast({
-                        title: "Succès",
-                        description: "Catégorie créée avec succès",
-                      })
-                    } catch (error: any) {
-                      toast({
-                        title: "Erreur",
-                        description: error.message || "Impossible de créer la catégorie",
-                        variant: "destructive",
-                      })
-                    } finally {
-                      setCreatingCategory(false)
-                    }
-                  }}
-                  disabled={creatingCategory || !newCategoryName.trim()}
-                  className="px-4 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center gap-2"
-                >
-                  <Plus size={18} />
-                  {creatingCategory ? "Création..." : "Créer"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowNewCategory(false)
-                    setNewCategoryName("")
-                  }}
-                  className="px-4 py-3 border border-primary/20 text-primary rounded-xl font-bold hover:bg-primary/5 transition-all"
-                >
-                  Annuler
-                </button>
-              </div>
-            )}
           </div>
         </div>
 
@@ -428,6 +344,51 @@ export default function GoodiesProductForm({ product, onSubmit, onCancel }: Good
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Features/Characteristics Section */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Caractéristiques</label>
+        <div className="space-y-3">
+          {formData.features.map((feature, index) => (
+            <div key={index} className="flex gap-2 items-center">
+              <input
+                type="text"
+                value={feature}
+                onChange={(e) => {
+                  const newFeatures = [...formData.features]
+                  newFeatures[index] = e.target.value
+                  setFormData({ ...formData, features: newFeatures })
+                }}
+                placeholder="Caractéristique"
+                disabled={loading}
+                className="flex-1 px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const newFeatures = formData.features.filter((_, i) => i !== index)
+                  setFormData({ ...formData, features: newFeatures })
+                }}
+                disabled={loading}
+                className="p-3 bg-red-500/10 text-red-600 rounded-xl hover:bg-red-500/20 transition-all disabled:opacity-50"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
+              setFormData({ ...formData, features: [...formData.features, ''] })
+            }}
+            disabled={loading}
+            className="w-full px-4 py-3 bg-primary/10 text-primary rounded-xl font-bold hover:bg-primary/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            <Plus size={18} />
+            Ajouter une caractéristique
+          </button>
         </div>
       </div>
 

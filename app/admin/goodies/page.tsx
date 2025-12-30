@@ -25,9 +25,11 @@ export default function GoodiesPage() {
   const { toast } = useToast()
 
   const goodiesCategories = [
-    "Goodies / Lifestyle",
-    "Tote bags",
-    "Affiches / prints",
+    "Cup",
+    "Casquette",
+    "Chaussette",
+    "Tee-shirt",
+    "Tote bag",
   ]
 
   const loadProducts = async () => {
@@ -42,21 +44,29 @@ export default function GoodiesPage() {
         const category = (p.category || "").toLowerCase()
         const titleLower = (p.title || "").toLowerCase()
         
-        // Check by category
+        // Check by category (new goodies categories)
         const isGoodiesCategory = 
+          category === "cup" ||
+          category === "casquette" ||
+          category === "chaussette" ||
+          category === "tee-shirt" ||
+          category === "tote bag" ||
+          // Also accept old categories for backward compatibility
           category === "goodies / lifestyle" ||
           category === "tote bags" ||
           category === "affiches / prints"
         
         // Check by title keywords (for products that might not have the right category)
         const isGoodiesByTitle = 
-          titleLower.includes("gobelet") ||
-          titleLower.includes("isotherme") ||
+          titleLower.includes("cup") ||
+          titleLower.includes("casquette") ||
+          titleLower.includes("chaussette") ||
+          titleLower.includes("tee-shirt") ||
+          titleLower.includes("t-shirt") ||
           titleLower.includes("tote") ||
           titleLower.includes("sac") ||
-          titleLower.includes("affiche") ||
-          titleLower.includes("print") ||
-          titleLower.includes("poster")
+          titleLower.includes("gobelet") ||
+          titleLower.includes("isotherme")
         
         return isGoodiesCategory || isGoodiesByTitle
       })

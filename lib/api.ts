@@ -32,6 +32,32 @@ export async function fetchProducts(): Promise<Product[]> {
   }
 }
 
+export interface ProductCategory {
+  id: string;
+  name: string;
+  type?: 'ceramic' | 'goodies' | null;
+  created_at?: string;
+}
+
+export async function fetchProductCategories(): Promise<ProductCategory[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/categories`, {
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch categories:', response.status);
+      return [];
+    }
+
+    const data = await response.json();
+    return data.success ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
 export async function fetchProduct(id: string): Promise<Product | null> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {

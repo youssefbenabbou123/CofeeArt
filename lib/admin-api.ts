@@ -99,6 +99,7 @@ export async function deleteUser(id: string): Promise<void> {
 export interface ProductCategory {
   id: string;
   name: string;
+  type?: 'ceramic' | 'goodies' | null;
   created_at: string;
 }
 
@@ -107,10 +108,10 @@ export async function fetchProductCategories(): Promise<ProductCategory[]> {
   return data.success ? data.data : [];
 }
 
-export async function createProductCategory(name: string): Promise<ProductCategory> {
+export async function createProductCategory(name: string, type?: 'ceramic' | 'goodies'): Promise<ProductCategory> {
   const data = await apiCall('/api/admin/categories', {
     method: 'POST',
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ name, type }),
   });
   return data.data;
 }
@@ -176,12 +177,17 @@ export interface ContactMessage {
   subject: string;
   message: string;
   read: boolean;
+  replied: boolean;
+  replied_at: string | null;
+  reply_subject: string | null;
+  reply_message: string | null;
   created_at: string;
 }
 
-export async function fetchMessages(read?: boolean, subject?: string): Promise<ContactMessage[]> {
+export async function fetchMessages(read?: boolean, replied?: boolean, subject?: string): Promise<ContactMessage[]> {
   const params = new URLSearchParams();
   if (read !== undefined) params.append('read', read.toString());
+  if (replied !== undefined) params.append('replied', replied.toString());
   if (subject) params.append('subject', subject);
 
   const query = params.toString() ? `?${params.toString()}` : '';
@@ -193,6 +199,14 @@ export async function updateMessage(id: string, read: boolean): Promise<ContactM
   const data = await apiCall(`/api/admin/messages/${id}`, {
     method: 'PUT',
     body: JSON.stringify({ read }),
+  });
+  return data.data;
+}
+
+export async function replyToMessage(id: string, replyMessage: string, subject?: string): Promise<ContactMessage> {
+  const data = await apiCall(`/api/admin/messages/${id}/reply`, {
+    method: 'POST',
+    body: JSON.stringify({ message: replyMessage, subject }),
   });
   return data.data;
 }
@@ -551,10 +565,18 @@ export async function createManualBooking(workshopId: string, booking: {
   return data.data;
 }
 
-export async function cancelBooking(bookingId: string, reason?: string, refund_amount?: number, send_email?: boolean): Promise<Booking> {
+export async function cancelBooking(bookingId: string, reason?: string, send_email?: boolean): Promise<Booking> {
   const data = await apiCall(`/api/admin/workshops/bookings/${bookingId}/cancel`, {
     method: 'PUT',
-    body: JSON.stringify({ reason, refund_amount, send_email }),
+    body: JSON.stringify({ reason, send_email }),
+  });
+  return data.data;
+}
+
+export async function refundBooking(bookingId: string, reason?: string, send_email?: boolean): Promise<any> {
+  const data = await apiCall(`/api/admin/workshops/bookings/${bookingId}/refund`, {
+    method: 'PUT',
+    body: JSON.stringify({ reason, send_email }),
   });
   return data.data;
 }

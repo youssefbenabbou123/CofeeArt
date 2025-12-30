@@ -94,6 +94,7 @@ export default function Ateliers() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {workshops.map((workshop, index) => {
+                const hasAvailableSessions = workshop.session_count > 0;
                 const durationHours = Math.floor(workshop.duration / 60);
                 const durationMinutes = workshop.duration % 60;
                 const durationText = durationMinutes > 0 
@@ -134,28 +135,36 @@ export default function Ateliers() {
                             <Clock size={16} />
                             {durationText}
                           </div>
-                          {workshop.next_session_date && (
-                            <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
-                              <Calendar size={16} />
-                              {new Date(workshop.next_session_date).toLocaleDateString('fr-FR', {
+                          <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
+                            <Calendar size={16} />
+                            {workshop.next_session_date ? (
+                              new Date(workshop.next_session_date).toLocaleDateString('fr-FR', {
                                 day: 'numeric',
                                 month: 'long',
                                 year: 'numeric'
-                              })}
-                            </div>
-                          )}
+                              })
+                            ) : (
+                              <span className="text-amber-600">Aucune session disponible</span>
+                            )}
+                          </div>
                         </div>
 
                         <div className="flex items-center justify-between">
                           <span className="text-3xl font-black text-primary">
                             {typeof workshop.price === 'number' ? workshop.price.toFixed(2) : parseFloat(workshop.price).toFixed(2)}€
                           </span>
-                          <Link
-                            href={`/ateliers/${workshop.id}`}
-                            className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center"
-                          >
-                            Réserver
-                          </Link>
+                          {hasAvailableSessions ? (
+                            <Link
+                              href={`/ateliers/${workshop.id}`}
+                              className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center"
+                            >
+                              Réserver
+                            </Link>
+                          ) : (
+                            <span className="px-6 py-3 bg-gray-300 text-gray-500 rounded-xl font-bold cursor-not-allowed">
+                              Bientôt disponible
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>

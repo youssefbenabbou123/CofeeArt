@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Image as ImageIcon, X, Upload, Plus } from "lucide-react"
 import type { Product } from "@/lib/admin-api"
-import { fetchProductCategories, createProductCategory, type ProductCategory } from "@/lib/admin-api"
 import Image from "next/image"
 import { uploadImageToCloudinary } from "@/lib/cloudinary-upload"
 import { useToast } from "@/hooks/use-toast"
@@ -21,8 +20,6 @@ const mainCategories = [
   "Assiettes",
   "Pièces uniques",
   "Collections spéciales",
-  "Tote bags",
-  "Affiches / prints",
 ]
 
 export default function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
@@ -40,22 +37,7 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
   })
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [categories, setCategories] = useState<ProductCategory[]>([])
-  const [showNewCategory, setShowNewCategory] = useState(false)
-  const [newCategoryName, setNewCategoryName] = useState("")
-  const [creatingCategory, setCreatingCategory] = useState(false)
 
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await fetchProductCategories()
-        setCategories(data)
-      } catch (error) {
-        console.error("Error loading categories:", error)
-      }
-    }
-    loadCategories()
-  }, [])
 
   useEffect(() => {
     if (product) {
@@ -86,6 +68,16 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (formData.category && !mainCategories.includes(formData.category)) {
+      toast({
+        title: "Erreur",
+        description: "La catégorie doit être une des catégories céramique disponibles",
+        variant: "destructive",
+      })
+      return
+    }
+    
     setLoading(true)
 
     try {
@@ -158,15 +150,8 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
           <div className="space-y-2">
             <select
               value={formData.category}
-              onChange={(e) => {
-                if (e.target.value === "new") {
-                  setShowNewCategory(true)
-                  setFormData({ ...formData, category: "" })
-                } else {
-                  setFormData({ ...formData, category: e.target.value })
-                  setShowNewCategory(false)
-                }
-              }}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              required
               disabled={loading}
               className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             >
@@ -176,76 +161,7 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
                   {cat}
                 </option>
               ))}
-              {categories
-                .filter(cat => !mainCategories.includes(cat.name))
-                .map((cat) => (
-                  <option key={cat.id} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
-              <option value="new">+ Ajouter une nouvelle catégorie</option>
             </select>
-            
-            {showNewCategory && (
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Nom de la nouvelle catégorie"
-                  disabled={creatingCategory}
-                  className="flex-1 px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!newCategoryName.trim()) {
-                      toast({
-                        title: "Erreur",
-                        description: "Veuillez entrer un nom de catégorie",
-                        variant: "destructive",
-                      })
-                      return
-                    }
-                    setCreatingCategory(true)
-                    try {
-                      const newCategory = await createProductCategory(newCategoryName.trim())
-                      setCategories([...categories, newCategory])
-                      setFormData({ ...formData, category: newCategory.name })
-                      setShowNewCategory(false)
-                      setNewCategoryName("")
-                      toast({
-                        title: "Succès",
-                        description: "Catégorie créée avec succès",
-                      })
-                    } catch (error: any) {
-                      toast({
-                        title: "Erreur",
-                        description: error.message || "Impossible de créer la catégorie",
-                        variant: "destructive",
-                      })
-                    } finally {
-                      setCreatingCategory(false)
-                    }
-                  }}
-                  disabled={creatingCategory || !newCategoryName.trim()}
-                  className="px-4 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center gap-2"
-                >
-                  <Plus size={18} />
-                  {creatingCategory ? "Création..." : "Créer"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowNewCategory(false)
-                    setNewCategoryName("")
-                  }}
-                  className="px-4 py-3 border border-primary/20 text-primary rounded-xl font-bold hover:bg-primary/5 transition-all"
-                >
-                  Annuler
-                </button>
-              </div>
-            )}
           </div>
         </div>
 

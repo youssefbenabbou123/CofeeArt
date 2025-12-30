@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Commandes", icon: ShoppingCart },
-  { href: "/admin/products", label: "Produits", icon: Package },
+  { href: "/admin/products", label: "Céramique", icon: Package },
   { href: "/admin/goodies", label: "Goodies / Lifestyle", icon: ShoppingBag },
   { href: "/admin/workshops", label: "Ateliers", icon: Calendar },
   { href: "/admin/gift-cards", label: "Cartes cadeaux", icon: Gift },
