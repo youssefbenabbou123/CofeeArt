@@ -4,12 +4,11 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { ScrollAnimation } from "@/components/scroll-animation"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function APropos() {
   const [currentMemberIndex, setCurrentMemberIndex] = useState(0)
-  const [activeSection, setActiveSection] = useState<string>("histoire")
 
   const teamMembers = [
     {
@@ -45,51 +44,6 @@ export default function APropos() {
 
   const currentMember = teamMembers[currentMemberIndex]
 
-  // Smooth scroll to section
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const offset = 100 // Offset for sticky navigation
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - offset
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      })
-      setActiveSection(sectionId)
-    }
-  }
-
-  // Update active section on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["histoire", "valeurs", "equipe", "engagement"]
-      const scrollPosition = window.scrollY + 150
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const navigationItems = [
-    { id: "histoire", label: "Notre histoire" },
-    { id: "valeurs", label: "Nos valeurs" },
-    { id: "equipe", label: "L'équipe" },
-    { id: "engagement", label: "Engagement écologique" },
-  ]
-
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -111,30 +65,8 @@ export default function APropos() {
         </div>
       </section>
 
-      {/* Navigation */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-primary/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center justify-center gap-2 md:gap-4 py-4 overflow-x-auto">
-            {navigationItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={cn(
-                  "px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-300",
-                  activeSection === item.id
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "text-primary/70 hover:text-primary hover:bg-primary/10"
-                )}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
-
       {/* Notre histoire Section */}
-      <section id="histoire" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
         <ScrollAnimation direction="up" delay={0}>
           <div className="text-center mb-12">
             <h2 className="section-title">Notre histoire</h2>
@@ -188,49 +120,8 @@ export default function APropos() {
         </ScrollAnimation>
       </section>
 
-      {/* Nos valeurs Section */}
-      <section id="valeurs" className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <ScrollAnimation direction="up" delay={0}>
-            <div className="text-center mb-16">
-              <h2 className="section-title text-primary-foreground mb-6">Nos valeurs</h2>
-              <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto">
-                Une manière d'être, de créer et de recevoir.
-              </p>
-            </div>
-          </ScrollAnimation>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Le café comme point de départ",
-                description: "Nous sommes avant tout un coffee shop, avec des boissons de qualité et une vraie exigence gustative. La création vient enrichir l'expérience, sans jamais la remplacer."
-              },
-              {
-                title: "La création comme prolongement",
-                description: "Chez Coffee Arts Paris, la création n'est pas une performance. On vient pour essayer, apprendre, toucher et prendre plaisir au geste, simplement."
-              },
-              {
-                title: "Un espace où l'on se sent bien",
-                description: "Coffee Arts Paris a été pensé comme un lieu calme et accueillant, où l'on peut s'attarder, se retrouver et faire une pause, seul ou à plusieurs."
-              },
-            ].map((value, index) => (
-              <ScrollAnimation key={index} direction="up" delay={index * 100}>
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl hover:bg-white/20 transition-all duration-300 hover:-translate-y-2">
-                  <h3 className="text-2xl font-bold mb-4 text-center">{value.title}</h3>
-                  <p className="text-center text-primary-foreground/90 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </ScrollAnimation>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* L'équipe Section */}
-      <section id="equipe" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <ScrollAnimation direction="up" delay={0}>
           <h2 className="section-title text-center mb-16">L'équipe</h2>
         </ScrollAnimation>
@@ -323,93 +214,6 @@ export default function APropos() {
             </div>
           </div>
         </ScrollAnimation>
-      </section>
-
-      {/* Engagement écologique Section */}
-      <section id="engagement" className="py-24 bg-primary/5 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollAnimation direction="up" delay={0}>
-            <div className="text-center mb-16">
-              <h2 className="section-title mb-6">Engagement écologique</h2>
-              <p className="text-xl text-primary/80 max-w-2xl mx-auto">
-                Une attention portée aux matières, aux ressources et aux gestes.
-              </p>
-            </div>
-          </ScrollAnimation>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Choisir avec attention</h3>
-              </div>
-              <p className="text-primary/80 leading-relaxed">
-                Nous faisons le choix de fournisseurs sélectionnés avec soin, en tenant compte de la provenance des produits et de leur impact, à notre échelle.
-              </p>
-              <p className="text-primary/80 leading-relaxed mt-4">
-                Une démarche progressive, guidée par le bon sens et le respect des ressources.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Matières & usages</h3>
-              </div>
-              <p className="text-primary/80 leading-relaxed">
-                Des argiles utilisées à l’atelier aux consommables du lieu, nous faisons des choix réfléchis pour limiter les déchets et favoriser des usages plus responsables.
-              </p>
-              <p className="text-primary/80 leading-relaxed mt-4">
-                Des choix intégrés au quotidien, dans la manière de faire et d’utiliser.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Des pratiques raisonnées</h3>
-              </div>
-              <p className="text-primary/80 leading-relaxed">
-                Dans le fonctionnement du café comme de l’atelier, nous veillons à réduire les déchets et à ajuster nos usages lorsque cela est possible.
-              </p>
-              <p className="text-primary/80 leading-relaxed mt-4">
-                Une attention constante portée aux gestes du quotidien.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl border border-white/60"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <h3 className="text-2xl font-black text-primary">Sensibiliser par la pratique</h3>
-              </div>
-              <p className="text-primary/80 leading-relaxed">
-                À travers les ateliers et la vie du lieu, nous cherchons à transmettre des gestes simples et plus conscients.
-              </p>
-              <p className="text-primary/80 leading-relaxed mt-4">
-                Une approche naturelle, par l’expérience et le faire.
-              </p>
-            </motion.div>
-          </div>
-        </div>
       </section>
     </div>
   )

@@ -219,12 +219,15 @@ export default function Navigation() {
 
   const rightLinks = [
     { href: "/blog", label: "Blog" },
-    { href: "/apropos", label: "À propos" },
+    { href: "/apropos", label: "À propos", submenu: [
+      { href: "/apropos", label: "À propos" },
+      { href: "/apropos/engagement", label: "Engagement" }
+    ]},
     { href: "/contact", label: "Contact" },
     { href: "/espace-client", label: "Espace client" },
   ]
 
-  const menuLinks = [...leftLinks, ...rightLinks]
+  const menuLinks = [...leftLinks, ...rightLinks.map(link => ({ href: link.href, label: link.label }))]
   
   // On home page, use scrolled state. On other pages, always use scrolled state for elements.
   const elementsScrolled = isHomePage ? scrolled : true
@@ -286,17 +289,44 @@ export default function Navigation() {
           {/* Desktop Navigation - Right side (3 items close to logo) */}
           <div className="hidden md:flex items-center gap-10 absolute left-1/2 ml-25 mx-8">
             {rightLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "font-medium hover:text-[#ACB792] transition-colors text-lg relative group",
-                  elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
-                )}
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ACB792] transition-all group-hover:w-full" />
-              </Link>
+              link.submenu ? (
+                <div key={link.href} className="relative group">
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "font-medium hover:text-[#ACB792] transition-colors text-lg relative inline-block",
+                      elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
+                    )}
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ACB792] transition-all group-hover:w-full" />
+                  </Link>
+                  {/* Dropdown menu */}
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-primary/10 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    {link.submenu.map((subItem) => (
+                      <Link
+                        key={subItem.href}
+                        href={subItem.href}
+                        className="block px-4 py-2 text-primary hover:bg-primary/5 transition-colors"
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "font-medium hover:text-[#ACB792] transition-colors text-lg relative group",
+                    elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
+                  )}
+                >
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ACB792] transition-all group-hover:w-full" />
+                </Link>
+              )
             ))}
           </div>
 
@@ -630,7 +660,7 @@ export default function Navigation() {
           </button>
 
           <div className="flex flex-col items-center space-y-6 text-center">
-            {menuLinks.map((link) => (
+            {leftLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -639,6 +669,32 @@ export default function Navigation() {
               >
                 {link.label}
               </Link>
+            ))}
+            {rightLinks.map((link) => (
+              link.submenu ? (
+                <div key={link.href} className="flex flex-col items-center space-y-4">
+                  <div className="text-3xl font-bold text-primary">{link.label}</div>
+                  {link.submenu.map((subItem) => (
+                    <Link
+                      key={subItem.href}
+                      href={subItem.href}
+                      className="text-2xl font-medium text-primary/70 hover:text-accent transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {subItem.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-3xl font-bold text-primary hover:text-accent transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
             <Link
               href="/panier"

@@ -104,10 +104,10 @@ export default function Carte() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-6xl font-title text-[#58604C] mb-8 leading-tight">
-            Envie de passer nous voir ?
+            Une expérience à vivre sur place
           </h2>
           <p className="text-xl text-[#58604C] mb-8 max-w-2xl mx-auto">
-            Retrouvez l'adresse et la carte pour venir découvrir notre café et nos créations en personne.
+            Toutes les informations pour venir découvrir le café
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/contact#map" className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20">

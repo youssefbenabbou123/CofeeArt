@@ -11,15 +11,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           {/* Brand */}
-          <div 
+          <div
             className="space-y-3"
             style={{
               marginLeft: "var(--footer-col1-ml, 0px)",
               marginRight: "var(--footer-col1-mr, 0px)",
             }}
           >
-            <div>
-              <Link href="/" className="flex items-center gap-2 mb-3">
+            {/* Header / Logo Area - Fixed height for alignment */}
+            <div className="h-[36px] mb-3 flex items-center">
+              <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/Fichier 95.png"
                   alt="Coffee Arts Paris"
@@ -30,39 +31,41 @@ export default function Footer() {
                 />
               </Link>
             </div>
-            <p className="text-primary-foreground/80 leading-relaxed">
-              Un lieu unique où la céramique<br />
-              rencontre le café artisanal à Paris.<br />
-              Créer, déguster, partager.
-            </p>
-            <div className="flex gap-4">
-              <Link href="https://www.instagram.com/coffeearts.paris/" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-accent hover:text-primary transition-all duration-300" aria-label="Instagram Coffee Arts Paris">
-                <Instagram size={20} />
-              </Link>
-              <Link
-                href="https://www.tiktok.com/@coffeeartsparis"
-                className="p-2 bg-primary-foreground/10 rounded-full hover:bg-accent hover:text-primary transition-all duration-300 relative group"
-                aria-label="TikTok Coffee Arts Paris"
-              >
-                <span className="block h-5 w-5 relative">
-                  <Image
-                    src="/tiktok-beige.png"
-                    alt="TikTok"
-                    fill
-                    sizes="20px"
-                    className="object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
-                    style={{ filter: "brightness(1.15)" }}
-                  />
-                  <Image
-                    src="/tiktok-green.png"
-                    alt="TikTok"
-                    fill
-                    sizes="20px"
-                    className="object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                  />
-                </span>
-              </Link>
-            </div>
+
+            {/* Content List - Aligned with other columns */}
+            <ul className="space-y-2 text-primary-foreground/80">
+              <li className="h-6 flex items-center">Un lieu unique où la céramique</li>
+              <li className="h-6 flex items-center">rencontre le café artisanal à Paris.</li>
+              <li className="h-6 flex items-center">Créer, déguster, partager.</li>
+              <li className="pt-1 flex gap-4">
+                <Link href="https://www.instagram.com/coffeearts.paris/" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-accent hover:text-primary transition-all duration-300" aria-label="Instagram Coffee Arts Paris">
+                  <Instagram size={20} />
+                </Link>
+                <Link
+                  href="https://www.tiktok.com/@coffeeartsparis"
+                  className="p-2 bg-primary-foreground/10 rounded-full hover:bg-accent hover:text-primary transition-all duration-300 relative group"
+                  aria-label="TikTok Coffee Arts Paris"
+                >
+                  <span className="block h-5 w-5 relative">
+                    <Image
+                      src="/tiktok-beige.png"
+                      alt="TikTok"
+                      fill
+                      sizes="20px"
+                      className="object-contain transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                      style={{ filter: "brightness(1.15)" }}
+                    />
+                    <Image
+                      src="/tiktok-green.png"
+                      alt="TikTok"
+                      fill
+                      sizes="20px"
+                      className="object-contain transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                    />
+                  </span>
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Links - Two columns */}
@@ -73,7 +76,9 @@ export default function Footer() {
               marginRight: 0,
             }}
           >
-            <h3 className="col-span-2 font-bold text-lg mb-3 text-center" style={{ color: "#e9d7c1", marginLeft: "-80px" }}>Découvrir</h3>
+            <div className="col-span-2 h-[36px] mb-3 flex items-center">
+              <h3 className="font-bold text-lg" style={{ color: "#e9d7c1" }}>Découvrir</h3>
+            </div>
             <div>
               <ul className="space-y-2">
                 {[
@@ -121,21 +126,30 @@ export default function Footer() {
               marginRight: "var(--footer-col3-mr, 0px)",
             }}
           >
-            <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Contact</h3>
+            <div className="h-[36px] mb-3 flex items-center">
+              <h3 className="font-bold text-lg" style={{ color: "#e9d7c1" }}>Contact</h3>
+            </div>
             <ul className="space-y-2">
-              <li className="flex items-start gap-2 text-primary-foreground/80 group">
+              <li className="flex items-center gap-2 text-primary-foreground/80 group h-6">
                 <span>07.66.91.82.94</span>
               </li>
-              <li className="flex items-start gap-2 text-primary-foreground/80 group">
-                <Link 
+              <li className="flex items-center gap-2 text-primary-foreground/80 group h-6">
+                <Link
                   href="mailto:coffeeartsparis@gmail.com"
                   className="hover:text-accent transition-colors"
                 >
                   coffeeartsparis@gmail.com
                 </Link>
               </li>
-              <li className="flex items-start gap-2 text-primary-foreground/80 group">
-                <span>25 Boulevard du Temple<br />75003 Paris</span>
+              <li className="flex items-center gap-2 text-primary-foreground/80 group h-6">
+                <Link
+                  href="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+Paris"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors"
+                >
+                  25 Boulevard du Temple<br />75003 Paris
+                </Link>
               </li>
             </ul>
           </div>
@@ -147,16 +161,17 @@ export default function Footer() {
               marginRight: "var(--footer-col4-mr, 0px)",
             }}
           >
-            <h3 className="font-bold text-lg mb-3" style={{ color: "#e9d7c1" }}>Horaires</h3>
+            <div className="h-[36px] mb-3 flex items-center">
+              <h3 className="font-bold text-lg" style={{ color: "#e9d7c1" }}>Horaires</h3>
+            </div>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li className="border-b border-primary-foreground/10 pb-1 space-y-1">
-                <div>Mardi - Mercredi - Jeudi - Vendredi</div>
-                <div className="font-medium">08h - 20h</div>
+              <li className="h-6 flex items-center">Mardi - Mercredi - Jeudi - Vendredi</li>
+              <li className="h-6 flex items-center font-medium relative">
+                08h - 20h
+                <div className="absolute -bottom-1 left-0 w-full border-b border-primary-foreground/10 opacity-50"></div>
               </li>
-              <li className="border-b border-primary-foreground/10 pb-1 space-y-1">
-                <div>Samedi - Dimanche</div>
-                <div className="font-medium">10h - 21h</div>
-              </li>
+              <li className="h-6 flex items-center">Samedi - Dimanche</li>
+              <li className="h-6 flex items-center font-medium">10h - 21h</li>
             </ul>
           </div>
         </div>
@@ -165,7 +180,7 @@ export default function Footer() {
         <div className="border-t border-primary-foreground/10 pt-4 mt-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/60">
             <p>&copy; {new Date().getFullYear()} Coffee Arts Paris. Tous droits réservés.</p>
-            
+
             {/* Payment Icons */}
             <div className="flex items-center gap-2 flex-wrap justify-center">
               {/* Mastercard */}
