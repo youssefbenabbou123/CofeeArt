@@ -178,7 +178,7 @@ export default function Home() {
         {/* Background Video with Overlay */}
         <div className="absolute inset-0 z-0">
           <video
-            src="/VIDEO PAGE D'ACCUEIL.mp4"
+            src="/VIDEO PAGE D'ACCUEIL.mov"
             autoPlay
             loop
             muted
@@ -446,7 +446,7 @@ export default function Home() {
           </ScrollAnimation>
           <ScrollAnimation direction="up" delay={100}>
             <p className="text-xl text-[#58604C] mb-8 max-w-2xl mx-auto">
-              Un lieu où l'on vient créer, discuter, boire un café et s'attarder. Des moments simples, à vivre et à partager.
+              Un lieu où l'on vient créer, discuter, boire un café et s'attarder.<br />Des moments simples, à vivre et à partager.
             </p>
           </ScrollAnimation>
           <ScrollAnimation direction="up" delay={200}>

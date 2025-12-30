@@ -23,10 +23,21 @@ export default function Contact() {
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
-    const name = formData.get('name') as string
-    const email = formData.get('email') as string
-    const subject = formData.get('subject') as string
-    const message = formData.get('message') as string
+    const name = (formData.get('name') as string)?.trim() || ''
+    const email = (formData.get('email') as string)?.trim() || ''
+    const subject = (formData.get('subject') as string)?.trim() || ''
+    const message = (formData.get('message') as string)?.trim() || ''
+
+    // Validate required fields
+    if (!name || !email || !subject || !message) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs requis",
+        variant: "destructive",
+      })
+      setLoading(false)
+      return
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/contact`, {
@@ -40,6 +51,11 @@ export default function Contact() {
       const data = await response.json()
 
       if (!response.ok) {
+        // Show validation errors if available
+        if (data.errors && Array.isArray(data.errors)) {
+          const errorMessages = data.errors.map((err: any) => err.msg || err.message).join(', ')
+          throw new Error(errorMessages || data.message || 'Erreur lors de l\'envoi du message')
+        }
         throw new Error(data.message || 'Erreur lors de l\'envoi du message')
       }
 
@@ -176,11 +192,12 @@ export default function Contact() {
                     style={{ backgroundPosition: 'calc(100% - 12px) center' }}
                     required
                     disabled={loading}
+                    defaultValue="Renseignement général"
                   >
-                    <option>Renseignement général</option>
-                    <option>Privatisation</option>
-                    <option>Ateliers</option>
-                    <option>Presse & partenariats</option>
+                    <option value="Renseignement général">Renseignement général</option>
+                    <option value="Privatisation">Privatisation</option>
+                    <option value="Ateliers">Ateliers</option>
+                    <option value="Presse & partenariats">Presse & partenariats</option>
                   </select>
                 </div>
 

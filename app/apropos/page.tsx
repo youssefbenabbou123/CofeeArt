@@ -4,11 +4,12 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { ScrollAnimation } from "@/components/scroll-animation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function APropos() {
   const [currentMemberIndex, setCurrentMemberIndex] = useState(0)
+  const [activeSection, setActiveSection] = useState<string>("histoire")
 
   const teamMembers = [
     {
@@ -43,6 +44,52 @@ export default function APropos() {
   }
 
   const currentMember = teamMembers[currentMemberIndex]
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 100 // Offset for sticky navigation
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+      setActiveSection(sectionId)
+    }
+  }
+
+  // Update active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["histoire", "valeurs", "equipe", "engagement"]
+      const scrollPosition = window.scrollY + 150
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const navigationItems = [
+    { id: "histoire", label: "Notre histoire" },
+    { id: "valeurs", label: "Nos valeurs" },
+    { id: "equipe", label: "L'équipe" },
+    { id: "engagement", label: "Engagement écologique" },
+  ]
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -55,21 +102,49 @@ export default function APropos() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Un lieu <span className="text-[#8A8E74]">pensé pour prendre le temps</span>
+              À <span className="text-[#8A8E74]">propos</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Un coffee shop créatif où l’on vient pour le café, et où l’on reste pour l’expérience.
+              Un coffee shop créatif où l'on vient pour le café, et où l'on reste pour l'expérience.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
+      {/* Navigation */}
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-primary/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center justify-center gap-2 md:gap-4 py-4 overflow-x-auto">
+            {navigationItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={cn(
+                  "px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all duration-300",
+                  activeSection === item.id
+                    ? "bg-primary text-primary-foreground shadow-lg"
+                    : "text-primary/70 hover:text-primary hover:bg-primary/10"
+                )}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Notre histoire Section */}
+      <section id="histoire" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
         <ScrollAnimation direction="up" delay={0}>
+          <div className="text-center mb-12">
+            <h2 className="section-title">Notre histoire</h2>
+          </div>
+        </ScrollAnimation>
+        
+        <ScrollAnimation direction="up" delay={100}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 order-2 md:order-1">
-              <h2 className="section-title">Le point de départ</h2>
+              <h3 className="text-3xl font-bold text-primary">Le point de départ</h3>
               <div className="space-y-6 text-lg text-[#58604C] leading-relaxed">
                 <p>Nous sommes Kenza et Anis, deux âmes sensibles au beau, au geste et au temps qui passe lentement.</p>
                 <p>Notre histoire commence bien avant l'ouverture d'un lieu : elle naît de nos passions mêlées, entre la chaleur d'un café soigneusement préparé et la poésie d'une pièce façonnée à la main. Nous avons voulu créer un espace qui nous ressemble — doux, brut, vivant.</p>
@@ -100,7 +175,7 @@ export default function APropos() {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
             </div>
             <div className="space-y-8 order-2 md:order-2">
-              <h2 className="section-title">Notre histoire</h2>
+              <h3 className="text-3xl font-bold text-primary">L'aventure Coffee Arts Paris</h3>
               <div className="space-y-6 text-lg text-[#58604C] leading-relaxed">
                 <p>De fil en aiguille, nous avons rêvé un coffee shop qui n'en est pas vraiment un : c'est un terrain de jeu pour les créatifs, un havre pour les sensibles, une parenthèse pour ceux qui aiment prendre le temps.</p>
                 <p>Chaque choix a été fait avec intention : la lumière qui glisse doucement sur les tables, les teintes naturelles, les formes imparfaites, la chaleur du bois, la simplicité assumée…</p>
@@ -113,13 +188,13 @@ export default function APropos() {
         </ScrollAnimation>
       </section>
 
-      {/* L'esprit du lieu Section */}
-      <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
+      {/* Nos valeurs Section */}
+      <section id="valeurs" className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollAnimation direction="up" delay={0}>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-title mb-6">L'esprit du lieu</h2>
+              <h2 className="section-title text-primary-foreground mb-6">Nos valeurs</h2>
               <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto">
                 Une manière d'être, de créer et de recevoir.
               </p>
@@ -154,8 +229,8 @@ export default function APropos() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* L'équipe Section */}
+      <section id="equipe" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <ScrollAnimation direction="up" delay={0}>
           <h2 className="section-title text-center mb-16">L'équipe</h2>
         </ScrollAnimation>
@@ -250,12 +325,12 @@ export default function APropos() {
         </ScrollAnimation>
       </section>
 
-      {/* Engagements écologiques */}
-      <section className="py-24 bg-primary/5 relative overflow-hidden">
+      {/* Engagement écologique Section */}
+      <section id="engagement" className="py-24 bg-primary/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollAnimation direction="up" delay={0}>
             <div className="text-center mb-16">
-              <h2 className="section-title mb-6">Nos engagements écologiques</h2>
+              <h2 className="section-title mb-6">Engagement écologique</h2>
               <p className="text-xl text-primary/80 max-w-2xl mx-auto">
                 Une attention portée aux matières, aux ressources et aux gestes.
               </p>

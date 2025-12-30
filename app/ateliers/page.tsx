@@ -234,8 +234,8 @@ export default function Ateliers() {
               ].map((item, i) => (
                 <ScrollAnimation key={item.title} direction="up" delay={200 + i * 100}>
                   <div className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow">
-                    <h4 className="text-2xl font-bold text-[#58604C] mb-4">{item.title}</h4>
-                    <p className="text-[#58604C] leading-relaxed">
+                    <h4 className="text-2xl font-bold text-[#58604C] mb-4 text-center">{item.title}</h4>
+                    <p className="text-[#58604C] leading-relaxed text-center">
                       {item.desc}
                     </p>
                   </div>

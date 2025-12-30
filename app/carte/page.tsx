@@ -10,7 +10,7 @@ export default function Carte() {
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden">
+      <section className="relative pt-24 pb-6 md:pt-32 md:pb-8 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
@@ -33,7 +33,7 @@ export default function Carte() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Menu Images */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-2">
             <ScrollAnimation direction="up" delay={0}>
               <div className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden" style={{ backgroundColor: '#f2eadf' }}>
                 <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
@@ -65,7 +65,7 @@ export default function Carte() {
 
           {/* Nos cafés */}
           <ScrollAnimation direction="up" delay={200}>
-            <div className="mt-12 bg-white/70 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/10 shadow-xl">
+            <div className="mt-2 bg-white/70 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/10 shadow-xl">
             <div className="text-center mb-8">
               <h3 className="text-3xl font-title text-[#58604C] mb-4">Nos cafés</h3>
               <p className="text-[#58604C] mb-6">Une sélection de cafés de spécialité, travaillés avec attention, de l'origine à l'extraction.</p>
