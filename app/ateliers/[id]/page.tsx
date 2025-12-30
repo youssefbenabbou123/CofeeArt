@@ -618,13 +618,6 @@ export default function WorkshopDetail({ params }: { params: Promise<{ id: strin
                 )}
               </div>
             </div>
-              <div className="flex justify-between items-center">
-                <span className="font-bold text-primary">Total :</span>
-                <span className="text-2xl font-black text-primary">
-                  {w?.price ? ((typeof w.price === 'number' ? w.price : parseFloat(w.price)) * quantity).toFixed(2) : "0.00"}€
-                </span>
-              </div>
-            </div>
 
             {/* Submit */}
             <button
