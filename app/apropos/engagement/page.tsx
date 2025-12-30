@@ -16,10 +16,10 @@ export default function Engagement() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-primary mb-8 tracking-tight leading-tight">
-              Engagement <span className="text-[#8A8E74]">écologique</span>
+              <span className="text-[#8A8E74]">Engagement</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-              Une attention portée aux matières, aux ressources et aux gestes.
+              Nos valeurs et notre engagement écologique.
             </p>
           </motion.div>
         </div>
