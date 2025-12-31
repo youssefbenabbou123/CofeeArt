@@ -97,77 +97,77 @@ export default function Ateliers() {
                 const hasAvailableSessions = workshop.session_count > 0;
                 const durationHours = Math.floor(workshop.duration / 60);
                 const durationMinutes = workshop.duration % 60;
-                const durationText = durationMinutes > 0 
+                const durationText = durationMinutes > 0
                   ? `${durationHours}h${durationMinutes.toString().padStart(2, '0')}`
                   : `${durationHours}h00`;
 
                 return (
                   <ScrollAnimation key={workshop.id} direction="up" delay={100 + index * 100}>
                     <div className="bg-white/50 backdrop-blur-xl rounded-2xl overflow-hidden shadow-xl border border-white/60 hover:shadow-2xl transition-all group flex flex-col">
-                    {workshop.image && (
-                      <div className="relative h-48 overflow-hidden">
-                        <Image
-                          src={workshop.image}
-                          alt={workshop.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
-                      </div>
-                    )}
+                      {workshop.image && (
+                        <div className="relative h-48 overflow-hidden">
+                          <Image
+                            src={workshop.image}
+                            alt={workshop.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+                        </div>
+                      )}
 
-                    <div className="p-8 flex flex-col flex-grow">
-                      <div className="mb-4 flex-grow">
-                        <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-3">
-                          {workshop.level || "Tous niveaux"}
-                        </span>
-                        <h3 className="text-2xl font-black text-primary mb-3">
-                          {workshop.title}
-                        </h3>
-                        <p className="text-[#58604C] leading-relaxed">
-                          {workshop.description}
-                        </p>
-                      </div>
+                      <div className="p-8 flex flex-col flex-grow">
+                        <div className="mb-4 flex-grow">
+                          <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-3">
+                            {workshop.level || "Tous niveaux"}
+                          </span>
+                          <h3 className="text-2xl font-black text-primary mb-3">
+                            {workshop.title}
+                          </h3>
+                          <p className="text-[#58604C] leading-relaxed">
+                            {workshop.description}
+                          </p>
+                        </div>
 
-                      <div className="mt-auto pt-6 border-t border-primary/10">
-                        <div className="space-y-3 mb-6">
-                          <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
-                            <Clock size={16} />
-                            {durationText}
+                        <div className="mt-auto pt-6 border-t border-primary/10">
+                          <div className="space-y-3 mb-6">
+                            <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
+                              <Clock size={16} />
+                              {durationText}
+                            </div>
+                            <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
+                              <Calendar size={16} />
+                              {workshop.next_session_date ? (
+                                new Date(workshop.next_session_date).toLocaleDateString('fr-FR', {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric'
+                                })
+                              ) : (
+                                <span className="text-amber-600">Aucune session disponible</span>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 text-sm font-medium text-primary/80">
-                            <Calendar size={16} />
-                            {workshop.next_session_date ? (
-                              new Date(workshop.next_session_date).toLocaleDateString('fr-FR', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                              })
+
+                          <div className="flex items-center justify-between">
+                            <span className="text-3xl font-black text-primary">
+                              {typeof workshop.price === 'number' ? workshop.price.toFixed(2) : parseFloat(workshop.price).toFixed(2)}€
+                            </span>
+                            {hasAvailableSessions ? (
+                              <Link
+                                href={`/ateliers/${workshop.id}`}
+                                className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center"
+                              >
+                                Réserver
+                              </Link>
                             ) : (
-                              <span className="text-amber-600">Aucune session disponible</span>
+                              <span className="px-6 py-3 bg-gray-300 text-gray-500 rounded-xl font-bold cursor-not-allowed">
+                                Bientôt disponible
+                              </span>
                             )}
                           </div>
                         </div>
-
-                        <div className="flex items-center justify-between">
-                          <span className="text-3xl font-black text-primary">
-                            {typeof workshop.price === 'number' ? workshop.price.toFixed(2) : parseFloat(workshop.price).toFixed(2)}€
-                          </span>
-                          {hasAvailableSessions ? (
-                            <Link
-                              href={`/ateliers/${workshop.id}`}
-                              className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all hover:scale-105 flex items-center justify-center"
-                            >
-                              Réserver
-                            </Link>
-                          ) : (
-                            <span className="px-6 py-3 bg-gray-300 text-gray-500 rounded-xl font-bold cursor-not-allowed">
-                              Bientôt disponible
-                            </span>
-                          )}
-                        </div>
                       </div>
-                    </div>
                     </div>
                   </ScrollAnimation>
                 )
@@ -182,34 +182,34 @@ export default function Ateliers() {
         {/* Présentation */}
         <ScrollAnimation direction="up" delay={0}>
           <div className="bg-white/50 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 shadow-xl border border-white/60 mb-16 md:mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="space-y-5 md:space-y-6">
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                L'atelier de céramique est un espace ouvert à celles et ceux qui souhaitent découvrir la matière, expérimenter et créer de leurs mains.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Peinture sur céramique, modelage ou initiation à la poterie : chaque atelier est pensé comme un moment accessible, guidé et sans pression.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Que vous veniez pour la première fois ou que vous ayez déjà pratiqué, l'accompagnement se fait pas à pas, dans une atmosphère conviviale.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                L'objectif n'est pas la performance, mais le plaisir de créer, d'apprendre et de prendre le temps.
-              </p>
-              <p className="text-base md:text-lg text-primary leading-relaxed font-light">
-                Les ateliers se déroulent en petits groupes, afin de garantir une expérience attentive et personnalisée pour chaque participant.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div className="space-y-5 md:space-y-6">
+                <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                  L'atelier de céramique est un espace ouvert à celles et ceux qui souhaitent découvrir la matière, expérimenter et créer de leurs mains.
+                </p>
+                <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                  Peinture sur céramique, modelage ou initiation à la poterie : chaque atelier est pensé comme un moment accessible, guidé et sans pression.
+                </p>
+                <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                  Que vous veniez pour la première fois ou que vous ayez déjà pratiqué, l'accompagnement se fait pas à pas, dans une atmosphère conviviale.
+                </p>
+                <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                  L'objectif n'est pas la performance, mais le plaisir de créer, d'apprendre et de prendre le temps.
+                </p>
+                <p className="text-base md:text-lg text-primary leading-relaxed font-light">
+                  Les ateliers se déroulent en petits groupes, afin de garantir une expérience attentive et personnalisée pour chaque participant.
+                </p>
+              </div>
+              <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden group">
+                <Image
+                  src="/jennifer-burk-CHG8eMpD1Aw-unsplash.jpg"
+                  alt="Atelier de céramique"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
+              </div>
             </div>
-            <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden group">
-              <Image
-                src="/jennifer-burk-CHG8eMpD1Aw-unsplash.jpg"
-                alt="Atelier de céramique"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-700" />
-            </div>
-          </div>
           </div>
         </ScrollAnimation>
 
@@ -234,7 +234,7 @@ export default function Ateliers() {
               ].map((item, i) => (
                 <ScrollAnimation key={item.title} direction="up" delay={200 + i * 100}>
                   <div className="bg-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-white/60 hover:shadow-2xl transition-shadow">
-                    <h4 className="text-2xl font-bold text-[#58604C] mb-4 text-center">{item.title}</h4>
+                    <h4 style={{ textAlign: "center" }} className="text-2xl font-bold text-[#58604C] mb-4 text-center">{item.title}</h4>
                     <p className="text-[#58604C] leading-relaxed text-center">
                       {item.desc}
                     </p>

@@ -379,7 +379,7 @@ export interface UserReservation {
 export async function fetchUserReservations(): Promise<UserReservation[]> {
   try {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    
+
     if (!token) {
       return [];
     }
@@ -438,7 +438,7 @@ export interface OrderDetail extends UserOrder {
 export async function fetchUserOrders(): Promise<UserOrder[]> {
   try {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    
+
     if (!token) {
       return [];
     }
@@ -468,7 +468,7 @@ export async function fetchUserOrders(): Promise<UserOrder[]> {
 export async function fetchOrderDetails(orderId: string): Promise<OrderDetail | null> {
   try {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-    
+
     if (!token) {
       return null;
     }

@@ -26,11 +26,11 @@ export default function APropos() {
       image: "/ANIS.JPG"
     },
     {
-      name: "Nisrine",
+      name: "Niss",
       role: "Community Manager & Créatrice de contenu",
       description: "Organisée, créative et toujours à l'affût des tendances, Nisrine est la voix de Coffee Arts Paris sur les réseaux sociaux. Entre création de contenu et storytelling visuel elle donne vie à l'univers du coffee shop.",
       favorite: "Son péché mignon : le soda melon.",
-      image: "/NISRINE.JPG"
+      image: "/niss.png"
     }
   ]
 
@@ -66,13 +66,13 @@ export default function APropos() {
       </section>
 
       {/* Notre histoire Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
+      <section className=" px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
         <ScrollAnimation direction="up" delay={0}>
           <div className="text-center mb-12">
             <h2 className="section-title">Notre histoire</h2>
           </div>
         </ScrollAnimation>
-        
+
         <ScrollAnimation direction="up" delay={100}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 order-2 md:order-1">
@@ -154,7 +154,7 @@ export default function APropos() {
               </div>
 
               {/* Image */}
-              <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg order-1 md:order-2 group">
+              <div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] mx-auto rounded-full overflow-hidden shadow-lg order-1 md:order-2 group border-4 border-white/50">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentMemberIndex}
@@ -186,7 +186,7 @@ export default function APropos() {
               >
                 <ChevronLeft size={24} />
               </button>
-              
+
               {/* Dots indicator */}
               <div className="flex gap-2">
                 {teamMembers.map((_, index) => (

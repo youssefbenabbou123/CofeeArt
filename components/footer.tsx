@@ -87,7 +87,7 @@ export default function Footer() {
                   { label: "Boutique", href: "/boutique" },
                   { label: "Evénements", href: "/evenements" },
                 ].map((link) => (
-                  <li key={link.href}>
+                  <li key={link.href} className="h-6 flex items-center">
                     <Link
                       href={link.href}
                       className="text-primary-foreground/80 hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block"
@@ -106,7 +106,7 @@ export default function Footer() {
                   { label: "Contact", href: "/contact" },
                   { label: "Espace client", href: "/espace-client" },
                 ].map((link) => (
-                  <li key={link.href}>
+                  <li key={link.href} className="h-6 flex items-center">
                     <Link
                       href={link.href}
                       className="text-primary-foreground/80 hover:text-accent hover:translate-x-1 transition-all duration-300 inline-block"
@@ -129,7 +129,7 @@ export default function Footer() {
             <div className="h-[36px] mb-3 flex items-center">
               <h3 className="font-bold text-lg" style={{ color: "#e9d7c1" }}>Contact</h3>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-2" style={{ marginTop: "20px" }}>
               <li className="flex items-center gap-2 text-primary-foreground/80 group h-6">
                 <span>07.66.91.82.94</span>
               </li>
@@ -148,7 +148,17 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
                 >
-                  25 Boulevard du Temple<br />75003 Paris
+                  25 Boulevard du Temple
+                </Link>
+              </li>
+              <li className="flex items-center gap-2 text-primary-foreground/80 group h-6">
+                <Link
+                  href="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+Paris"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors"
+                >
+                  75003 Paris
                 </Link>
               </li>
             </ul>
@@ -164,7 +174,7 @@ export default function Footer() {
             <div className="h-[36px] mb-3 flex items-center">
               <h3 className="font-bold text-lg" style={{ color: "#e9d7c1" }}>Horaires</h3>
             </div>
-            <ul className="space-y-2 text-primary-foreground/80">
+            <ul style={{ marginTop: "20px" }} className="space-y-2 text-primary-foreground/80">
               <li className="h-6 flex items-center">Mardi - Mercredi - Jeudi - Vendredi</li>
               <li className="h-6 flex items-center font-medium relative">
                 08h - 20h

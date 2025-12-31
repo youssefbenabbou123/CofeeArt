@@ -33,7 +33,7 @@ export default function Carte() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Menu Images */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-2" style={{ paddingBottom: "2rem" }}>
             <ScrollAnimation direction="up" delay={0}>
               <div className="group rounded-[2rem] p-6 shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden" style={{ backgroundColor: '#f2eadf' }}>
                 <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden">
@@ -66,31 +66,31 @@ export default function Carte() {
           {/* Nos cafés */}
           <ScrollAnimation direction="up" delay={200}>
             <div className="mt-2 bg-white/70 backdrop-blur-xl rounded-[2rem] p-12 border border-primary/10 shadow-xl">
-            <div className="text-center mb-8">
-              <h3 className="text-3xl font-title text-[#58604C] mb-4">Nos cafés</h3>
-              <p className="text-[#58604C] mb-6">Une sélection de cafés de spécialité, travaillés avec attention, de l'origine à l'extraction.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-              {[
-                {
-                  title: "Origine des cafés",
-                  desc: "Nous sélectionnons des cafés de spécialité auprès de torréfacteurs choisis avec attention, en privilégiant la qualité, la traçabilité et le respect du produit.",
-                },
-                {
-                  title: "Préparation & extraction",
-                  desc: "Chaque café est préparé avec soin, en adaptant la méthode d'extraction afin de révéler au mieux ses arômes et son équilibre.",
-                },
-                {
-                  title: "Nos torréfacteurs",
-                  desc: "Nous collaborons avec différents torréfacteurs pour proposer une sélection de cafés adaptée au lieu et aux saisons.",
-                },
-              ].map((item, i) => (
-                <div key={item.title} className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
-                  <h4 className="text-xl font-bold text-primary mb-3">{item.title}</h4>
-                  <p className="text-primary/70 leading-relaxed text-sm">{item.desc}</p>
-                </div>
-              ))}
-            </div>
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-title text-[#58604C] mb-4">Nos cafés</h3>
+                <p className="text-[#58604C] mb-6">Une sélection de cafés de spécialité, travaillés avec attention, de l'origine à l'extraction.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                {[
+                  {
+                    title: "Origine des cafés",
+                    desc: "Nous sélectionnons des cafés de spécialité auprès de torréfacteurs choisis avec attention, en privilégiant la qualité, la traçabilité et le respect du produit.",
+                  },
+                  {
+                    title: "Préparation & extraction",
+                    desc: "Chaque café est préparé avec soin, en adaptant la méthode d'extraction afin de révéler au mieux ses arômes et son équilibre.",
+                  },
+                  {
+                    title: "Nos torréfacteurs",
+                    desc: "Nous collaborons avec différents torréfacteurs pour proposer une sélection de cafés adaptée au lieu et aux saisons.",
+                  },
+                ].map((item, i) => (
+                  <div key={item.title} className="p-6 rounded-2xl bg-primary/5 border border-primary/10">
+                    <h4 style={{ textAlign: "center" }} className="text-xl font-bold text-primary mb-3">{item.title}</h4>
+                    <p className="text-primary/70 leading-relaxed text-sm">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </ScrollAnimation>
         </div>
@@ -104,10 +104,10 @@ export default function Carte() {
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-6xl font-title text-[#58604C] mb-8 leading-tight">
-            Une expérience à vivre sur place
+            Une expérience à vivre sur place.
           </h2>
           <p className="text-xl text-[#58604C] mb-8 max-w-2xl mx-auto">
-            Toutes les informations pour venir découvrir le café
+            Toutes les informations pour venir découvrir le café.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/contact#map" className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20">

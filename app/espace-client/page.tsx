@@ -156,11 +156,10 @@ export default function EspaceClient() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
-                  activeTab === tab.id
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${activeTab === tab.id
                     ? "bg-primary text-primary-foreground shadow-lg"
                     : "bg-white/50 text-primary hover:bg-primary/5"
-                }`}
+                  }`}
               >
                 <Icon size={20} />
                 {tab.label}
@@ -236,16 +235,15 @@ export default function EspaceClient() {
                           <div className="flex items-center gap-3 mb-2">
                             <Package size={20} className="text-primary" />
                             <span className="font-bold text-primary">Commande #{order.id.slice(0, 8)}</span>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              order.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                              order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
-                              order.status === 'delivered' ? 'bg-primary/20 text-primary' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
+                                  order.status === 'delivered' ? 'bg-primary/20 text-primary' :
+                                    'bg-gray-100 text-gray-700'
+                              }`}>
                               {order.status === 'confirmed' ? 'Confirmée' :
-                               order.status === 'shipped' ? 'Expédiée' :
-                               order.status === 'delivered' ? 'Livrée' :
-                               order.status}
+                                order.status === 'shipped' ? 'Expédiée' :
+                                  order.status === 'delivered' ? 'Livrée' :
+                                    order.status}
                             </span>
                           </div>
                           <div className="flex items-center gap-4 text-sm text-primary/70">
@@ -465,14 +463,13 @@ export default function EspaceClient() {
                         <div className="pt-3 border-t border-primary/10">
                           <div className="flex items-center justify-between">
                             <span className="font-semibold text-primary">Statut:</span>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              order.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                              order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
+                                  'bg-gray-100 text-gray-700'
+                              }`}>
                               {order.status === 'confirmed' ? 'Confirmée' :
-                               order.status === 'shipped' ? 'Expédiée' :
-                               order.status}
+                                order.status === 'shipped' ? 'Expédiée' :
+                                  order.status}
                             </span>
                           </div>
                         </div>
@@ -579,7 +576,7 @@ export default function EspaceClient() {
                   {reservations.map((reservation) => {
                     const durationHours = Math.floor(reservation.duration / 60);
                     const durationMinutes = reservation.duration % 60;
-                    const durationText = durationMinutes > 0 
+                    const durationText = durationMinutes > 0
                       ? `${durationHours}h${durationMinutes.toString().padStart(2, '0')}`
                       : `${durationHours}h00`;
 
@@ -605,14 +602,13 @@ export default function EspaceClient() {
                                 <h3 className="text-2xl font-black text-primary mb-2">
                                   {reservation.workshop_title}
                                 </h3>
-                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${
-                                  reservation.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                                  reservation.status === 'waitlist' ? 'bg-yellow-100 text-yellow-700' :
-                                  'bg-gray-100 text-gray-700'
-                                }`}>
+                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${reservation.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                    reservation.status === 'waitlist' ? 'bg-yellow-100 text-yellow-700' :
+                                      'bg-gray-100 text-gray-700'
+                                  }`}>
                                   {reservation.status === 'confirmed' ? 'Confirmé' :
-                                   reservation.status === 'waitlist' ? 'Liste d\'attente' :
-                                   reservation.status}
+                                    reservation.status === 'waitlist' ? 'Liste d\'attente' :
+                                      reservation.status}
                                 </span>
                                 {reservation.waitlist_position && (
                                   <p className="text-sm text-primary/70">

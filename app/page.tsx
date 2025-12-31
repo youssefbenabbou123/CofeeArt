@@ -28,11 +28,11 @@ export default function Home() {
       try {
         // Fetch products to get the "Gobelet Isotherme X Coffee Arts Paris" product ID
         const products = await fetchProducts()
-        const gobeletProduct = products.find(p => 
-          p.title?.toLowerCase().includes('gobelet') && 
+        const gobeletProduct = products.find(p =>
+          p.title?.toLowerCase().includes('gobelet') &&
           p.title?.toLowerCase().includes('isotherme')
         ) || products[0] // Fallback to first product if not found
-        
+
         if (gobeletProduct) {
           setCeramicProductId(gobeletProduct.id)
         }
@@ -72,7 +72,7 @@ export default function Home() {
         signaturePhotos.forEach((photo, index) => {
           const photoIndex = index + 2; // Photo 2, 3, 4, 5, 6, 7, 8
           let link: string | undefined;
-          
+
           // Configure links based on photo number
           if (photoIndex === 3) {
             // 3ème photo - link to Gobelet Isotherme X Coffee Arts Paris product
@@ -81,7 +81,7 @@ export default function Home() {
             link = '/ateliers'; // Link to ceramic/ateliers page
           }
           // Photo 2, 5, 7, 8 have no link (undefined = no redirection)
-          
+
           items.push({
             id: `signature-photo-${photoIndex}`,
             category: 'Signature',
@@ -301,78 +301,78 @@ export default function Home() {
           {/* Card 1: Café */}
           <ScrollAnimation direction="up" delay={100}>
             <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
-            <Image
-              src="/artisan-coffee-cafe-with-ceramic-pottery-handmade-.jpg"
-              alt="Café"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">DÉGUSTER</span>
+              <Image
+                src="/photo1.jpg"
+                alt="Café"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="mb-2 text-accent h-5">
+                    <span className="font-bold uppercase tracking-wider text-sm">DÉGUSTER</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Café de spécialité</h3>
+                  <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    Grains sélectionnés et torréfiés localement.
+                  </p>
+                  <Link href="/carte" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                    Découvrir la carte
+                  </Link>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Café de spécialité</h3>
-                <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  Grains sélectionnés et torréfiés localement.
-                </p>
-                <Link href="/carte" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Découvrir la carte
-                </Link>
               </div>
-            </div>
             </div>
           </ScrollAnimation>
 
           {/* Card 2: Ateliers */}
           <ScrollAnimation direction="up" delay={200}>
             <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
-            <Image
-              src="/ceramic-pottery-workshop-hands-creating-clay-potte.jpg"
-              alt="Ateliers"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">CRÉER</span>
+              <Image
+                src="/ceramic-pottery-workshop-hands-creating-clay-potte.jpg"
+                alt="Ateliers"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="mb-2 text-accent h-5">
+                    <span className="font-bold uppercase tracking-wider text-sm">CRÉER</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Ateliers créatifs</h3>
+                  <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    Initiez-vous au tournage et au modelage.
+                  </p>
+                  <Link href="/ateliers" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                    Participer à un atelier
+                  </Link>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">Ateliers créatifs</h3>
-                <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  Initiez-vous au tournage et au modelage.
-                </p>
-                <Link href="/ateliers" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Participer à un atelier
-                </Link>
               </div>
-            </div>
             </div>
           </ScrollAnimation>
 
           {/* Card 3: Boutique */}
           <ScrollAnimation direction="up" delay={300}>
             <div className="relative group overflow-hidden rounded-3xl cursor-pointer min-h-[400px]">
-            <Image
-              src="/boutique/tasse-artisanale.jpg"
-              alt="La boutique"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="mb-2 text-accent h-5">
-                  <span className="font-bold uppercase tracking-wider text-sm">EMPORTER</span>
+              <Image
+                src="/image3.jpg"
+                alt="La boutique"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-8 flex flex-col justify-end">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="mb-2 text-accent h-5">
+                    <span className="font-bold uppercase tracking-wider text-sm">EMPORTER</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">La boutique</h3>
+                  <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    Céramiques artisanales et objets uniques.
+                  </p>
+                  <Link href="/boutique" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
+                    Explorer la boutique
+                  </Link>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-2 leading-tight h-16">La boutique</h3>
-                <p className="text-white/80 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  Céramiques artisanales et objets uniques.
-                </p>
-                <Link href="/boutique" className="inline-flex items-center justify-center text-white font-medium border-b border-accent pb-1 hover:text-accent transition-colors">
-                  Explorer la boutique
-                </Link>
               </div>
-            </div>
             </div>
           </ScrollAnimation>
         </div>

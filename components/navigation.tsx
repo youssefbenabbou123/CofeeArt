@@ -30,7 +30,7 @@ export default function Navigation() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
     }
-    
+
     // Set initial state after mount to avoid hydration mismatch
     if (typeof window !== 'undefined') {
       handleScroll()
@@ -51,15 +51,15 @@ export default function Navigation() {
     const handleStorageChange = () => {
       checkUser()
     }
-    
+
     // Listen for auth changes (when user logs in/out in same tab)
     const handleAuthChange = () => {
       checkUser()
     }
-    
+
     window.addEventListener('storage', handleStorageChange)
     window.addEventListener('auth-change', handleAuthChange)
-    
+
     // Also check on focus (when user comes back to tab)
     window.addEventListener('focus', checkUser)
 
@@ -219,16 +219,18 @@ export default function Navigation() {
 
   const rightLinks = [
     { href: "/blog", label: "Blog" },
-    { href: "/apropos", label: "À propos", submenu: [
-      { href: "/apropos", label: "À propos" },
-      { href: "/apropos/engagement", label: "Engagement" }
-    ]},
+    {
+      href: "/apropos", label: "À propos", submenu: [
+        { href: "/apropos", label: "À propos" },
+        { href: "/apropos/engagement", label: "Nos Engagements" }
+      ]
+    },
     { href: "/contact", label: "Contact" },
     { href: "/espace-client", label: "Espace client" },
   ]
 
   const menuLinks = [...leftLinks, ...rightLinks.map(link => ({ href: link.href, label: link.label }))]
-  
+
   // On home page, use scrolled state. On other pages, always use scrolled state for elements.
   const elementsScrolled = isHomePage ? scrolled : true
 
@@ -236,7 +238,7 @@ export default function Navigation() {
     <nav
       className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300",
-        scrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-4"
+        scrolled ? "py-2" : "bg-transparent py-4"
       )}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -447,7 +449,7 @@ export default function Navigation() {
               className={cn(
                 "relative p-2 rounded-full transition-colors",
                 elementsScrolled
-                  ? "bg-primary/5 hover:bg-primary/10 text-primary" 
+                  ? "bg-primary/5 hover:bg-primary/10 text-primary"
                   : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
               )}
               aria-label="Panier"
@@ -472,7 +474,7 @@ export default function Navigation() {
                     <div className={cn(
                       "p-2 rounded-full transition-colors flex items-center justify-center",
                       elementsScrolled
-                        ? "bg-primary/5 hover:bg-primary/10 text-primary" 
+                        ? "bg-primary/5 hover:bg-primary/10 text-primary"
                         : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
                     )}>
                       <User size={24} />
@@ -482,12 +484,12 @@ export default function Navigation() {
                       elementsScrolled ? "text-primary" : "text-[#e9d7c1]"
                     )}>{user.name}</span>
                   </button>
-                  
+
                   {/* Dropdown Menu */}
                   {showUserMenu && (
                     <>
-                      <div 
-                        className="fixed inset-0 z-40" 
+                      <div
+                        className="fixed inset-0 z-40"
                         onClick={() => setShowUserMenu(false)}
                       />
                       <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-primary/10 py-2 z-50">
@@ -508,7 +510,7 @@ export default function Navigation() {
                   className={cn(
                     "inline-flex items-center justify-center p-2 rounded-full transition-colors",
                     elementsScrolled
-                      ? "bg-primary/5 hover:bg-primary/10 text-primary" 
+                      ? "bg-primary/5 hover:bg-primary/10 text-primary"
                       : "bg-[#e9d7c1]/15 hover:bg-[#e9d7c1]/25 text-[#e9d7c1]"
                   )}
                   aria-label="Connexion"

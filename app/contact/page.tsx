@@ -110,7 +110,7 @@ export default function Contact() {
             </div>
             <div className="flex items-center gap-3">
               <Mail size={20} className="text-primary" />
-              <span className="text-primary/80">coffeeartsparis@gmail.com</span>
+              <Link href="mailto:coffeeartsparis@gmail.com" className="text-primary/80 hover:text-accent transition-colors">coffeeartsparis@gmail.com</Link>
             </div>
             <div className="flex items-start gap-3">
               <Clock size={20} className="text-primary flex-shrink-0 relative top-3" />
@@ -137,92 +137,20 @@ export default function Contact() {
           </ScrollAnimation>
           <ScrollAnimation direction="up" delay={100}>
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl border border-primary/10">
-            <iframe
-              src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0"
-              title="Coffee Arts Paris Location"
-            />
+              <iframe
+                src="https://www.google.com/maps?q=25+Boulevard+du+Temple+75003+PARIS&z=17&output=embed&hl=fr"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0"
+                title="Coffee Arts Paris Location"
+              />
             </div>
           </ScrollAnimation>
         </div>
-      </section>
-
-      {/* Form Section */}
-      <section className="pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <ScrollAnimation direction="up" delay={100}>
-          <div className="bg-white/80 backdrop-blur-xl border border-white/50 p-8 md:p-10 rounded-3xl shadow-xl">
-          <h2 className="text-2xl font-bold text-primary mb-6 text-center">Formulaire de contact</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-primary ml-1">Nom</label>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Votre nom"
-                      className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                      required
-                      disabled={loading}
-                    />
-                  </div>
-              <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-primary ml-1">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="votre@email.com"
-                      className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                      required
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-
-            <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-primary ml-1">Objet</label>
-                  <select
-                    name="subject"
-                    className="w-full px-4 py-3 pr-10 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-primary/70 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%2358604C%22%20d%3D%22M6%209L1%204h10z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right-3 bg-[length:12px_12px]"
-                    style={{ backgroundPosition: 'calc(100% - 12px) center' }}
-                    required
-                    disabled={loading}
-                    defaultValue="Renseignement général"
-                  >
-                    <option value="Renseignement général">Renseignement général</option>
-                    <option value="Privatisation">Privatisation</option>
-                    <option value="Ateliers">Ateliers</option>
-                    <option value="Presse & partenariats">Presse & partenariats</option>
-                  </select>
-                </div>
-
-            <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-primary ml-1">Message</label>
-                  <textarea
-                    name="message"
-                    placeholder="Comment pouvons-nous vous aider ?"
-                    rows={5}
-                    className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
-                    required
-                    disabled={loading}
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary/90 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Envoi en cours..." : "Envoyer"}
-                </button>
-              </form>
-          </div>
-        </ScrollAnimation>
       </section>
 
       {/* Collaborations / Influenceurs / Presse Section */}
@@ -285,6 +213,80 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+
+      {/* Form Section */}
+      <section className="pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <ScrollAnimation direction="up" delay={100}>
+          <div className="bg-white/80 backdrop-blur-xl border border-white/50 p-8 md:p-10 rounded-3xl shadow-xl">
+            <h2 className="text-2xl font-bold text-primary mb-6 text-center">Formulaire de contact</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-primary ml-1">Nom</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Votre nom"
+                    className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-primary ml-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="votre@email.com"
+                    className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    required
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-primary ml-1">Objet</label>
+                <select
+                  name="subject"
+                  className="w-full px-4 py-3 pr-10 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-primary/70 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%2358604C%22%20d%3D%22M6%209L1%204h10z%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right-3 bg-[length:12px_12px]"
+                  style={{ backgroundPosition: 'calc(100% - 12px) center' }}
+                  required
+                  disabled={loading}
+                  defaultValue="Renseignement général"
+                >
+                  <option value="Renseignement général">Renseignement général</option>
+                  <option value="Privatisation">Privatisation</option>
+                  <option value="Ateliers">Ateliers</option>
+                  <option value="Presse & partenariats">Presse & partenariats</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-primary ml-1">Message</label>
+                <textarea
+                  name="message"
+                  placeholder="Comment pouvons-nous vous aider ?"
+                  rows={5}
+                  className="w-full px-4 py-3 bg-white/50 border border-primary/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
+                  required
+                  disabled={loading}
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary/90 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Envoi en cours..." : "Envoyer"}
+              </button>
+            </form>
+          </div>
+        </ScrollAnimation>
+      </section>
+
 
       {/* FAQ Section */}
       <section className="py-20 bg-background">
@@ -350,7 +352,7 @@ export default function Contact() {
                   },
                   {
                     question: "Peut-on venir uniquement pour boire un café ?",
-                    answer: "Oui. Le lieu est avant tout un coffee shop. Il est tout à fait possible de venir simplement profiter d'un café, sans participer à un atelier."
+                    answer: "Oui, le lieu est avant tout un coffee shop. Il est tout à fait possible de venir simplement profiter d'un café, sans participer à un atelier."
                   },
                   {
                     question: "Faut-il réserver pour venir chez Coffee Arts Paris ?",
@@ -372,7 +374,7 @@ export default function Contact() {
                   },
                   {
                     question: "Les ateliers sont-ils accessibles aux débutants ?",
-                    answer: "Oui. Les ateliers sont ouverts à tous, sans niveau requis. L'objectif est de découvrir et de créer dans un cadre détendu."
+                    answer: "Oui, les ateliers sont ouverts à tous, sans niveau requis. L'objectif est de découvrir et de créer dans un cadre détendu."
                   },
                   {
                     question: "Comment réserver un atelier ?",
@@ -384,7 +386,7 @@ export default function Contact() {
                   },
                   {
                     question: "Quelle est la politique d'annulation ou de modification ?",
-                    answer: "Les réservations peuvent être annulées ou modifiées jusqu'à 48 heures avant l'événement, par email."
+                    answer: <span > Les réservations peuvent être annulées ou modifiées jusqu'à 48 heures avant l'événement, par <Link href="mailto:coffeeartsparis@gmail.com" className="text-primary/60 hover:text-primary transition-colors font-medium">email</Link>.</span>
                   }
                 ],
                 boutique: [
@@ -402,11 +404,11 @@ export default function Contact() {
                   },
                   {
                     question: "Puis-je offrir un produit ou un kit en cadeau ?",
-                    answer: "Oui, les produits de la boutique se prêtent très bien aux cadeaux et peuvent être commandés directement en ligne. Il est également possible d'offrir une expérience Coffee Arts Paris grâce à nos cartes cadeaux. Elles peuvent être utilisées pour des ateliers de céramique, des consommations au café ou sous forme de montant libre."
+                    answer: <span>Oui, les produits de la boutique se prêtent très bien aux cadeaux et peuvent être commandés directement en ligne. Il est également possible d'offrir une expérience Coffee Arts Paris grâce à nos cartes cadeaux. <br /> Elles peuvent être utilisées pour des ateliers de céramique, des consommations au café ou sous forme de montant libre.</span>
                   },
                   {
                     question: "Que faire en cas de question ou de problème avec une commande ?",
-                    answer: "Pour toute question liée à une commande, vous pouvez contacter via la page Contact."
+                    answer: <span>Pour toute question liée à une commande, vous pouvez nous contacter via la page <Link href="/contact" className="text-primary/60 hover:text-primary transition-colors font-medium">Contact</Link>.</span>
                   }
                 ]
               }
@@ -464,12 +466,12 @@ export default function Contact() {
             className="mt-12 text-center"
           >
             <p className="text-primary/70 mb-4">Vous ne trouvez pas la réponse à votre question ?</p>
-            <Link
-              href="/contact"
+            <a
+              href="tel:0766918294"
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Contactez-nous
-            </Link>
+            </a>
           </motion.div>
         </div>
       </section>

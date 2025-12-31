@@ -16,7 +16,7 @@ export default function Connexion() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>("")
   const { toast } = useToast()
-  
+
   // Form states
   const [loginEmail, setLoginEmail] = useState("")
   const [loginPassword, setLoginPassword] = useState("")
@@ -33,7 +33,7 @@ export default function Connexion() {
       <div className="max-w-md w-full mx-auto px-4 py-12 relative z-10">
         <div className="bg-white/60 backdrop-blur-xl p-10 rounded-3xl border border-white/50 shadow-2xl animate-fade-up opacity-0" style={{ animationDelay: "0.1s" }}>
           <h1 className="text-4xl font-black text-primary text-center mb-10 animate-fade-up opacity-0" style={{ animationDelay: "0.2s" }}>
-            Coffee Arts
+            Coffee Arts Paris
           </h1>
 
           {/* Tabs */}
@@ -41,8 +41,8 @@ export default function Connexion() {
             <button
               onClick={() => setTab("login")}
               className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "login"
-                  ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
-                  : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
+                ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
+                : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
                 }`}
             >
               Connexion
@@ -50,8 +50,8 @@ export default function Connexion() {
             <button
               onClick={() => setTab("signup")}
               className={`flex-1 py-3 px-6 rounded-xl font-bold transition-all duration-300 ${tab === "signup"
-                  ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
-                  : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
+                ? "bg-[#ACB792] text-[#58604C] shadow-lg scale-105"
+                : "border-2 border-[#8A8E74]/30 text-[#58604C] hover:bg-[#ACB792]/10 hover:border-[#8A8E74]/50"
                 }`}
             >
               Inscription
@@ -67,13 +67,13 @@ export default function Connexion() {
 
           {/* Login Form */}
           {tab === "login" && (
-            <form 
+            <form
               className="space-y-5"
               onSubmit={async (e) => {
                 e.preventDefault()
                 setError("")
                 setLoading(true)
-                
+
                 try {
                   const response = await signIn(loginEmail, loginPassword)
                   // Dispatch custom event to notify navigation
@@ -129,13 +129,13 @@ export default function Connexion() {
 
           {/* Signup Form */}
           {tab === "signup" && (
-            <form 
+            <form
               className="space-y-5"
               onSubmit={async (e) => {
                 e.preventDefault()
                 setError("")
                 setLoading(true)
-                
+
                 try {
                   const response = await signUp(signupName, signupEmail, signupPassword)
                   // Dispatch custom event to notify navigation
@@ -201,7 +201,7 @@ export default function Connexion() {
           )}
 
           <p className="text-center text-primary/60 text-sm mt-8 font-medium animate-fade-up opacity-0" style={{ animationDelay: "0.7s" }}>
-            {tab === "login" ? "Pas encore de compte? " : "Déjà inscrit? "}
+            {tab === "login" ? "Pas encore de compte ? " : "Déjà inscrit ? "}
             <button
               onClick={() => setTab(tab === "login" ? "signup" : "login")}
               className="text-primary font-bold hover:text-accent transition-colors"
